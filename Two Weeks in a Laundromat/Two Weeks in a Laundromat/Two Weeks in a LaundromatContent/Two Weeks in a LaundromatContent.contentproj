@@ -100,7 +100,6 @@
       <Name>Dryer</Name>
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
-      <ProcessorParameters_RotationX>-90</ProcessorParameters_RotationX>
     </Compile>
   </ItemGroup>
   <ItemGroup>
