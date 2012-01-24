@@ -70,7 +70,7 @@ namespace Delve_Engine.World
             ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
                 ref cMatrices);
             // Set the pieces of out matrix descriptor:
-            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
+            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(60.0f),
                 gDevice.Viewport.AspectRatio, 0.1f, 1000.0f);
             cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
 

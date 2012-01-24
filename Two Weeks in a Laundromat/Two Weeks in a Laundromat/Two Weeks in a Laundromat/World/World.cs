@@ -14,8 +14,10 @@ namespace Two_Weeks_in_a_Laundromat
 {
     public class World: Delve_Engine.World.World
     {
+        const float milsMultiple = 50 * (float)Math.PI;
         public override void Update(GameTime gTime)
         {
+            float mils = gTime.TotalGameTime.Milliseconds / milsMultiple;
             // Update the shaders in each model
             foreach (MetaModel m in modelsToDraw)
             {
@@ -28,6 +30,8 @@ namespace Two_Weeks_in_a_Laundromat
                     Matrix worldView = Matrix.Multiply(globalEffect.World, globalEffect.View);
                     Matrix worldViewProj = Matrix.Multiply(worldView, globalEffect.Projection);
                     m.Shader.Parameters["WorldViewProj"].SetValue(worldViewProj);
+                    m.Shader.Parameters["LightPos"].SetValue(new Vector3(0 + (float)Math.Sin(mils) * 4,
+                        2, 0 + (float)Math.Cos(mils) * 4));
                 }
             }
 
