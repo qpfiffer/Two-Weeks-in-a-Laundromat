@@ -1,8 +1,0 @@
-Content\Fonts\mainFont.xnb
-Content\Textures\Ghiblies\cart.xnb
-Content\Textures\Ghiblies\textureless.xnb
-Content\Textures\Ghiblies\Dryer.xnb
-Content\Models\Ghiblies\cart.xnb
-Content\Models\Ghiblies\Tired_and_Things.xnb
-Content\Models\Ghiblies\Dryer.xnb
-Content\Shaders\lighting.xnb

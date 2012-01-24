@@ -12,19 +12,3 @@ D:\Code\Two_Weeks_Local\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two 
 D:\Code\Two_Weeks_Local\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Textures\Ghiblies\textureless.xnb
 D:\Code\Two_Weeks_Local\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Models\Ghiblies\Tired_and_Things.xnb
 D:\Code\Two_Weeks_Local\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Shaders\lighting.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\obj\x86\Debug\Two Weeks in a Laundromat.exe
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\obj\x86\Debug\Two Weeks in a Laundromat.pdb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Fonts\mainFont.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Textures\Ghiblies\cart.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Textures\Ghiblies\textureless.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Textures\Ghiblies\Dryer.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Models\Ghiblies\cart.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Models\Ghiblies\Tired_and_Things.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Models\Ghiblies\Dryer.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Content\Shaders\lighting.xnb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Two Weeks in a Laundromat.exe
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Two Weeks in a Laundromat.pdb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Delve Engine.dll
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\bin\x86\Debug\Delve Engine.pdb
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a Laundromat\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt

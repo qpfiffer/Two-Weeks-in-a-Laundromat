@@ -1,0 +1,12 @@
+D:\Code\Delve Engine\Delve Engine\Delve Engine\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Code\Delve Engine\Delve Engine\Delve Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\Code\Delve Engine\Delve Engine\Delve Engine\bin\x86\Debug\Delve Engine.dll
+D:\Code\Delve Engine\Delve Engine\Delve Engine\bin\x86\Debug\Delve Engine.pdb
+D:\Code\Delve Engine\Delve Engine\Delve Engine\obj\x86\Debug\Delve Engine.dll
+D:\Code\Delve Engine\Delve Engine\Delve Engine\obj\x86\Debug\Delve Engine.pdb
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\bin\x86\Debug\Delve Engine.dll
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\bin\x86\Debug\Delve Engine.pdb
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\obj\x86\Debug\Delve Engine.dll
+D:\Code\Two_Weeks_Local\Delve Engine\Delve Engine\obj\x86\Debug\Delve Engine.pdb
