@@ -26,16 +26,16 @@ namespace Delve_Engine.Menu
         #region SCENE_TO_DRAW
         MatrixDescriptor currentMatrices;
         SoundEffect bgSound;
-        BasicEffect globalEffect;
-        Vector3 cameraPos;
-        float leftRightRot, upDownRot;
-        RasterizerState rState;
-        GraphicsDevice gDevice;
+        RasterizerState rState;        
         #endregion
 
         #region Protected_Stuff
         protected List<MetaModel> models;
         protected Color clearColor;
+        protected BasicEffect globalEffect;
+        protected GraphicsDevice gDevice;
+        protected Vector3 cameraPos = Vector3.Zero;
+        protected float leftRightRot, upDownRot;
         #endregion
 
         public Menu(GraphicsDevice gDevice, string title)
@@ -48,18 +48,13 @@ namespace Delve_Engine.Menu
             this.Flag = MenuFlags.normal;
             this.clearColor = Color.LightCyan;
             #endregion
-            #region Scenery
-            cameraPos = new Vector3(0.0f, 1.0f, 3.0f);
-
+            #region Scenery          
             models = new List<MetaModel>();
 
             rState = new RasterizerState();
             rState.FillMode = FillMode.Solid;
             rState.CullMode = CullMode.CullCounterClockwiseFace;
-            rState.ScissorTestEnable = true;
-
-            leftRightRot = 0.0f;
-            upDownRot = MathHelper.ToRadians(-10.0f);
+            rState.ScissorTestEnable = true;         
             #endregion
         }
 
@@ -94,7 +89,7 @@ namespace Delve_Engine.Menu
             #endregion
         }
 
-        public void Update(GameTime gTime)
+        public virtual void Update(GameTime gTime)
         {
         }
 
@@ -132,9 +127,16 @@ namespace Delve_Engine.Menu
             gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, clearColor, 1.0f, 0);
             gDevice.RasterizerState = rState;
 
-            foreach (MetaModel mModel in models)
+            foreach (MetaModel model in models)
             {
-                ModelUtil.DrawModel(mModel, globalEffect);
+                if (model.Shader == null)
+                {
+                    ModelUtil.DrawModel(model, globalEffect);
+                }
+                else
+                {
+                    ModelUtil.DrawModel(model);
+                }
             }
 
             // Draw the title of the menu:

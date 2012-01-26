@@ -130,7 +130,17 @@ namespace Delve_Engine.Utilities
         public static Effect CreateGlobalEffect(GraphicsDevice gDevice, ContentManager gManager)
         {
             Effect shader = gManager.Load<Effect>("Shaders/lighting");
-            shader.Parameters["LightPos"].SetValue(new Vector3(4, 2, -3));
+            shader.Parameters["LightPos"].SetValue(Vector3.Zero);
+            shader.Parameters["LightPower"].SetValue(1.0f);
+            shader.Parameters["LightDistanceSquared"].SetValue(49.0f);
+
+            return shader;
+        }
+
+        public static Effect CreateGlobalEffect(GraphicsDevice gDevice, ContentManager gManager, Vector3 defaultLightPos)
+        {
+            Effect shader = gManager.Load<Effect>("Shaders/lighting");
+            shader.Parameters["LightPos"].SetValue(defaultLightPos);
             shader.Parameters["LightPower"].SetValue(1.0f);
             shader.Parameters["LightDistanceSquared"].SetValue(49.0f);
 
