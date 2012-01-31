@@ -180,7 +180,7 @@ namespace Delve_Engine.World
             }
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             gDevice.DepthStencilState = DepthStencilState.Default;
             gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);

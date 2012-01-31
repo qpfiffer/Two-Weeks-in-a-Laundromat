@@ -16,23 +16,7 @@ namespace Two_Weeks_in_a_Laundromat
     {
         const float milsMultiple = 50 * (float)Math.PI;
         public override void Update(GameTime gTime)
-        {
-            float mils = gTime.TotalGameTime.Milliseconds / milsMultiple;
-            // Update the shaders in each model
-            foreach (MetaModel m in modelsToDraw)
-            {
-                if (m.Shader != null)
-                {                   
-                    m.Shader.Parameters["World"].SetValue(globalEffect.World);
-                    m.Shader.Parameters["View"].SetValue(globalEffect.View);
-                    m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
-
-                    //m.Shader.Parameters["LightPos"].SetValue(new Vector3(0 + (float)Math.Sin(mils) * 4,
-                    //    2, 0 + (float)Math.Cos(mils) * 4));
-                    m.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
-                }
-            }
-
+        {            
             base.Update(gTime);
         }
 
@@ -55,11 +39,11 @@ namespace Two_Weeks_in_a_Laundromat
             this.modelsToDraw.Add(laundromat);
 
             MetaModel hallwayTest = new MetaModel();
-            hallwayTest.Position = new Vector3(-10, 0, 0.0f);
+            hallwayTest.Position = new Vector3(-9.5f, 0, -2.75f);
             hallwayTest.Rotation = Vector3.Zero;
             hallwayTest.model = gManager.Load<Model>("Models/Ghiblies/hall_test");
             hallwayTest.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            //hallwayTest.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            hallwayTest.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             this.modelsToDraw.Add(hallwayTest);
 
             for (int i = 0; i < 3; i++)
@@ -74,6 +58,22 @@ namespace Two_Weeks_in_a_Laundromat
             }
 
             base.Load(gManager, gDevice);
+        }
+
+        public override void Draw()
+        {
+            // Update the shaders in each model
+            foreach (MetaModel m in modelsToDraw)
+            {
+                if (m.Shader != null)
+                {
+                    m.Shader.Parameters["World"].SetValue(globalEffect.World);
+                    m.Shader.Parameters["View"].SetValue(globalEffect.View);
+                    m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
+                    m.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
+                }
+            }
+            base.Draw();
         }
     }
 }

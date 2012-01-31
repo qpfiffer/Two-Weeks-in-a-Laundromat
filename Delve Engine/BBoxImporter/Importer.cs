@@ -149,7 +149,7 @@ namespace BBoxImporter
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
             //ModelContent basemodel = base.Process(input, context);
-            GenerateNormals(input, context);
+            //GenerateNormals(input, context);
             GenerateTangents(input, context);
 
             // Setup bounding box data.

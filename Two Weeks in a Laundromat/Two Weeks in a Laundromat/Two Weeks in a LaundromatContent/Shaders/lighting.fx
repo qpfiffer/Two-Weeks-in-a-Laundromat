@@ -33,41 +33,45 @@ float DotProduct(float3 lightPos, float3 pos3D, float3 normal)
 // ---------------------------------------------
 struct VertexToPixel
 {
-    float4 Position     : POSITION;    
-    float2 TexCoords    : TEXCOORD0;
-    float3 Normal        : TEXCOORD1;
-    float3 Position3D    : TEXCOORD2;
+    float4 Position			: POSITION;    
+    float2 TexCoords		: TEXCOORD0;
+    float3 Normal			: TEXCOORD1;
+    float3 WorldPosition    : TEXCOORD2;
 };
 // ---------------------------------------------
 
 
 // POINT LIGHT
 // ---------------------------------------------
-VertexToPixel PointLightVS(float4 inPos : POSITION0, float2 inTexCoords : TEXCOORD0, float3 inNormal : NORMAL) {
-	VertexToPixel Output = (VertexToPixel)0;
+VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOORD0, float3 inNormal : NORMAL) {
+	VertexToPixel output;
 
-	Output.Normal = normalize(mul(inNormal, (float3x3)World));    
-	Output.Position3D = mul(inPos, World);
-	Output.TexCoords = inTexCoords;
-	float4x4 wvp = mul(mul(World, View), Projection);
-	Output.Position = mul(inPos, wvp);
+    //generate the world-view-projection matrix
+    float4x4 wvp = mul(mul(World, View), Projection);
+     
+    //transform the input position to the output
+    output.Position = mul(float4(inPos, 1.0), wvp);
 
-	return Output;
+    output.Normal =  mul(inNormal, World);
+    float4 worldPosition =  mul(float4(inPos, 1.0), World);
+    output.WorldPosition = worldPosition / worldPosition.w;
+
+	output.TexCoords = inTexCoords;
+    //return the output structure
+    return output;
 }
 
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
-	float diffuseLightingFactor = DotProduct(LightPos, PSIn.Position3D, PSIn.Normal);
-	diffuseLightingFactor = saturate(diffuseLightingFactor);
-	diffuseLightingFactor *= LightPower;
-	//PSIn.TexCoords.y--;
+	//calculate per-pixel diffuse
+     float3 directionToLight = normalize(LightPos - PSIn.WorldPosition);
+     float diffuseIntensity = saturate(dot(directionToLight, PSIn.Normal));
+     float4 diffuse = tex2D(TextureSampler, PSIn.TexCoords) * diffuseIntensity;
+     
+     float4 color = diffuse;
+	color.a = 1;
 
-	float4 baseColor = tex2D(TextureSampler, PSIn.TexCoords);
-	float baseColorAlpha = baseColor.a;
-	baseColor *= diffuseLightingFactor;
-	baseColor.a = baseColorAlpha;
-
-    return baseColor;
+    return color;
 }
 // ---------------------------------------------
 

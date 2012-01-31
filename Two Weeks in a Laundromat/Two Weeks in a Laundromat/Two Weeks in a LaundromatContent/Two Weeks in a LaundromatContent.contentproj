@@ -114,6 +114,7 @@
       <Name>hall_test</Name>
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
+      <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
