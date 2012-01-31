@@ -27,11 +27,9 @@ namespace Two_Weeks_in_a_Laundromat
                     m.Shader.Parameters["View"].SetValue(globalEffect.View);
                     m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
 
-                    Matrix worldView = Matrix.Multiply(globalEffect.World, globalEffect.View);
-                    Matrix worldViewProj = Matrix.Multiply(worldView, globalEffect.Projection);
-                    m.Shader.Parameters["WorldViewProj"].SetValue(worldViewProj);
-                    m.Shader.Parameters["LightPos"].SetValue(new Vector3(0 + (float)Math.Sin(mils) * 4,
-                        2, 0 + (float)Math.Cos(mils) * 4));
+                    //m.Shader.Parameters["LightPos"].SetValue(new Vector3(0 + (float)Math.Sin(mils) * 4,
+                    //    2, 0 + (float)Math.Cos(mils) * 4));
+                    m.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
                 }
             }
 
@@ -55,6 +53,14 @@ namespace Two_Weeks_in_a_Laundromat
             laundromat.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             laundromat.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             this.modelsToDraw.Add(laundromat);
+
+            MetaModel hallwayTest = new MetaModel();
+            hallwayTest.Position = new Vector3(-10, 0, 0.0f);
+            hallwayTest.Rotation = Vector3.Zero;
+            hallwayTest.model = gManager.Load<Model>("Models/Ghiblies/hall_test");
+            hallwayTest.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //hallwayTest.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            this.modelsToDraw.Add(hallwayTest);
 
             for (int i = 0; i < 3; i++)
             {

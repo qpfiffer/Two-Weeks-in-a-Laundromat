@@ -37,10 +37,6 @@ namespace Two_Weeks_in_a_Laundromat
                     m.Shader.Parameters["World"].SetValue(globalEffect.World);
                     m.Shader.Parameters["View"].SetValue(globalEffect.View);
                     m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
-
-                    Matrix worldView = Matrix.Multiply(globalEffect.World, globalEffect.View);
-                    Matrix worldViewProj = Matrix.Multiply(worldView, globalEffect.Projection);
-                    m.Shader.Parameters["WorldViewProj"].SetValue(worldViewProj);
                 }
             }
             base.Update(gTime);

@@ -1,7 +1,6 @@
 float4x4 World;
 float4x4 View;
 float4x4 Projection;
-float4x4 WorldViewProj;
 
 // POINT LIGHT VARIABLES
 float3 LightPos;
@@ -50,7 +49,8 @@ VertexToPixel PointLightVS(float4 inPos : POSITION0, float2 inTexCoords : TEXCOO
 	Output.Normal = normalize(mul(inNormal, (float3x3)World));    
 	Output.Position3D = mul(inPos, World);
 	Output.TexCoords = inTexCoords;
-	Output.Position = mul(inPos, WorldViewProj);
+	float4x4 wvp = mul(mul(World, View), Projection);
+	Output.Position = mul(inPos, wvp);
 
 	return Output;
 }
@@ -58,20 +58,15 @@ VertexToPixel PointLightVS(float4 inPos : POSITION0, float2 inTexCoords : TEXCOO
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
 	float diffuseLightingFactor = DotProduct(LightPos, PSIn.Position3D, PSIn.Normal);
-	//diffuseLightingFactor = saturate(diffuseLightingFactor);
-	
-	// Introduce fall-off of light intensity
-	//diffuseLightingFactor *= (LightDistanceSquared / dot(LightPos - PSIn.Position3D, LightPos - PSIn.Position3D));
-	// Limit it a bit
-	//diffuseLightingFactor = clamp(diffuseLightingFactor, 0, xLightPower);
-	//diffuseLightingFactor = saturate(diffuseLightingFactor);
+	diffuseLightingFactor = saturate(diffuseLightingFactor);
+	diffuseLightingFactor *= LightPower;
+	//PSIn.TexCoords.y--;
 
 	float4 baseColor = tex2D(TextureSampler, PSIn.TexCoords);
 	float baseColorAlpha = baseColor.a;
 	baseColor *= diffuseLightingFactor;
-	//float greyscale   = dot(baseColor, float3(0.20, 0.49, 0.01));     
-    //baseColor         = lerp(greyscale, baseColor, 0.05);
 	baseColor.a = baseColorAlpha;
+
     return baseColor;
 }
 // ---------------------------------------------
@@ -80,11 +75,6 @@ float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 // ---------------------------------------------
 technique WorldLighting
 {
-	//pass AmbientLight
-    //{
-		//VertexShader = compile vs_2_0 AmbientLightVS();
-        //PixelShader = compile ps_2_0 AmbientLightPS();
-    //}
 	pass PointLight
     {
 		VertexShader = compile vs_2_0 PointLightVS();

@@ -218,8 +218,9 @@ namespace Delve_Engine.Utilities
             // that way than to clone them.
 
             // PUSH IT
-            Matrix wolrdvpOld = m.Shader.Parameters["WorldViewProj"].GetValueMatrix();
             Matrix oldWorld = m.Shader.Parameters["World"].GetValueMatrix();
+            Matrix oldView = m.Shader.Parameters["View"].GetValueMatrix();
+            Matrix oldProj = m.Shader.Parameters["Projection"].GetValueMatrix();
 
             Matrix[] transforms = new Matrix[m.model.Bones.Count];
             m.model.CopyAbsoluteBoneTransformsTo(transforms);
@@ -241,24 +242,14 @@ namespace Delve_Engine.Utilities
                         worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
                         worldTemp *= Matrix.CreateTranslation(m.Position);
                         part.Effect.Parameters["World"].SetValue(worldTemp);
-
-                        // Setup world*view:
-                        Matrix worldView = Matrix.Multiply(worldTemp,
-                            m.Shader.Parameters["View"].GetValueMatrix());
-
-                        // Setup world*view*proj:
-                        Matrix worldViewProj = Matrix.Multiply(worldView,
-                            m.Shader.Parameters["Projection"].GetValueMatrix());
-
-                        // Pass it to the effect:
-                        part.Effect.Parameters["WorldViewProj"].SetValue(worldViewProj);
                         
                     }
                     mesh.Draw();
 
                     // POP IT!
-                    m.Shader.Parameters["WorldViewProj"].SetValue(wolrdvpOld);
                     m.Shader.Parameters["World"].SetValue(oldWorld);
+                    m.Shader.Parameters["View"].SetValue(oldView);
+                    m.Shader.Parameters["Projection"].SetValue(oldProj);
                 }
             }
         }
