@@ -112,46 +112,8 @@ namespace BBoxImporter
             }
         }
 
-        // Tangents.
-        private void GenerateTangents(NodeContent input, ContentProcessorContext context)
-        {
-            MeshContent mesh = input as MeshContent;
-
-            if (mesh != null)
-            {
-                MeshHelper.CalculateTangentFrames(mesh,
-                    VertexChannelNames.TextureCoordinate(0),
-                    VertexChannelNames.Tangent(0),
-                    VertexChannelNames.Binormal(0));
-            }
-
-            foreach (NodeContent child in input.Children)
-            {
-                GenerateTangents(child, context);
-            }
-        }
-        // Normals
-        private void GenerateNormals(NodeContent input, ContentProcessorContext context)
-        {
-            MeshContent mesh = input as MeshContent;
-
-            if (mesh != null)
-            {
-                MeshHelper.CalculateNormals(mesh, true);
-            }
-
-            foreach (NodeContent child in input.Children)
-            {
-                GenerateNormals(child, context);
-            }
-        }
-
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
-            //ModelContent basemodel = base.Process(input, context);
-            //GenerateNormals(input, context);
-            GenerateTangents(input, context);
-
             // Setup bounding box data.
             CheckNode(input);
 
