@@ -5,7 +5,6 @@ float4x4 Projection;
 // POINT LIGHT VARIABLES
 float3 LightPos;
 float LightPower;
-float LightDistanceSquared;
 
 // Texture that gets mapped onto surfaces:
 Texture UsedTexture;
@@ -45,31 +44,30 @@ struct VertexToPixel
 // ---------------------------------------------
 VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOORD0, float3 inNormal : NORMAL) {
 	VertexToPixel output;
-
-    //generate the world-view-projection matrix
-    float4x4 wvp = mul(mul(World, View), Projection);
+	//generate the world-view-projection matrix
+	float4x4 wvp = mul(mul(World, View), Projection);
      
-    //transform the input position to the output
-    output.Position = mul(float4(inPos, 1.0), wvp);
+	//transform the input position to the output
+	output.Position = mul(float4(inPos, 1.0), wvp);
 
-    output.Normal =  mul(inNormal, World);
-    float4 worldPosition =  mul(float4(inPos, 1.0), World);
-    output.WorldPosition = worldPosition / worldPosition.w;
+	output.Normal =  mul(inNormal, World);
+	float4 worldPosition =  mul(float4(inPos, 1.0), World);
+	output.WorldPosition = worldPosition / worldPosition.w;
 
 	output.TexCoords = inTexCoords;
-    //return the output structure
-    return output;
+	//return the output structure
+	return output;
 }
 
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
 	//calculate per-pixel diffuse
-     float3 directionToLight = normalize(LightPos - PSIn.WorldPosition);
-     float diffuseIntensity = saturate(dot(directionToLight, PSIn.Normal));
-     float4 diffuse = tex2D(TextureSampler, PSIn.TexCoords) * diffuseIntensity;
+	float3 directionToLight = normalize(LightPos - PSIn.WorldPosition);
+	float diffuseIntensity = saturate(dot(directionToLight, PSIn.Normal));
+	float4 diffuse = tex2D(TextureSampler, PSIn.TexCoords) * diffuseIntensity;
      
-     float4 color = diffuse;
-	color.a = 1;
+	float4 color = diffuse;
+	color.a = tex2D(TextureSampler, PSIn.TexCoords).w;
 
     return color;
 }

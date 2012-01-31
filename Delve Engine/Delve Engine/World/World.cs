@@ -38,8 +38,8 @@ namespace Delve_Engine.World
 
         public World()
         {
-            Vector3 playerPos = new Vector3(0, Player.chestHeight, 3.0f);
-            Vector2 playerRot = new Vector2(0.0f, 0.0f);
+            Vector3 playerPos = new Vector3(0, Player.playerHeight, 0);
+            Vector2 playerRot = Vector2.Zero;
 
             rState = new RasterizerState();
             rState.FillMode = FillMode.Solid;
@@ -55,8 +55,6 @@ namespace Delve_Engine.World
         {
             this.gDevice = gDevice;
             this.gManager = gManager;
-
-            mainPlayer.Position = new Vector3(0, Player.chestHeight, 0);
 
             Setup3D(gDevice);
         }

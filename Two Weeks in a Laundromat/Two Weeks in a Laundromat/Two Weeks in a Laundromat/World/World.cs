@@ -14,7 +14,11 @@ namespace Two_Weeks_in_a_Laundromat
 {
     public class World: Delve_Engine.World.World
     {
-        const float milsMultiple = 50 * (float)Math.PI;
+        public World(): base()
+        {
+            mainPlayer.setCameraPosition(new Vector3(0, Player.playerHeight, 10), Vector3.Zero);
+        }
+
         public override void Update(GameTime gTime)
         {            
             base.Update(gTime);
@@ -22,29 +26,13 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            MetaModel cart = new MetaModel();
-            cart.Position = new Vector3(0, 0, 1.0f);
-            cart.Rotation = new Vector3(0.0f, MathHelper.ToRadians(45.0f), 0.0f);
-            cart.model = gManager.Load<Model>("Models/Ghiblies/cart");
-            cart.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/cart");
-            cart.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            this.modelsToDraw.Add(cart);
-
-            MetaModel laundromat = new MetaModel();
-            laundromat.Position = new Vector3(0, 0, 0.0f);
-            laundromat.Rotation = Vector3.Zero;
-            laundromat.model = gManager.Load<Model>("Models/Ghiblies/Tired_and_Things");
-            laundromat.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            laundromat.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            this.modelsToDraw.Add(laundromat);
-
-            MetaModel hallwayTest = new MetaModel();
-            hallwayTest.Position = new Vector3(-9.5f, 0, -2.75f);
-            hallwayTest.Rotation = Vector3.Zero;
-            hallwayTest.model = gManager.Load<Model>("Models/Ghiblies/hall_test");
-            hallwayTest.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            hallwayTest.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            this.modelsToDraw.Add(hallwayTest);
+            MetaModel Scale = new MetaModel();
+            Scale.Position = Vector3.Zero;
+            Scale.Rotation = Vector3.Zero;
+            Scale.model = gManager.Load<Model>("Models/Ghiblies/Scale");
+            Scale.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            this.modelsToDraw.Add(Scale);
 
             for (int i = 0; i < 3; i++)
             {

@@ -90,6 +90,7 @@ namespace Delve_Engine.Utilities
 
     public static class ModelUtil
     {
+        public const float defaultLightPower = 1.0f;
         /// <summary>
         /// Updates the view matrix given a camera's rotation and position.
         /// </summary>
@@ -127,22 +128,29 @@ namespace Delve_Engine.Utilities
             return globalEffect;
         }
 
+        /// <summary>
+        /// Creates the global effect to be used for lighting on all models. Uses 0,0,0.
+        /// </summary>
+        /// <param name="gDevice">The graphics device to create the effect on.</param>
+        /// <param name="gManager">The global content manager to load the effect with.</param>
+        /// <returns>The created effect.</returns>
         public static Effect CreateGlobalEffect(GraphicsDevice gDevice, ContentManager gManager)
         {
-            Effect shader = gManager.Load<Effect>("Shaders/lighting");
-            shader.Parameters["LightPos"].SetValue(Vector3.Zero);
-            shader.Parameters["LightPower"].SetValue(1.0f);
-            shader.Parameters["LightDistanceSquared"].SetValue(49.0f);
-
-            return shader;
+            return CreateGlobalEffect(gDevice, gManager, Vector3.Zero);
         }
 
+        /// <summary>
+        /// Creates the global effect to be used for lighting on all models. Uses what you specify.
+        /// </summary>
+        /// <param name="gDevice">The graphics device to create the effect on.</param>
+        /// <param name="gManager">The global content manager to load the effect with.</param>
+        /// <param name="defaultLightPos">Where the light will initially be positioned.</param>
+        /// <returns>The created effect.</returns>
         public static Effect CreateGlobalEffect(GraphicsDevice gDevice, ContentManager gManager, Vector3 defaultLightPos)
         {
             Effect shader = gManager.Load<Effect>("Shaders/lighting");
             shader.Parameters["LightPos"].SetValue(defaultLightPos);
-            shader.Parameters["LightPower"].SetValue(1.0f);
-            shader.Parameters["LightDistanceSquared"].SetValue(49.0f);
+            shader.Parameters["LightPower"].SetValue(defaultLightPower);
 
             return shader;
         }

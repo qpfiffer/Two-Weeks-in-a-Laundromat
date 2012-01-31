@@ -40,8 +40,11 @@ namespace Delve_Engine.World
         // Default constants.
         public const float rotationSpeed = 0.3f;
         public const float moveSpeed = 4.0f;
-        public const float chestHeight = 1.8f;
-        public const float floorBoxHeight = chestHeight - 0.5f;
+        // Top of the head
+        public const float playerHeight = 5.0f;
+        // 0.5f up from the bottom of the floor (has to do with the radius
+        // of the sphere we use)
+        public const float floorBoxHeight = 0.5f;
         public const float gravity = 0.35f;
         public const float rightAngleRadians = 1.57079633f;
         #endregion
@@ -51,6 +54,7 @@ namespace Delve_Engine.World
         {
             this.rotateEnabled = false;
             matrices = new MatrixDescriptor();
+            // A bounding sphere right at the chest
             BoundingSphere chestSphere = new BoundingSphere(position, 0.25f);
             base.addNewBounding(chestSphere, Vector3.Zero);
         }

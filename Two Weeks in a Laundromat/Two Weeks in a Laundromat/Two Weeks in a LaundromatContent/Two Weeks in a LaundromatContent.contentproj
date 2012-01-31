@@ -53,29 +53,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Ghiblies\cart.png">
-      <Name>cart</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Ghiblies\cart.fbx">
-      <Name>cart</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>Importer</Processor>
-      <ProcessorParameters_Scale>1.5</ProcessorParameters_Scale>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Ghiblies\Tired_and_Things.fbx">
-      <Name>Tired_and_Things</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-      <ProcessorParameters_RotationX>-90</ProcessorParameters_RotationX>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\Ghiblies\textureless.png">
       <Name>textureless</Name>
       <Importer>TextureImporter</Importer>
@@ -110,11 +87,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Ghiblies\hall_test.fbx">
-      <Name>hall_test</Name>
+    <Compile Include="Models\Ghiblies\Scale.fbx">
+      <Name>Scale</Name>
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
-      <ProcessorParameters_Scale>0.1</ProcessorParameters_Scale>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

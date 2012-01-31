@@ -46,14 +46,6 @@ namespace Two_Weeks_in_a_Laundromat
         {
             defaultLightPos = new Vector3(0, 2, 0);
 
-            MetaModel test = new MetaModel();
-            test.Position = new Vector3(0,0,1.0f);
-            test.Rotation = new Vector3(0.0f, MathHelper.ToRadians(45.0f), 0.0f);
-            test.model = gManager.Load<Model>("Models/Ghiblies/cart");
-            test.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/cart");
-            test.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager, defaultLightPos);
-            this.models.Add(test);
-
             MetaModel dryer = new MetaModel();
             dryer.Position = new Vector3(0.8f, 0.0f, -6.0f);
             dryer.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
@@ -61,14 +53,6 @@ namespace Two_Weeks_in_a_Laundromat
             dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
             dryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             this.models.Add(dryer);
-
-            test = new MetaModel();
-            test.Position = new Vector3(0, 0, 0.0f);
-            test.Rotation = Vector3.Zero;
-            test.model = gManager.Load<Model>("Models/Ghiblies/Tired_and_Things");
-            test.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            test.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager, defaultLightPos);
-            this.models.Add(test);
 
             base.Load(gManager);
         }
