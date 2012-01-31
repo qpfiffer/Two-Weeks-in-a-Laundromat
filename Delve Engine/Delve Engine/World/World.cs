@@ -16,7 +16,7 @@ namespace Delve_Engine.World
     public class World : IInputHandler
     {
         #region Player
-        protected Player mainPlayer;
+        protected Player mainPlayer;        
         public Player MPlayer { get { return mainPlayer; } }
         #endregion
 
@@ -124,6 +124,8 @@ namespace Delve_Engine.World
                 mainPlayer.rotateCameraAboutYAxisPoint(mainPlayer.rotationTarget, 90.0f);
             }
 
+            // Haha, totally forgot I put this in here. Does a nice little demo rotate think around
+            // 0,0,0. Neat little thing.
             if (info.curKBDState.IsKeyDown(Keys.R) &&
                 info.oldKBDState.IsKeyUp(Keys.R))
             {
@@ -174,7 +176,12 @@ namespace Delve_Engine.World
 
             if (moveVector != Vector3.Zero)
             {
+                mainPlayer.HeadBobbing = true;
                 collideMove(info.timeDifference, moveVector);
+            }
+            else
+            {
+                mainPlayer.HeadBobbing = false;
             }
         }
 

@@ -14,6 +14,8 @@ namespace Delve_Engine.World
     {
         #region Fields
         private MatrixDescriptor matrices;
+        private float mils;
+        public bool HeadBobbing { get; set; }
         #endregion
         #region Properties
         public Vector2 rotationTarget { get; set; }
@@ -53,6 +55,7 @@ namespace Delve_Engine.World
             base(ref position, ref rotation, gDevice)
         {
             this.rotateEnabled = false;
+            HeadBobbing = false;
             matrices = new MatrixDescriptor();
             // A bounding sphere right at the chest
             BoundingSphere chestSphere = new BoundingSphere(position, 0.25f);
@@ -145,7 +148,15 @@ namespace Delve_Engine.World
             oldPosition += localMoveSpeed * rotatedVector;
 
             position = oldPosition;
-            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
+            if (HeadBobbing)
+            {
+                Vector3 headBobPos = position + (new Vector3(0, (float)(Math.Cos(mils*2.0f)/5.0f), 0));
+                ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, headBobPos, ref matrices);
+            }
+            else
+            {
+                ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
+            }
         }
 
         public void setCameraPosition(Vector3 newPosition, Vector3 offset)
@@ -159,8 +170,16 @@ namespace Delve_Engine.World
 
         public override void Update(GameTime gTime)
         {
+            mils += 0.1f;
+
+            if (mils > 100.0f)
+                mils = 0.0f;
+
             if (rotateEnabled)
                 rotateCameraAboutYAxisPoint(new Vector2(rotationTarget.X, rotationTarget.Y), -1.0f);
+
+            if (!HeadBobbing)
+                ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
 
             base.Update(gTime);
         }
