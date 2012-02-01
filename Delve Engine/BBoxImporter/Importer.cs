@@ -78,14 +78,6 @@ namespace BBoxImporter
                     bb.Min = Vector3.Transform(new Vector3((float)minX, (float)minY, (float)minZ), scaleMatrix);
                     bb.Max = Vector3.Transform(new Vector3((float)maxX, (float)maxY, (float)maxZ), scaleMatrix);
                     #endregion
-                    #region Float_Scale
-                    //bb.Min = new Vector3((float)minX, (float)minY, (float)minZ);
-                    //bb.Max = new Vector3((float)maxX, (float)maxY, (float)maxZ);
-                    #endregion
-                    #region Nonscale
-                    //bb.Min = new Vector3((float)minX, (float)minY, (float)minZ);
-                    //bb.Max = new Vector3((float)maxX, (float)maxY, (float)maxZ);
-                    #endregion
                     boxes.Add(bb);
                 }
                 else
@@ -105,7 +97,8 @@ namespace BBoxImporter
                 for (int ind = 0; ind < geometry.Indices.Count; ind++)
                 {
                     // Transforms all of my verticies to local space.
-                    Vector3 position = Vector3.Transform(geometry.Vertices.Positions[geometry.Indices[ind]], mesh.AbsoluteTransform);
+                    Vector3 position = Vector3.Transform(geometry.Vertices.Positions[geometry.Indices[ind]],
+                        mesh.AbsoluteTransform);
                     temp.Add(position);
                 }
                 MeshVerts.Add(temp);

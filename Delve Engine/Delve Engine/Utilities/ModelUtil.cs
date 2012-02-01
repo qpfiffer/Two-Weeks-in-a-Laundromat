@@ -162,6 +162,9 @@ namespace Delve_Engine.Utilities
         /// <param name="m">The model to update</param>
         public static void UpdateBoundingBoxes(ref MetaModel m)
         {
+            if (m.model.Tag == null)
+                throw new Exception("No bounding box data for this model!");
+
             List<BoundingBox> toSet = new List<BoundingBox>();
 
             Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X);

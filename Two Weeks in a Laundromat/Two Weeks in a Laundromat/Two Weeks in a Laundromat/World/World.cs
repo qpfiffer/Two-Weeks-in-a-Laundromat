@@ -19,11 +19,6 @@ namespace Two_Weeks_in_a_Laundromat
             mainPlayer.setCameraPosition(new Vector3(0, Player.playerHeight, 10), Vector3.Zero);
         }
 
-        public override void Update(GameTime gTime)
-        {            
-            base.Update(gTime);
-        }
-
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             MetaModel Scale = new MetaModel();
@@ -32,7 +27,15 @@ namespace Two_Weeks_in_a_Laundromat
             Scale.model = gManager.Load<Model>("Models/Ghiblies/Scale");
             Scale.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            this.modelsToDraw.Add(Scale);
+            addNewModel(ref Scale);
+
+            MetaModel wall = new MetaModel();
+            wall.Position = new Vector3(-5, 0, 0);
+            wall.Rotation = Vector3.Zero;
+            wall.model = gManager.Load<Model>("Models/Segments/wall");
+            wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            addNewModel(ref wall);
 
             for (int i = 0; i < 3; i++)
             {
@@ -42,26 +45,10 @@ namespace Two_Weeks_in_a_Laundromat
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
                 dryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-                this.modelsToDraw.Add(dryer);
+                addNewModel(ref dryer);
             }
 
             base.Load(gManager, gDevice);
-        }
-
-        public override void Draw()
-        {
-            // Update the shaders in each model
-            foreach (MetaModel m in modelsToDraw)
-            {
-                if (m.Shader != null)
-                {
-                    m.Shader.Parameters["World"].SetValue(globalEffect.World);
-                    m.Shader.Parameters["View"].SetValue(globalEffect.View);
-                    m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
-                    m.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
-                }
-            }
-            base.Draw();
         }
     }
 }

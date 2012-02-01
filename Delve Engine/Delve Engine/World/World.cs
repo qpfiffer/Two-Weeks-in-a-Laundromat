@@ -33,7 +33,7 @@ namespace Delve_Engine.World
         #region World
         protected Song bgMusic;
         // Any random models that are needed:
-        protected List<MetaModel> modelsToDraw;
+        private List<MetaModel> modelsToDraw;
         #endregion
 
         public World()
@@ -57,6 +57,25 @@ namespace Delve_Engine.World
             this.gManager = gManager;
 
             Setup3D(gDevice);
+        }
+
+        /// <summary>
+        /// To add a new model to the world, add it via this function.
+        /// It performs some housekeeping to make sure everything is correct.
+        /// </summary>
+        /// <param name="toAdd">The model to add.</param>
+        protected void addNewModel(ref MetaModel toAdd)
+        {
+            try
+            {
+                ModelUtil.UpdateBoundingBoxes(ref toAdd);
+            }
+            catch (Exception e)
+            {
+                // Probably no bounding box data. Thats okay.
+                System.Diagnostics.Debug.WriteLine(e);
+            }
+            modelsToDraw.Add(toAdd);
         }
 
         private void Setup3D(GraphicsDevice gDevice)
@@ -199,8 +218,26 @@ namespace Delve_Engine.World
                 }
                 else
                 {
+                    model.Shader.Parameters["World"].SetValue(globalEffect.World);
+                    model.Shader.Parameters["View"].SetValue(globalEffect.View);
+                    model.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
+                    model.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
                     ModelUtil.DrawModel(model);
                 }
+
+#if DEBUG
+                if (model.BBoxes != null)
+                {
+                    foreach (BoundingBox bBox in model.BBoxes)
+                    {
+                        BoundingBoxRenderer.Render(bBox,
+                            gDevice,
+                            globalEffect.View,
+                            globalEffect.Projection,
+                            Color.Red);
+                    }
+                }
+#endif
             }
         }
     }
