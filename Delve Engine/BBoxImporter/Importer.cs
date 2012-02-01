@@ -6,12 +6,22 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Graphics;
 using Microsoft.Xna.Framework.Content.Pipeline.Processors;
+using System.ComponentModel;
 
 namespace BBoxImporter
 {
     [ContentProcessor(DisplayName = "Bounding Box Generator")]
     public class Importer : ModelProcessor
     {
+        [DisplayName("Blender Export")]
+        [Description("Toggles whether or not this model should be treated as exported from Blender.")]
+        [DefaultValue(false)]
+        public bool BlenderExport
+        {
+            get;
+            set; 
+        }
+
         double minX = double.MaxValue;
         double minY = double.MaxValue;
         double minZ = double.MaxValue;
