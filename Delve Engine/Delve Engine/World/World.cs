@@ -207,7 +207,7 @@ namespace Delve_Engine.World
         public virtual void Draw()
         {
             gDevice.DepthStencilState = DepthStencilState.Default;
-            gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);
+            gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
             gDevice.RasterizerState = rState;
 
             foreach (MetaModel model in modelsToDraw)

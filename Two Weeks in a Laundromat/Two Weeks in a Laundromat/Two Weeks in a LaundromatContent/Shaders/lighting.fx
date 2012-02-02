@@ -62,9 +62,10 @@ VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOO
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
 	//calculate per-pixel diffuse
+	float attenuation = distance(LightPos, PSIn.WorldPosition)/3;
 	float3 directionToLight = normalize(LightPos - PSIn.WorldPosition);
 	float diffuseIntensity = saturate(dot(directionToLight, PSIn.Normal));
-	float4 diffuse = tex2D(TextureSampler, PSIn.TexCoords) * diffuseIntensity;
+	float4 diffuse = tex2D(TextureSampler, PSIn.TexCoords) * diffuseIntensity / attenuation;
      
 	float4 color = diffuse;
 	color.a = tex2D(TextureSampler, PSIn.TexCoords).w;
