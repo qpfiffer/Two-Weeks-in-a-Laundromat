@@ -77,6 +77,7 @@
       <Name>Dryer</Name>
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
+      <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
     </Compile>
   </ItemGroup>
   <ItemGroup>

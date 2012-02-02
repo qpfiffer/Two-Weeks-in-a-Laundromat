@@ -40,7 +40,7 @@ namespace Two_Weeks_in_a_Laundromat
             for (int i = 0; i < 3; i++)
             {
                 MetaModel dryer = new MetaModel();
-                dryer.Position = new Vector3(3.0f - (i*2.2f), 0.0f, -6.0f);
+                dryer.Position = new Vector3(6.0f - (i*6.2f), 0.0f, -6.0f);
                 dryer.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
