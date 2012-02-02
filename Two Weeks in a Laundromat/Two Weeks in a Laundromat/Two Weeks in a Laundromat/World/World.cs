@@ -21,26 +21,45 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            MetaModel Scale = new MetaModel();
-            Scale.Position = Vector3.Zero;
-            Scale.Rotation = Vector3.Zero;
-            Scale.model = gManager.Load<Model>("Models/Ghiblies/Scale");
-            Scale.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            addNewModel(ref Scale);
+            //MetaModel Scale = new MetaModel();
+            //Scale.Position = Vector3.Zero;
+            //Scale.Rotation = Vector3.Zero;
+            //Scale.model = gManager.Load<Model>("Models/Ghiblies/Scale");
+            //Scale.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            //addNewModel(ref Scale);
 
-            MetaModel wall = new MetaModel();
-            wall.Position = new Vector3(-5, 0, 0);
-            wall.Rotation = Vector3.Zero;
-            wall.model = gManager.Load<Model>("Models/Segments/wall");
-            wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            addNewModel(ref wall);
+            for (int i = 0; i < 10; i++)
+            {
+                MetaModel wall = new MetaModel();
+                wall.Position = new Vector3(-5, 0, (i * 4));
+                wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                wall.model = gManager.Load<Model>("Models/Segments/wall");
+                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+                addNewModel(ref wall);
+
+                wall = new MetaModel();
+                wall.Position = new Vector3(-9, 0, (i * 4));
+                wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                wall.model = gManager.Load<Model>("Models/Segments/wall");
+                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+                addNewModel(ref wall);
+
+                MetaModel Scale = new MetaModel();
+                Scale.Position = new Vector3((i * 4), 0, 0);
+                Scale.Rotation = Vector3.Zero;
+                Scale.model = gManager.Load<Model>("Models/Ghiblies/Scale");
+                Scale.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+                addNewModel(ref Scale);
+            }
 
             for (int i = 0; i < 3; i++)
             {
                 MetaModel dryer = new MetaModel();
-                dryer.Position = new Vector3(6.0f - (i*6.2f), 0.0f, -6.0f - (i*6.0f));
+                dryer.Position = new Vector3(6.0f - (i*6.2f), 0.0f, 0);
                 dryer.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");

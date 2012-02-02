@@ -53,13 +53,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Ghiblies\textureless.png">
-      <Name>textureless</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Shaders\lighting.fx">
       <Name>lighting</Name>
       <Importer>EffectImporter</Importer>
@@ -100,6 +93,13 @@
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
       <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Ghiblies\textureless.jpg">
+      <Name>textureless</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

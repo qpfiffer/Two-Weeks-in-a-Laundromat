@@ -150,7 +150,7 @@ namespace Delve_Engine.World
             position = oldPosition;
             if (HeadBobbing)
             {
-                Vector3 headBobPos = position + (new Vector3(0, (float)(Math.Cos(mils*2.0f)/6.0f), 0));
+                Vector3 headBobPos = position + (new Vector3(0, (float)(Math.Cos(mils * 2.0f) / 6.0f),0 ));
                 ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, headBobPos, ref matrices);
             }
             else

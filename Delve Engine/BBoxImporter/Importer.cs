@@ -145,8 +145,25 @@ namespace BBoxImporter
             }
         }
 
+        // Normals
+        private void GenerateNormals(NodeContent input, ContentProcessorContext context)
+        {
+            MeshContent mesh = input as MeshContent;
+
+            if (mesh != null)
+            {
+                MeshHelper.CalculateNormals(mesh, true);
+            }
+
+            foreach (NodeContent child in input.Children)
+            {
+                GenerateNormals(child, context);
+            }
+        }
+
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
+            //GenerateNormals(input, context);
             // Setup bounding box data.
             CheckNode(input);
 

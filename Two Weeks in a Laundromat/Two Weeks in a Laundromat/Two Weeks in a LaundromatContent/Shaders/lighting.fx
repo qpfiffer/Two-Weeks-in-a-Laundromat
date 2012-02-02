@@ -61,14 +61,21 @@ VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOO
 
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
-	//calculate per-pixel diffuse
+	float lightRadius = 10;
+	// WORKING:
+	// Get the color of the texture
 	float4 defaultColor = tex2D(TextureSampler, PSIn.TexCoords);
-	float attenuation = distance(LightPos, PSIn.WorldPosition);
-	float3 directionToLight = normalize(LightPos - PSIn.WorldPosition);
-	float diffuseIntensity = saturate(dot(directionToLight, PSIn.Normal));
-	float4 diffuse =  (defaultColor * diffuseIntensity) / attenuation;
-	//diffuse = lerp((0,0,0,0), defaultColor, attenuation);
-     
+	// Distance to the light
+	float lightDistance = distance(LightPos, PSIn.WorldPosition);
+	// The vector to the light
+	float3 directionToLight = LightPos - PSIn.WorldPosition;
+	// Compute attention
+	float attenuation = saturate(1.0f - (lightDistance/lightRadius));
+	directionToLight = normalize(directionToLight);	
+	float diffuseIntensity = max(0,dot(PSIn.Normal,directionToLight));
+	float4 diffuse = defaultColor * diffuseIntensity * attenuation;
+	//diffuse = lerp(defaultColor, (0,0,0,0), lightDistance/20);
+    
 	float4 color = diffuse;
 	color.a = defaultColor.w;
 
