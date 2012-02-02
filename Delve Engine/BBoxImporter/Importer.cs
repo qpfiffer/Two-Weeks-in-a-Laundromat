@@ -53,28 +53,58 @@ namespace BBoxImporter
                     maxZ = double.MinValue;
 
                     MeshContent mesh = (MeshContent)o;
-                    foreach (Vector3 basev in mesh.Positions)
+                    if (BlenderExport)
                     {
-                        Vector3 v = basev;
+                        for (int i = 0; i < mesh.Positions.Count; i++)
+                        {
+                            Vector3 v = mesh.Positions[i];
+                            v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX - MathHelper.ToRadians(90.0f)));
 
-                        if (v.X < minX)
-                            minX = v.X;
+                            if (v.X < minX)
+                                minX = v.X;
 
-                        if (v.Y < minY)
-                            minY = v.Y;
+                            if (v.Y < minY)
+                                minY = v.Y;
 
-                        if (v.Z < minZ)
-                            minZ = v.Z;
+                            if (v.Z < minZ)
+                                minZ = v.Z;
 
-                        if (v.X > maxX)
-                            maxX = v.X;
+                            if (v.X > maxX)
+                                maxX = v.X;
 
-                        if (v.Y > maxY)
-                            maxY = v.Y;
+                            if (v.Y > maxY)
+                                maxY = v.Y;
 
-                        if (v.Z > maxZ)
-                            maxZ = v.Z;
+                            if (v.Z > maxZ)
+                                maxZ = v.Z;
 
+                        }
+                    }
+                    else
+                    {
+                        foreach (Vector3 basev in mesh.Positions)
+                        {
+                            Vector3 v = basev;
+
+                            if (v.X < minX)
+                                minX = v.X;
+
+                            if (v.Y < minY)
+                                minY = v.Y;
+
+                            if (v.Z < minZ)
+                                minZ = v.Z;
+
+                            if (v.X > maxX)
+                                maxX = v.X;
+
+                            if (v.Y > maxY)
+                                maxY = v.Y;
+
+                            if (v.Z > maxZ)
+                                maxZ = v.Z;
+
+                        }
                     }
 
                     double lenX = maxX - minX;
