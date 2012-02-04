@@ -26,6 +26,14 @@ namespace Two_Weeks_in_a_Laundromat
             this.roomCenter = roomCenter;
         }
 
+        public void Draw()
+        {
+            foreach (MetaModel m in pieces)
+            {
+                ModelUtil.DrawModel(m);
+            }
+        }
+
         public void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             MetaModel floor = new MetaModel();
