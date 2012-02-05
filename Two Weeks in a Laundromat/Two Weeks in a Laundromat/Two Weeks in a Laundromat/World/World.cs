@@ -14,6 +14,8 @@ namespace Two_Weeks_in_a_Laundromat
 {
     public class World: Delve_Engine.World.World
     {
+        private Room currentRoom = null;
+
         public World(): base()
         {
             mainPlayer.setCameraPosition(new Vector3(0, Player.playerHeight, 10), Vector3.Zero);
@@ -29,32 +31,32 @@ namespace Two_Weeks_in_a_Laundromat
             Scale.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             addNewModel(ref Scale);
 
-            for (int i = 0; i < 10; i++)
-            {
-                MetaModel wall = new MetaModel();
-                wall.Position = new Vector3(-5, 0, (i * 4));
-                wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                wall.model = gManager.Load<Model>("Models/Segments/wall");
-                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-                addNewModel(ref wall);
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    MetaModel wall = new MetaModel();
+            //    wall.Position = new Vector3(-5, 0, (i * 4));
+            //    wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+            //    wall.model = gManager.Load<Model>("Models/Segments/wall");
+            //    wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //    wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            //    addNewModel(ref wall);
 
-                MetaModel floor = new MetaModel();
-                floor.Position = new Vector3(-7, 0, (i * 4));
-                floor.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                floor.model = gManager.Load<Model>("Models/Segments/floor");
-                floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-                addNewModel(ref floor);
+            //    MetaModel floor = new MetaModel();
+            //    floor.Position = new Vector3(-7, 0, (i * 4));
+            //    floor.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+            //    floor.model = gManager.Load<Model>("Models/Segments/floor");
+            //    floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //    floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            //    addNewModel(ref floor);
 
-                wall = new MetaModel();
-                wall.Position = new Vector3(-9, 0, (i * 4));
-                wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                wall.model = gManager.Load<Model>("Models/Segments/wall");
-                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-                addNewModel(ref wall);
-            }
+            //    wall = new MetaModel();
+            //    wall.Position = new Vector3(-9, 0, (i * 4));
+            //    wall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+            //    wall.model = gManager.Load<Model>("Models/Segments/wall");
+            //    wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //    wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            //    addNewModel(ref wall);
+            //}
 
             for (int i = 0; i < 3; i++)
             {
@@ -67,7 +69,20 @@ namespace Two_Weeks_in_a_Laundromat
                 addNewModel(ref dryer);
             }
 
+            if (currentRoom == null)
+            {
+                Vector3 dimensions = new Vector3(WOLOLO.Next(10), 1, WOLOLO.Next(10));
+                Vector3 pos = new Vector3(-10, 0, -10);
+                currentRoom = new Room(ref dimensions, ref pos);
+            }
             base.Load(gManager, gDevice);
+        }
+
+        public override void Draw()
+        {
+            currentRoom.Draw();
+
+            base.Draw();
         }
     }
 }

@@ -34,6 +34,7 @@ namespace Delve_Engine.World
         protected Song bgMusic;
         // Any random models that are needed:
         private List<MetaModel> modelsToDraw;
+        protected Random WOLOLO;
         #endregion
 
         public World()
@@ -49,6 +50,8 @@ namespace Delve_Engine.World
             mainPlayer = new Player(ref playerPos, ref playerRot, gDevice);
             modelsToDraw = new List<MetaModel>();
             releaseMouseToggle = false;
+
+            WOLOLO = new Random();
         }
 
         public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
