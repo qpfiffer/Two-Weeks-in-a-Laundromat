@@ -26,11 +26,24 @@ namespace Two_Weeks_in_a_Laundromat
             this.roomCenter = roomCenter;
         }
 
-        public void Draw()
+        public void Draw(GraphicsDevice gDevice)
         {
             foreach (MetaModel m in pieces)
             {
                 ModelUtil.DrawModel(m);
+#if DEBUG
+                if (m.BBoxes != null)
+                {
+                    foreach (BoundingBox bBox in m.BBoxes)
+                    {
+                        BoundingBoxRenderer.Render(bBox,
+                            gDevice,
+                            m.Shader.Parameters["View"].GetValueMatrix(),
+                            m.Shader.Parameters["Projection"].GetValueMatrix(),
+                            Color.Red);
+                    }
+                }
+#endif
             }
         }
 
@@ -44,18 +57,18 @@ namespace Two_Weeks_in_a_Laundromat
             floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
             MetaModel wall = new MetaModel();
-            floor.Position = Vector3.Zero;
-            floor.Rotation = Vector3.Zero;
-            floor.model = gManager.Load<Model>("Models/Segments/wall");
-            floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            wall.Position = Vector3.Zero;
+            wall.Rotation = Vector3.Zero;
+            wall.model = gManager.Load<Model>("Models/Segments/wall");
+            wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
             MetaModel ceiling = new MetaModel();
-            //floor.Position = Vector3.Zero;
-            //floor.Rotation = Vector3.Zero;
-            //floor.model = gManager.Load<Model>("Models/Segments/floor");
-            //floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            //floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            //ceiling.Position = Vector3.Zero;
+            //ceiling.Rotation = Vector3.Zero;
+            //ceiling.model = gManager.Load<Model>("Models/Segments/floor");
+            //ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            //ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
             setupPieces(ref floor, ref wall, ref ceiling);
         }
@@ -69,10 +82,11 @@ namespace Two_Weeks_in_a_Laundromat
             Vector3 topLeft = new Vector3(roomCenter.X - (dimensions.X / 2.0f), roomCenter.Y - (dimensions.Y / 2.0f), roomCenter.Z - (dimensions.Z / 2.0f));
             Vector3 worldSpaceSize = new Vector3(roomCenter.X + dimensions.X, roomCenter.Y + dimensions.Y, roomCenter.Z + dimensions.Z);
 
-            for (float z = topLeft.Z; z < (topLeft.Z + worldSpaceSize.Z); z++)
+            for (float z = topLeft.Z; z < (topLeft.Z + dimensions.Z); z++)
             {
-                for (float x = topLeft.X; x < (topLeft.X + worldSpaceSize.X); x++)
+                for (float x = topLeft.X; x < (topLeft.X + dimensions.X); x++)
                 {
+                    #region XWalls
                     if (x == topLeft.X)
                     {
                         MetaModel newWall = new MetaModel();
@@ -95,7 +109,9 @@ namespace Two_Weeks_in_a_Laundromat
                         ModelUtil.UpdateBoundingBoxes(ref newWall);
                         pieces.Add(newWall);
                     }
+                    #endregion
 
+                    #region ZWalls
                     if (z == topLeft.Z)
                     {
                         MetaModel newWall = new MetaModel();
@@ -118,6 +134,16 @@ namespace Two_Weeks_in_a_Laundromat
                         ModelUtil.UpdateBoundingBoxes(ref newWall);
                         pieces.Add(newWall);
                     }
+                    #endregion
+
+                    MetaModel floorPiece = new MetaModel();
+                    floorPiece.Position = new Vector3(x, topLeft.Y, z);
+                    floorPiece.Rotation = Vector3.Zero;
+                    floorPiece.model = wall.model;
+                    floorPiece.Texture = wall.Texture;
+                    floorPiece.Shader = wall.Shader;
+                    ModelUtil.UpdateBoundingBoxes(ref floorPiece);
+                    pieces.Add(floorPiece);
                 }
             }
         }

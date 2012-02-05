@@ -71,16 +71,17 @@ namespace Two_Weeks_in_a_Laundromat
 
             if (currentRoom == null)
             {
-                Vector3 dimensions = new Vector3(WOLOLO.Next(10), 1, WOLOLO.Next(10));
+                Vector3 dimensions = new Vector3(10, 8, 10);
                 Vector3 pos = new Vector3(-10, 0, -10);
                 currentRoom = new Room(ref dimensions, ref pos);
+                currentRoom.Load(gManager, gDevice);
             }
             base.Load(gManager, gDevice);
         }
 
         public override void Draw()
         {
-            currentRoom.Draw();
+            currentRoom.Draw(gDevice);
 
             base.Draw();
         }
