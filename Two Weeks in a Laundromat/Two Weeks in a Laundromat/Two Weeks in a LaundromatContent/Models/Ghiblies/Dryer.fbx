@@ -10,10 +10,10 @@ FBXHeaderExtension:  {
 		Version: 1000
 		Year: 2012
 		Month: 02
-		Day: 02
-		Hour: 10
-		Minute: 50
-		Second: 24
+		Day: 05
+		Hour: 04
+		Minute: 15
+		Second: 13
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2012-02-02 10:50:24:000"
+CreationTime: "2012-02-05 04:15:13:000"
 Creator: "Blender version 2.61 (sub 0)"
 
 ; Object definitions
@@ -1049,7 +1049,7 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "Dryer.png"
-		RelativeFilename: "D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a LaundromatContent\Textures\Ghiblies\Dryer.png"
+		RelativeFilename: "..\..\Textures\Ghiblies\Dryer.png"
 	}
 	Texture: "Texture::Dryer_png_001", "TextureVideoClip" {
 		Type: "TextureVideoClip"
@@ -1074,7 +1074,7 @@ Objects:  {
 		}
 		Media: "Video::Dryer_png_001"
 		FileName: "Dryer.png"
-		RelativeFilename: "D:\Code\Two_Weeks\Two Weeks in a Laundromat\Two Weeks in a Laundromat\Two Weeks in a LaundromatContent\Textures\Ghiblies\Dryer.png"
+		RelativeFilename: "..\..\Textures\Ghiblies\Dryer.png"
 		ModelUVTranslation: 0,0
 		ModelUVScaling: 1,1
 		Texture_Alpha_Source: "None"
