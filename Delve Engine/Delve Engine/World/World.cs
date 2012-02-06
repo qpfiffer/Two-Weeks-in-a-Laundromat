@@ -25,6 +25,7 @@ namespace Delve_Engine.World
         protected GraphicsDevice gDevice;
         protected BasicEffect globalEffect;
         protected RasterizerState rState;
+        protected bool frameIsClear = false;
 #if DEBUG
         bool releaseMouseToggle; // Used to release the mouse from the window
 #endif
@@ -35,6 +36,7 @@ namespace Delve_Engine.World
         // Any random models that are needed:
         private List<MetaModel> modelsToDraw;
         protected Random WOLOLO;
+        protected bool isNight = false;
         #endregion
 
         public World()
@@ -112,10 +114,6 @@ namespace Delve_Engine.World
 
         public virtual void Update(GameTime gTime)
         {
-            globalEffect.View = mainPlayer.Matrices.view;
-            globalEffect.World = mainPlayer.Matrices.world;
-            globalEffect.Projection = mainPlayer.Matrices.proj;
-
             mainPlayer.Update(gTime);
         }
 
@@ -154,10 +152,11 @@ namespace Delve_Engine.World
                 mainPlayer.rotateEnabled = !mainPlayer.rotateEnabled;
             }
 
+            // Toggles on brighter light settings.
             if (info.curKBDState.IsKeyDown(Keys.F) &&
                 info.oldKBDState.IsKeyUp(Keys.F))
             {
-                // TODO: Toggle fog on objects that have it enabled.
+                isNight = !isNight;
             }
 #endif
 
@@ -207,11 +206,29 @@ namespace Delve_Engine.World
             }
         }
 
+        protected void clearBuffer()
+        {
+            // Do this if some other function has already cleared the frame and drawn stuff. We don't want to
+            // hide it.
+            if (!frameIsClear)
+            {
+                gDevice.DepthStencilState = DepthStencilState.Default;
+                if (isNight)
+                    gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);
+                else
+                    gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+                gDevice.RasterizerState = rState;
+                frameIsClear = true;
+            }
+        }
+
         public virtual void Draw()
         {
-            gDevice.DepthStencilState = DepthStencilState.Default;
-            gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
-            gDevice.RasterizerState = rState;
+            globalEffect.View = mainPlayer.Matrices.view;
+            globalEffect.World = mainPlayer.Matrices.world;
+            globalEffect.Projection = mainPlayer.Matrices.proj;
+
+            clearBuffer();
 
             foreach (MetaModel model in modelsToDraw)
             {
@@ -242,6 +259,7 @@ namespace Delve_Engine.World
                 }
 #endif
             }
+            frameIsClear = false;
         }
     }
 }

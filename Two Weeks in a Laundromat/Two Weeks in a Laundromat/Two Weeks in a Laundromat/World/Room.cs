@@ -26,10 +26,15 @@ namespace Two_Weeks_in_a_Laundromat
             this.roomCenter = roomCenter;
         }
 
-        public void Draw(GraphicsDevice gDevice)
+        public void Draw(GraphicsDevice gDevice, BasicEffect gEffect, Vector3 playerPos)
         {
             foreach (MetaModel m in pieces)
             {
+                m.Shader.Parameters["World"].SetValue(gEffect.World);
+                m.Shader.Parameters["View"].SetValue(gEffect.View);
+                m.Shader.Parameters["Projection"].SetValue(gEffect.Projection);
+                m.Shader.Parameters["LightPos"].SetValue(playerPos);
+
                 ModelUtil.DrawModel(m);
 #if DEBUG
                 if (m.BBoxes != null)
@@ -90,7 +95,7 @@ namespace Two_Weeks_in_a_Laundromat
                     if (x == topLeft.X)
                     {
                         MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3(x-2.0f, topLeft.Y, z);
+                        newWall.Position = new Vector3((x*4)-2.0f, topLeft.Y, (z*4));
                         newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                         newWall.model = wall.model;
                         newWall.Texture = wall.Texture;
@@ -101,7 +106,7 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (x == ((topLeft.X + worldSpaceSize.X) - 1))
                     {
                         MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3(x+2.0f, topLeft.Y, z);
+                        newWall.Position = new Vector3((x * 4) + 2.0f, topLeft.Y, (z * 4));
                         newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                         newWall.model = wall.model;
                         newWall.Texture = wall.Texture;
@@ -115,7 +120,7 @@ namespace Two_Weeks_in_a_Laundromat
                     if (z == topLeft.Z)
                     {
                         MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3(x, topLeft.Y, z-2.0f);
+                        newWall.Position = new Vector3((x * 4), topLeft.Y, (z * 4) - 2.0f);
                         newWall.Rotation = Vector3.Zero;
                         newWall.model = wall.model;
                         newWall.Texture = wall.Texture;
@@ -126,7 +131,7 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (z == ((topLeft.Z + worldSpaceSize.Y) - 1))
                     {
                         MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3(x, topLeft.Y, z+2.0f);
+                        newWall.Position = new Vector3((x * 4), topLeft.Y, (z * 4) + 2.0f);
                         newWall.Rotation = Vector3.Zero;
                         newWall.model = wall.model;
                         newWall.Texture = wall.Texture;
@@ -137,11 +142,11 @@ namespace Two_Weeks_in_a_Laundromat
                     #endregion
 
                     MetaModel floorPiece = new MetaModel();
-                    floorPiece.Position = new Vector3(x, topLeft.Y, z);
+                    floorPiece.Position = new Vector3((x * 4), topLeft.Y, (z * 4));
                     floorPiece.Rotation = Vector3.Zero;
-                    floorPiece.model = wall.model;
-                    floorPiece.Texture = wall.Texture;
-                    floorPiece.Shader = wall.Shader;
+                    floorPiece.model = floor.model;
+                    floorPiece.Texture = floor.Texture;
+                    floorPiece.Shader = floor.Shader;
                     ModelUtil.UpdateBoundingBoxes(ref floorPiece);
                     pieces.Add(floorPiece);
                 }

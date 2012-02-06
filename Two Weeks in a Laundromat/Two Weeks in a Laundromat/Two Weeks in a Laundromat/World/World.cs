@@ -81,7 +81,8 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Draw()
         {
-            currentRoom.Draw(gDevice);
+            clearBuffer();
+            currentRoom.Draw(gDevice, globalEffect, this.mainPlayer.Position);
 
             base.Draw();
         }

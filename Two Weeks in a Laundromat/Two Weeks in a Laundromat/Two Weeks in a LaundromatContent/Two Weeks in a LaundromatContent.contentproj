@@ -99,7 +99,8 @@
     <Compile Include="Models\Segments\floor.fbx">
       <Name>floor</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
+      <Processor>Importer</Processor>
+      <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
     </Compile>
   </ItemGroup>
   <ItemGroup>
