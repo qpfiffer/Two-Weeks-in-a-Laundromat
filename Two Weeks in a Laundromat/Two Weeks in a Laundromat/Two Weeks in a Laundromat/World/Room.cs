@@ -84,9 +84,10 @@ namespace Two_Weeks_in_a_Laundromat
         private void setupPieces(ref MetaModel floor, ref MetaModel wall, ref MetaModel ceiling)
         {
             // Find the top left portion of the room:
-            Vector3 topLeft = new Vector3(roomCenter.X - (dimensions.X / 2.0f), roomCenter.Y - (dimensions.Y / 2.0f), roomCenter.Z - (dimensions.Z / 2.0f));
+            Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
             Vector3 worldSpaceSize = new Vector3(roomCenter.X + dimensions.X, roomCenter.Y + dimensions.Y, roomCenter.Z + dimensions.Z);
 
+            // TODO: Make it handle multilevel buildings. Should be as easy as adding another loop.
             for (float z = topLeft.Z; z < (topLeft.Z + dimensions.Z); z++)
             {
                 for (float x = topLeft.X; x < (topLeft.X + dimensions.X); x++)
@@ -103,7 +104,7 @@ namespace Two_Weeks_in_a_Laundromat
                         ModelUtil.UpdateBoundingBoxes(ref newWall);
                         pieces.Add(newWall);
                     }
-                    else if (x == ((topLeft.X + worldSpaceSize.X) - 1))
+                    else if (x == worldSpaceSize.X - 1)
                     {
                         MetaModel newWall = new MetaModel();
                         newWall.Position = new Vector3((x * 4) + 2.0f, topLeft.Y, (z * 4));
@@ -128,7 +129,7 @@ namespace Two_Weeks_in_a_Laundromat
                         ModelUtil.UpdateBoundingBoxes(ref newWall);
                         pieces.Add(newWall);
                     }
-                    else if (z == ((topLeft.Z + worldSpaceSize.Y) - 1))
+                    else if (z == worldSpaceSize.Z - 1)
                     {
                         MetaModel newWall = new MetaModel();
                         newWall.Position = new Vector3((x * 4), topLeft.Y, (z * 4) + 2.0f);
