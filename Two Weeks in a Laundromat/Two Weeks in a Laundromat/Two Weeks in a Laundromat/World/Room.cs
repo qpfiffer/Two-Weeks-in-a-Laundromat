@@ -95,50 +95,62 @@ namespace Two_Weeks_in_a_Laundromat
                     #region XWalls
                     if (x == topLeft.X)
                     {
-                        MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3((x*4)-2.0f, topLeft.Y, (z*4));
-                        newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                        newWall.model = wall.model;
-                        newWall.Texture = wall.Texture;
-                        newWall.Shader = wall.Shader;
-                        ModelUtil.UpdateBoundingBoxes(ref newWall);
-                        pieces.Add(newWall);
+                        for (int i = 0; i < dimensions.Y; i++)
+                        {
+                            MetaModel newWall = new MetaModel();
+                            newWall.Position = new Vector3((x * 4) - 2.0f, topLeft.Y + (i*8), (z * 4));
+                            newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                            newWall.model = wall.model;
+                            newWall.Texture = wall.Texture;
+                            newWall.Shader = wall.Shader;
+                            ModelUtil.UpdateBoundingBoxes(ref newWall);
+                            pieces.Add(newWall);
+                        }
                     }
                     else if (x == worldSpaceSize.X - 1)
                     {
-                        MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3((x * 4) + 2.0f, topLeft.Y, (z * 4));
-                        newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                        newWall.model = wall.model;
-                        newWall.Texture = wall.Texture;
-                        newWall.Shader = wall.Shader;
-                        ModelUtil.UpdateBoundingBoxes(ref newWall);
-                        pieces.Add(newWall);
+                        for (int i = 0; i < dimensions.Y; i++)
+                        {
+                            MetaModel newWall = new MetaModel();
+                            newWall.Position = new Vector3((x * 4) + 2.0f, topLeft.Y + (i * 8), (z * 4));
+                            newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                            newWall.model = wall.model;
+                            newWall.Texture = wall.Texture;
+                            newWall.Shader = wall.Shader;
+                            ModelUtil.UpdateBoundingBoxes(ref newWall);
+                            pieces.Add(newWall);
+                        }
                     }
                     #endregion
 
                     #region ZWalls
                     if (z == topLeft.Z)
                     {
-                        MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3((x * 4), topLeft.Y, (z * 4) - 2.0f);
-                        newWall.Rotation = Vector3.Zero;
-                        newWall.model = wall.model;
-                        newWall.Texture = wall.Texture;
-                        newWall.Shader = wall.Shader;
-                        ModelUtil.UpdateBoundingBoxes(ref newWall);
-                        pieces.Add(newWall);
+                        for (int i = 0; i < dimensions.Y; i++)
+                        {
+                            MetaModel newWall = new MetaModel();
+                            newWall.Position = new Vector3((x * 4), topLeft.Y + (i * 8), (z * 4) - 2.0f);
+                            newWall.Rotation = Vector3.Zero;
+                            newWall.model = wall.model;
+                            newWall.Texture = wall.Texture;
+                            newWall.Shader = wall.Shader;
+                            ModelUtil.UpdateBoundingBoxes(ref newWall);
+                            pieces.Add(newWall);
+                        }
                     }
                     else if (z == worldSpaceSize.Z - 1)
                     {
-                        MetaModel newWall = new MetaModel();
-                        newWall.Position = new Vector3((x * 4), topLeft.Y, (z * 4) + 2.0f);
-                        newWall.Rotation = Vector3.Zero;
-                        newWall.model = wall.model;
-                        newWall.Texture = wall.Texture;
-                        newWall.Shader = wall.Shader;
-                        ModelUtil.UpdateBoundingBoxes(ref newWall);
-                        pieces.Add(newWall);
+                        for (int i = 0; i < dimensions.Y; i++)
+                        {
+                            MetaModel newWall = new MetaModel();
+                            newWall.Position = new Vector3((x * 4), topLeft.Y + (i * 8), (z * 4) + 2.0f);
+                            newWall.Rotation = Vector3.Zero;
+                            newWall.model = wall.model;
+                            newWall.Texture = wall.Texture;
+                            newWall.Shader = wall.Shader;
+                            ModelUtil.UpdateBoundingBoxes(ref newWall);
+                            pieces.Add(newWall);
+                        }
                     }
                     #endregion
 
