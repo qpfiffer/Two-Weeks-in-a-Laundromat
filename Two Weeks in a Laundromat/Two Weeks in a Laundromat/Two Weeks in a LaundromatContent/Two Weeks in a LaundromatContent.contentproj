@@ -41,10 +41,7 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Segments\Junctions\" />
-    <Folder Include="Segments\Rooms\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Fonts\mainFont.spritefont">
       <Name>mainFont</Name>

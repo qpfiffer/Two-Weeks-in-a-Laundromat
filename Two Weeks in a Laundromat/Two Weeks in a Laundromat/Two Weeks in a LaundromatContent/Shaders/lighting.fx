@@ -61,7 +61,7 @@ VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOO
 
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
-	float lightRadius = 10;
+	float lightRadius = 15;
 	// WORKING:
 	// Get the color of the texture
 	float4 defaultColor = tex2D(TextureSampler, PSIn.TexCoords);

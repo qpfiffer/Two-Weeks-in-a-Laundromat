@@ -113,6 +113,7 @@
     <Compile Include="Main\Game1.cs" />
     <Compile Include="World\Door.cs" />
     <Compile Include="World\Hallway.cs" />
+    <Compile Include="World\Laundromat.cs" />
     <Compile Include="World\Room.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>

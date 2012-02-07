@@ -14,10 +14,18 @@ namespace Two_Weeks_in_a_Laundromat
 {
     class Room
     {
-        private List<MetaModel> pieces;
+        protected List<MetaModel> pieces;
 
-        private Vector3 dimensions;
-        private Vector3 roomCenter;
+        protected Vector3 dimensions;
+        protected Vector3 roomCenter;
+
+        /// <summary>
+        /// Use this one only if you're a subclass doing some dirty shit.
+        /// </summary>
+        protected Room()
+        {
+            pieces = new List<MetaModel>();
+        }
 
         public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
         {
@@ -52,7 +60,7 @@ namespace Two_Weeks_in_a_Laundromat
             }
         }
 
-        public void Load(ContentManager gManager, GraphicsDevice gDevice)
+        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             MetaModel floor = new MetaModel();
             floor.Position = Vector3.Zero;

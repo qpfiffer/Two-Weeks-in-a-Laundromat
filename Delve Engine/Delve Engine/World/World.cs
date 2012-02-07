@@ -208,6 +208,10 @@ namespace Delve_Engine.World
 
         protected void clearBuffer()
         {
+            globalEffect.View = mainPlayer.Matrices.view;
+            globalEffect.World = mainPlayer.Matrices.world;
+            globalEffect.Projection = mainPlayer.Matrices.proj;
+
             // Do this if some other function has already cleared the frame and drawn stuff. We don't want to
             // hide it.
             if (!frameIsClear)
@@ -223,11 +227,7 @@ namespace Delve_Engine.World
         }
 
         public virtual void Draw()
-        {
-            globalEffect.View = mainPlayer.Matrices.view;
-            globalEffect.World = mainPlayer.Matrices.world;
-            globalEffect.Projection = mainPlayer.Matrices.proj;
-
+        {            
             clearBuffer();
 
             foreach (MetaModel model in modelsToDraw)
