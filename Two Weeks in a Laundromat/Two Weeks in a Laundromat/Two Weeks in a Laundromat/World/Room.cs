@@ -69,11 +69,11 @@ namespace Two_Weeks_in_a_Laundromat
             wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
             MetaModel ceiling = new MetaModel();
-            //ceiling.Position = Vector3.Zero;
-            //ceiling.Rotation = Vector3.Zero;
-            //ceiling.model = gManager.Load<Model>("Models/Segments/floor");
-            //ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            //ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ceiling.Position = Vector3.Zero;
+            ceiling.Rotation = Vector3.Zero;
+            ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
+            ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
             setupPieces(ref floor, ref wall, ref ceiling);
         }
@@ -150,6 +150,15 @@ namespace Two_Weeks_in_a_Laundromat
                     floorPiece.Shader = floor.Shader;
                     ModelUtil.UpdateBoundingBoxes(ref floorPiece);
                     pieces.Add(floorPiece);
+
+                    MetaModel ceilingPiece = new MetaModel();
+                    ceilingPiece.Position = new Vector3((x * 4), topLeft.Y + ((dimensions.Y-1) * 8), (z * 4));
+                    ceilingPiece.Rotation = Vector3.Zero;
+                    ceilingPiece.model = ceiling.model;
+                    ceilingPiece.Texture = ceiling.Texture;
+                    ceilingPiece.Shader = ceiling.Shader;
+                    ModelUtil.UpdateBoundingBoxes(ref ceilingPiece);
+                    pieces.Add(ceilingPiece);
                 }
             }
         }

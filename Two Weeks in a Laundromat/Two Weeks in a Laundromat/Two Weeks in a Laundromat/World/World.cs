@@ -71,7 +71,7 @@ namespace Two_Weeks_in_a_Laundromat
 
             if (currentRoom == null)
             {
-                Vector3 dimensions = new Vector3(10, 8, 10);
+                Vector3 dimensions = new Vector3(10, 1, 10);
                 Vector3 pos = new Vector3(-10, 0, -10);
                 currentRoom = new Room(ref dimensions, ref pos);
                 currentRoom.Load(gManager, gDevice);
