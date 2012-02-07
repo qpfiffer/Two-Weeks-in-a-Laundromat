@@ -41,7 +41,14 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Models\Ghiblies\pillar.fbx">
+      <Name>pillar</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>Importer</Processor>
+      <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Fonts\mainFont.spritefont">
       <Name>mainFont</Name>
@@ -113,6 +120,13 @@
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
       <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Ghiblies\pillar.png">
+      <Name>pillar</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

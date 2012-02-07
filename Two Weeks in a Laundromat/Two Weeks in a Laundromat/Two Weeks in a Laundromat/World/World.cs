@@ -32,6 +32,21 @@ namespace Two_Weeks_in_a_Laundromat
             base.Load(gManager, gDevice);
         }
 
+        public override void handleInput(ref InputInfo info)
+        {
+#if DEBUG
+            // Toggles on brighter light settings.
+            if (info.curKBDState.IsKeyDown(Keys.F) &&
+                info.oldKBDState.IsKeyUp(Keys.F))
+            {
+                boundingBoxesDraw = !boundingBoxesDraw;
+                currentRoom.ShouldDrawBoundingBoxes = !currentRoom.ShouldDrawBoundingBoxes;
+            }
+#endif
+
+            base.handleInput(ref info);
+        }
+
         public override void Draw()
         {
             clearBuffer();

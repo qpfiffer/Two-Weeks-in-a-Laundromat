@@ -36,7 +36,7 @@ namespace Delve_Engine.World
         // Any random models that are needed:
         private List<MetaModel> modelsToDraw;
         protected Random WOLOLO;
-        protected bool isNight = false;
+        protected bool boundingBoxesDraw = false;
         #endregion
 
         public World()
@@ -117,7 +117,7 @@ namespace Delve_Engine.World
             mainPlayer.Update(gTime);
         }
 
-        public void handleInput(ref InputInfo info)
+        public virtual void handleInput(ref InputInfo info)
         {
             if (info.curKBDState.IsKeyDown(Keys.E) &&
                 info.oldKBDState.IsKeyUp(Keys.E))
@@ -150,13 +150,6 @@ namespace Delve_Engine.World
                 info.oldKBDState.IsKeyUp(Keys.R))
             {
                 mainPlayer.rotateEnabled = !mainPlayer.rotateEnabled;
-            }
-
-            // Toggles on brighter light settings.
-            if (info.curKBDState.IsKeyDown(Keys.F) &&
-                info.oldKBDState.IsKeyUp(Keys.F))
-            {
-                isNight = !isNight;
             }
 #endif
 
@@ -217,10 +210,7 @@ namespace Delve_Engine.World
             if (!frameIsClear)
             {
                 gDevice.DepthStencilState = DepthStencilState.Default;
-                if (isNight)
-                    gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.LightCyan, 1.0f, 0);
-                else
-                    gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
+                gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, Color.Black, 1.0f, 0);
                 gDevice.RasterizerState = rState;
                 frameIsClear = true;
             }
@@ -246,7 +236,7 @@ namespace Delve_Engine.World
                 }
 
 #if DEBUG
-                if (model.BBoxes != null)
+                if (model.BBoxes != null && boundingBoxesDraw)
                 {
                     foreach (BoundingBox bBox in model.BBoxes)
                     {

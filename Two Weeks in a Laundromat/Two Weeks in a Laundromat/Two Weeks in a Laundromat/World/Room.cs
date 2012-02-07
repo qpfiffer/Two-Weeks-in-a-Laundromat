@@ -15,9 +15,13 @@ namespace Two_Weeks_in_a_Laundromat
     class Room
     {
         protected List<MetaModel> pieces;
-
+        protected const float tileSize = 4.0f;
+        protected const float tileHalf = tileSize / 2.0f;
         protected Vector3 dimensions;
+        // Remember, roomCenter is actually the top left!
         protected Vector3 roomCenter;
+
+        public bool ShouldDrawBoundingBoxes { get; set; }
 
         /// <summary>
         /// Use this one only if you're a subclass doing some dirty shit.
@@ -25,11 +29,13 @@ namespace Two_Weeks_in_a_Laundromat
         protected Room()
         {
             pieces = new List<MetaModel>();
+            ShouldDrawBoundingBoxes = true;
         }
 
         public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
         {
             pieces = new List<MetaModel>();
+            ShouldDrawBoundingBoxes = true;
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
         }
@@ -45,7 +51,7 @@ namespace Two_Weeks_in_a_Laundromat
 
                 ModelUtil.DrawModel(m);
 #if DEBUG
-                if (m.BBoxes != null)
+                if (m.BBoxes != null && ShouldDrawBoundingBoxes)
                 {
                     foreach (BoundingBox bBox in m.BBoxes)
                     {
@@ -106,7 +112,7 @@ namespace Two_Weeks_in_a_Laundromat
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * 4) - 2.0f, topLeft.Y + (i*8), (z * 4));
+                            newWall.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -120,7 +126,7 @@ namespace Two_Weeks_in_a_Laundromat
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * 4) + 2.0f, topLeft.Y + (i * 8), (z * 4));
+                            newWall.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -137,7 +143,7 @@ namespace Two_Weeks_in_a_Laundromat
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * 4), topLeft.Y + (i * 8), (z * 4) - 2.0f);
+                            newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
                             newWall.Rotation = Vector3.Zero;
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -151,7 +157,7 @@ namespace Two_Weeks_in_a_Laundromat
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * 4), topLeft.Y + (i * 8), (z * 4) + 2.0f);
+                            newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
                             newWall.Rotation = Vector3.Zero;
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
