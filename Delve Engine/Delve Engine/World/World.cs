@@ -37,6 +37,7 @@ namespace Delve_Engine.World
         private List<MetaModel> modelsToDraw;
         protected Random WOLOLO;
         protected bool boundingBoxesDraw = false;
+        protected MatrixDescriptor cMatrices;
         #endregion
 
         public World()
@@ -88,7 +89,7 @@ namespace Delve_Engine.World
             // Get a unified global effect from the model util thing:
             globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
             // We create a matrixDescriptor here becuase we can't set properties of properties:
-            MatrixDescriptor cMatrices = mainPlayer.Matrices;
+            cMatrices = mainPlayer.Matrices;
             ModelUtil.UpdateViewMatrix(mainPlayer.UpDownRot, mainPlayer.LeftRightRot, mainPlayer.Position,
                 ref cMatrices);
             // Set the pieces of out matrix descriptor:
@@ -201,9 +202,9 @@ namespace Delve_Engine.World
 
         protected void clearBuffer()
         {
-            globalEffect.View = mainPlayer.Matrices.view;
-            globalEffect.World = mainPlayer.Matrices.world;
-            globalEffect.Projection = mainPlayer.Matrices.proj;
+            cMatrices.view = mainPlayer.Matrices.view;
+            cMatrices.world = mainPlayer.Matrices.world;
+            cMatrices.proj = mainPlayer.Matrices.proj;
 
             // Do this if some other function has already cleared the frame and drawn stuff. We don't want to
             // hide it.
@@ -228,9 +229,9 @@ namespace Delve_Engine.World
                 }
                 else
                 {
-                    model.Shader.Parameters["World"].SetValue(globalEffect.World);
-                    model.Shader.Parameters["View"].SetValue(globalEffect.View);
-                    model.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
+                    model.Shader.Parameters["World"].SetValue(cMatrices.world);
+                    model.Shader.Parameters["View"].SetValue(cMatrices.view);
+                    model.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
                     model.Shader.Parameters["LightPos"].SetValue(this.mainPlayer.Position);
                     ModelUtil.DrawModel(model);
                 }
@@ -242,8 +243,8 @@ namespace Delve_Engine.World
                     {
                         BoundingBoxRenderer.Render(bBox,
                             gDevice,
-                            globalEffect.View,
-                            globalEffect.Projection,
+                            cMatrices.view,
+                            cMatrices.proj,
                             Color.Red);
                     }
                 }

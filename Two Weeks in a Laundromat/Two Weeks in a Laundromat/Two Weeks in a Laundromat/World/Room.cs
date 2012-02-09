@@ -15,6 +15,7 @@ namespace Two_Weeks_in_a_Laundromat
     class Room
     {
         protected List<MetaModel> pieces;
+        protected List<GameObject> things;
         protected const float tileSize = 4.0f;
         protected const float tileHalf = tileSize / 2.0f;
         protected Vector3 dimensions;
@@ -29,24 +30,31 @@ namespace Two_Weeks_in_a_Laundromat
         protected Room()
         {
             pieces = new List<MetaModel>();
+            things = new List<GameObject>();
             ShouldDrawBoundingBoxes = true;
         }
 
         public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
         {
             pieces = new List<MetaModel>();
+            things = new List<GameObject>();
             ShouldDrawBoundingBoxes = true;
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
         }
 
-        public void Draw(GraphicsDevice gDevice, BasicEffect gEffect, Vector3 playerPos)
+        public void Draw(GraphicsDevice gDevice, ref MatrixDescriptor cMatrices, Vector3 playerPos)
         {
+            foreach (GameObject g in things)
+            {
+                g.Draw(ref cMatrices, ref playerPos);
+            }
+
             foreach (MetaModel m in pieces)
             {
-                m.Shader.Parameters["World"].SetValue(gEffect.World);
-                m.Shader.Parameters["View"].SetValue(gEffect.View);
-                m.Shader.Parameters["Projection"].SetValue(gEffect.Projection);
+                m.Shader.Parameters["World"].SetValue(cMatrices.world);
+                m.Shader.Parameters["View"].SetValue(cMatrices.view);
+                m.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
                 m.Shader.Parameters["LightPos"].SetValue(playerPos);
 
                 ModelUtil.DrawModel(m);
@@ -63,6 +71,14 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                 }
 #endif
+            }
+        }
+
+        public virtual void Update(GameTime gTime)
+        {
+            foreach (GameObject g in things)
+            {
+                g.Update(gTime);
             }
         }
 

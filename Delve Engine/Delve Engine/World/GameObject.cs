@@ -14,7 +14,6 @@ namespace Delve_Engine.World
         #region Fields
         protected Vector3 position;
         protected List<BoundingSphere> boundingSpheres;
-        protected List<BoundingBox> boundingBoxes;
         protected float leftRightRot, upDownRot;
         protected MetaModel model;
         protected BasicEffect material;
@@ -40,10 +39,6 @@ namespace Delve_Engine.World
         {
             get { return boundingSpheres; }
         }
-        public List<BoundingBox> BoundingBoxes
-        {
-            get { return boundingBoxes; }
-        }
         public float LeftRightRot
         {
             get { return leftRightRot; }
@@ -59,6 +54,11 @@ namespace Delve_Engine.World
         public BasicEffect Material
         {
             get { return material; }
+        }
+        public bool ShouldDrawBoundingBoxes
+        {
+            get;
+            set;
         }
         #endregion
 
@@ -87,8 +87,8 @@ namespace Delve_Engine.World
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
             boundingSpheres = new List<BoundingSphere>();
-            boundingBoxes = new List<BoundingBox>();
             boundingOffsets = new List<Vector3>();
+            ShouldDrawBoundingBoxes = true;
         }
 
         /// <summary>
@@ -96,31 +96,17 @@ namespace Delve_Engine.World
         /// </summary>
         /// <param name="position">Where it should go.</param>
         /// <param name="rotation">How it will be rotated when displayed.</param>
-        public GameObject(ref Vector3 position, ref Vector3 rotation, GraphicsDevice gDevice)
+        public GameObject(ref MetaModel newObject, GraphicsDevice gDevice)
         {
-            this.position = position;
+            this.model = newObject;
             this.gDevice = gDevice;
-            leftRightRot = 0.0f;
-            upDownRot = 0.0f;
-            model = new MetaModel();
-            model.Position = position;
-            model.Rotation = rotation;
-            boundingSpheres = new List<BoundingSphere>();
-            boundingBoxes = new List<BoundingBox>();
-            boundingOffsets = new List<Vector3>();
+            ShouldDrawBoundingBoxes = true;
         }
 
         public void addNewBounding(BoundingSphere toAdd, Vector3 offset)
         {
             BoundingSpheres.Add(toAdd);
             boundingOffsets.Add(offset);
-        }
-
-        public void addNewBounding(BoundingBox toAdd, Vector3 offset)
-        {
-            boundingBoxes.Add(toAdd);
-            boundingOffsets.Add(offset);
-
         }
 
         public virtual void Load(ContentManager gManager)
@@ -138,22 +124,41 @@ namespace Delve_Engine.World
             material.FogEnabled = !material.FogEnabled;
         }
 
+        public void Draw(ref MatrixDescriptor cMatrices, ref Vector3 playerPos)
+        {
+            //if (model.Shader != null)
+            {
+                model.Shader.Parameters["World"].SetValue(cMatrices.world);
+                model.Shader.Parameters["View"].SetValue(cMatrices.view);
+                model.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
+                model.Shader.Parameters["LightPos"].SetValue(playerPos);
+
+                ModelUtil.DrawModel(model);
+#if DEBUG
+                if (model.BBoxes != null && ShouldDrawBoundingBoxes)
+                {
+                    foreach (BoundingBox bBox in model.BBoxes)
+                    {
+                        BoundingBoxRenderer.Render(bBox,
+                            gDevice,
+                            cMatrices.view,
+                            cMatrices.proj,
+                            Color.Red);
+                    }
+                }
+#endif
+            }
+        }
+
         public virtual void Update(GameTime gTime)
         {
-            for (int i = 0; i < boundingSpheres.Count; i++)
+            if (boundingSpheres != null)
             {
-                boundingSpheres[i] = new BoundingSphere(position - boundingOffsets[i],
-                    boundingSpheres[i].Radius);
-            }
-
-            for (int i = 0; i < boundingBoxes.Count; i++)
-            {
-                Vector3 curMin = boundingBoxes[i].Min;
-                Vector3 curMax = boundingBoxes[i].Max;
-
-                Vector3 minActual = position - curMin;
-                Vector3 maxActual = position - curMax;
-                boundingBoxes[i] = new BoundingBox(minActual - boundingOffsets[i], maxActual - boundingOffsets[i]);
+                for (int i = 0; i < boundingSpheres.Count; i++)
+                {
+                    boundingSpheres[i] = new BoundingSphere(position - boundingOffsets[i],
+                        boundingSpheres[i].Radius);
+                }
             }
         }
     }

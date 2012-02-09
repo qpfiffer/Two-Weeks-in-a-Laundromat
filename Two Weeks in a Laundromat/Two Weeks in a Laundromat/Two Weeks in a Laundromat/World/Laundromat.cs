@@ -29,7 +29,7 @@ namespace Two_Weeks_in_a_Laundromat
             for (int i = 0; i < 7; i++)
             {
                 MetaModel dryer = new MetaModel();
-                dryer.Position = new Vector3(roomCenter.X, roomCenter.Y + dimensions.Y - 1, roomCenter.Z + 1.0f + (i * 5.5f));
+                dryer.Position = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z + 1.0f + (i * 5.5f));
                 dryer.Rotation = new Vector3(0, 0, 0);
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
@@ -38,7 +38,7 @@ namespace Two_Weeks_in_a_Laundromat
                 this.pieces.Add(dryer);
 
                 dryer = new MetaModel();
-                dryer.Position = new Vector3(roomCenter.X + ((dimensions.X-1)*tileSize), roomCenter.Y + dimensions.Y - 1, roomCenter.Z + 1.0f + (i * 5.5f));
+                dryer.Position = new Vector3(roomCenter.X + ((dimensions.X-1)*tileSize), roomCenter.Y, roomCenter.Z + 1.0f + (i * 5.5f));
                 dryer.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
@@ -47,8 +47,17 @@ namespace Two_Weeks_in_a_Laundromat
                 this.pieces.Add(dryer);
             }
 
+            MetaModel oddDryer = new MetaModel();
+            oddDryer.Position = new Vector3(roomCenter.X + 6.0f, roomCenter.Y, roomCenter.Z + 15.0f);
+            oddDryer.Rotation = new Vector3(MathHelper.ToRadians(90.0f), 0, 0);
+            oddDryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
+            oddDryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
+            oddDryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ModelUtil.UpdateBoundingBoxes(ref oddDryer);
+            this.pieces.Add(oddDryer);
+
             MetaModel pillar = new MetaModel();
-            pillar.Position = new Vector3(roomCenter.X + (tileSize * dimensions.X / 2.0f) - tileHalf, roomCenter.Y + dimensions.Y - 1, roomCenter.Z + dimensions.Z - tileHalf);
+            pillar.Position = new Vector3(roomCenter.X + (tileSize * dimensions.X / 2.0f) - tileHalf, roomCenter.Y, roomCenter.Z + dimensions.Z - tileHalf);
             pillar.Rotation = new Vector3(0, 0, 0);
             pillar.model = gManager.Load<Model>("Models/Ghiblies/pillar");
             pillar.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/pillar");
@@ -65,6 +74,17 @@ namespace Two_Weeks_in_a_Laundromat
             pillar2.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             ModelUtil.UpdateBoundingBoxes(ref pillar2);
             this.pieces.Add(pillar2);
+
+            MetaModel cabinetModel = new MetaModel();
+            cabinetModel.Position = new Vector3(roomCenter.X + 6.0f, roomCenter.Y, roomCenter.Z + 6.0f);
+            cabinetModel.Rotation = new Vector3(0, MathHelper.ToRadians(45.0f), 0);
+            cabinetModel.model = gManager.Load<Model>("Models/Ghiblies/cabinet");
+            cabinetModel.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            cabinetModel.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ModelUtil.UpdateBoundingBoxes(ref cabinetModel);
+
+            GameObject cabinet = new GameObject(ref cabinetModel, gDevice);
+            this.things.Add(cabinet);
 
             base.Load(gManager, gDevice);
         }

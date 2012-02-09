@@ -59,6 +59,8 @@ namespace BBoxImporter
                         {
                             Vector3 v = mesh.Positions[i];
                             v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX - MathHelper.ToRadians(90.0f)));
+                            v = Vector3.Transform(v, Matrix.CreateRotationY(RotationY));
+                            v = Vector3.Transform(v, Matrix.CreateRotationZ(RotationZ));
 
                             if (v.X < minX)
                                 minX = v.X;

@@ -21,6 +21,12 @@ namespace Two_Weeks_in_a_Laundromat
             mainPlayer.setCameraPosition(new Vector3(10, Player.playerHeight, 10), Vector3.Zero);
         }
 
+        public override void Update(GameTime gTime)
+        {
+            currentRoom.Update(gTime);
+            base.Update(gTime);
+        }
+
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
             if (currentRoom == null)
@@ -50,7 +56,7 @@ namespace Two_Weeks_in_a_Laundromat
         public override void Draw()
         {
             clearBuffer();
-            currentRoom.Draw(gDevice, globalEffect, this.mainPlayer.Position);
+            currentRoom.Draw(gDevice, ref cMatrices, this.mainPlayer.Position);
 
             base.Draw();
         }

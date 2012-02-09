@@ -329,6 +329,10 @@ Objects:  {
 			Property: "DiffuseFactor", "double", "",0.8000
 			Property: "Bump", "Vector3D", "",0,0,0
 			Property: "TransparentColor", "ColorRGB", "",1,1,1
+			Prop
+			Property: "DiffuseFactor", "double", "",0.8000
+			Property: "Bump", "Vector3D", "",0,0,0
+			Property: "TransparentColor", "ColorRGB", "",1,1,1
 			Property: "TransparencyFactor", "double", "",0.0000
 			Property: "SpecularColor", "ColorRGB", "",1.0000,1.0000,1.0000
 			Property: "SpecularFactor", "double", "",0.2500
@@ -374,15 +378,13 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
-	Pose: "Pose::BIND_POSES", "BindPose" {
-		Type: "BindPose"
-		Version: 100
+	Video: "Video::untitled", "Clip" {
+		Type: "Clip"
 		Properties60:  {
-		}
-		NbPoseNodes: 2
-		PoseNode:  {
-			Node: "Model::bounding"
-			Matrix: 1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,-1.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000
+			Property: "FrameRate", "double", "",0
+			Property: "LastFrame", "int", "",0
+			Property: "Width", "int", "",0
+			Property: "Height", "int", "",0000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000
 		}
 		PoseNode:  {
 			Node: "Model::Cube"

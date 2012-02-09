@@ -167,10 +167,8 @@ namespace Delve_Engine.Utilities
 
             List<BoundingBox> toSet = new List<BoundingBox>();
 
-            Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X);
-            translationMatrix *= Matrix.CreateRotationY(m.Rotation.Y);
-            translationMatrix *= Matrix.CreateRotationZ(m.Rotation.Z);
-            translationMatrix *= Matrix.CreateTranslation(m.Position);
+            Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X) * Matrix.CreateRotationY(m.Rotation.Y)
+                * Matrix.CreateRotationZ(m.Rotation.Z) * Matrix.CreateTranslation(m.Position);
 
             List<BoundingBox> generatedBBoxes = ((object[])m.model.Tag)[0] as List<BoundingBox>;
 
