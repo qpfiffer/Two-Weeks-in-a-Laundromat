@@ -137,6 +137,45 @@
       <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Segments\doorframe.fbx">
+      <Name>doorframe</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>Importer</Processor>
+      <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Laundromat\doorframe.png">
+      <Name>doorframe</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Textures\Segments\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Laundromat\floor.png">
+      <Name>floor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Laundromat\ceiling.png">
+      <Name>ceiling</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Laundromat\wall.png">
+      <Name>wall</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

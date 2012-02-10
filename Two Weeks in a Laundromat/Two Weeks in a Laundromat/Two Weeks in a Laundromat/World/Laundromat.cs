@@ -26,6 +26,38 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            #region RoomBuilding
+            floor = new MetaModel();
+            floor.Position = Vector3.Zero;
+            floor.Rotation = Vector3.Zero;
+            floor.model = gManager.Load<Model>("Models/Segments/floor");
+            floor.Texture = gManager.Load<Texture2D>("Textures/Laundromat/floor");
+            floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+
+            wall = new MetaModel();
+            wall.Position = Vector3.Zero;
+            wall.Rotation = Vector3.Zero;
+            wall.model = gManager.Load<Model>("Models/Segments/wall");
+            wall.Texture = gManager.Load<Texture2D>("Textures/Laundromat/wall");
+            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+
+            ceiling = new MetaModel();
+            ceiling.Position = Vector3.Zero;
+            ceiling.Rotation = Vector3.Zero;
+            ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
+            ceiling.Texture = gManager.Load<Texture2D>("Textures/Laundromat/ceiling");
+            ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+
+            doorframe = new MetaModel();
+            doorframe.Position = Vector3.Zero;
+            doorframe.Rotation = Vector3.Zero;
+            doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
+            doorframe.Texture = gManager.Load<Texture2D>("Textures/Laundromat/doorframe");
+            doorframe.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+
+            setupPieces();
+            #endregion
+            #region GhibliesBuilding
             for (int i = 0; i < 7; i++)
             {
                 MetaModel dryer = new MetaModel();
@@ -47,15 +79,6 @@ namespace Two_Weeks_in_a_Laundromat
                 this.pieces.Add(dryer);
             }
 
-            MetaModel oddDryer = new MetaModel();
-            oddDryer.Position = new Vector3(roomCenter.X + 6.0f, roomCenter.Y, roomCenter.Z + 15.0f);
-            oddDryer.Rotation = new Vector3(MathHelper.ToRadians(90.0f), 0, 0);
-            oddDryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
-            oddDryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
-            oddDryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            ModelUtil.UpdateBoundingBoxes(ref oddDryer);
-            this.pieces.Add(oddDryer);
-
             MetaModel pillar = new MetaModel();
             pillar.Position = new Vector3(roomCenter.X + (tileSize * dimensions.X / 2.0f) - tileHalf, roomCenter.Y, roomCenter.Z + dimensions.Z - tileHalf);
             pillar.Rotation = new Vector3(0, 0, 0);
@@ -74,19 +97,8 @@ namespace Two_Weeks_in_a_Laundromat
             pillar2.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             ModelUtil.UpdateBoundingBoxes(ref pillar2);
             this.pieces.Add(pillar2);
+            #endregion
 
-            MetaModel cabinetModel = new MetaModel();
-            cabinetModel.Position = new Vector3(roomCenter.X + 6.0f, roomCenter.Y, roomCenter.Z + 6.0f);
-            cabinetModel.Rotation = new Vector3(0, MathHelper.ToRadians(45.0f), 0);
-            cabinetModel.model = gManager.Load<Model>("Models/Ghiblies/cabinet");
-            cabinetModel.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            cabinetModel.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            ModelUtil.UpdateBoundingBoxes(ref cabinetModel);
-
-            GameObject cabinet = new GameObject(ref cabinetModel, gDevice);
-            this.things.Add(cabinet);
-
-            base.Load(gManager, gDevice);
         }
     }
 }

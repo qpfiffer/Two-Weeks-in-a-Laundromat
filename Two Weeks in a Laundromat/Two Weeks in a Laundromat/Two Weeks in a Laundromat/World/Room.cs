@@ -14,6 +14,7 @@ namespace Two_Weeks_in_a_Laundromat
 {
     class Room
     {
+        protected bool shouldDrawBoundingBoxes = true;
         protected List<MetaModel> pieces;
         protected List<GameObject> things;
         protected const float tileSize = 4.0f;
@@ -22,7 +23,26 @@ namespace Two_Weeks_in_a_Laundromat
         // Remember, roomCenter is actually the top left!
         protected Vector3 roomCenter;
 
-        public bool ShouldDrawBoundingBoxes { get; set; }
+        protected MetaModel doorframe, wall, ceiling, floor;
+
+        public bool ShouldDrawBoundingBoxes {
+            get
+            {
+                return shouldDrawBoundingBoxes;
+            }
+
+            set
+            {
+                this.shouldDrawBoundingBoxes = value;
+                if (things != null)
+                {
+                    foreach (GameObject thing in things)
+                    {
+                        thing.ShouldDrawBoundingBoxes = shouldDrawBoundingBoxes;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Use this one only if you're a subclass doing some dirty shit.
@@ -59,7 +79,7 @@ namespace Two_Weeks_in_a_Laundromat
 
                 ModelUtil.DrawModel(m);
 #if DEBUG
-                if (m.BBoxes != null && ShouldDrawBoundingBoxes)
+                if (m.BBoxes != null && shouldDrawBoundingBoxes)
                 {
                     foreach (BoundingBox bBox in m.BBoxes)
                     {
@@ -84,34 +104,41 @@ namespace Two_Weeks_in_a_Laundromat
 
         public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            MetaModel floor = new MetaModel();
+            floor = new MetaModel();
             floor.Position = Vector3.Zero;
             floor.Rotation = Vector3.Zero;
             floor.model = gManager.Load<Model>("Models/Segments/floor");
             floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
-            MetaModel wall = new MetaModel();
+            wall = new MetaModel();
             wall.Position = Vector3.Zero;
             wall.Rotation = Vector3.Zero;
             wall.model = gManager.Load<Model>("Models/Segments/wall");
             wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
-            MetaModel ceiling = new MetaModel();
+            ceiling = new MetaModel();
             ceiling.Position = Vector3.Zero;
             ceiling.Rotation = Vector3.Zero;
             ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
             ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
 
-            setupPieces(ref floor, ref wall, ref ceiling);
+            doorframe = new MetaModel();
+            doorframe.Position = Vector3.Zero;
+            doorframe.Rotation = Vector3.Zero;
+            doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
+            doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+            doorframe.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+
+            setupPieces();
         }
 
         /// <summary>
         /// Call this to create the room.
         /// </summary>
-        private void setupPieces(ref MetaModel floor, ref MetaModel wall, ref MetaModel ceiling)
+        protected void setupPieces()
         {
             // Find the top left portion of the room:
             Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
