@@ -54,7 +54,9 @@ namespace Delve_Engine.World
 
             mainPlayer = new Player(ref playerPos, ref playerRot, gDevice);
             modelsToDraw = new List<MetaModel>();
+#if DEBUG
             releaseMouseToggle = false;
+#endif
 
             collisionBoxes = new List<BoundingBox>();
 
@@ -173,8 +175,11 @@ namespace Delve_Engine.World
             }
 #endif
 
-
+#if DEBUG
             if (info.curMouseState != info.oldMouseState && !releaseMouseToggle)
+#else
+            if (info.curMouseState != info.oldMouseState)
+#endif
             {
                 int xDelta = info.curMouseState.X - info.oldMouseState.X;
                 int yDelta = info.curMouseState.Y - info.oldMouseState.Y;
