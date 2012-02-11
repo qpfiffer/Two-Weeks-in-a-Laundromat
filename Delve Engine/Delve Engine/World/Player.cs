@@ -19,6 +19,11 @@ namespace Delve_Engine.World
         #endregion
         #region Properties
         public Vector2 rotationTarget { get; set; }
+        public BoundingSphere chestSphere
+        {
+            get;
+            set;
+        }
         public bool rotateEnabled { get; set; }
         /// <summary>
         /// Controls whether noclip is enabled or not.
@@ -49,6 +54,7 @@ namespace Delve_Engine.World
         public const float floorBoxHeight = 0.5f;
         public const float gravity = 0.35f;
         public const float rightAngleRadians = 1.57079633f;
+        public const float chestSphereRadius = 0.5f;
         #endregion
 
         public Player(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice) :
@@ -58,8 +64,7 @@ namespace Delve_Engine.World
             HeadBobbing = false;
             matrices = new MatrixDescriptor();
             // A bounding sphere right at the chest
-            BoundingSphere chestSphere = new BoundingSphere(position, 0.25f);
-            base.addNewBounding(chestSphere, Vector3.Zero);
+            BoundingSphere chestSphere = new BoundingSphere(position, chestSphereRadius);
         }
 
         public void rotateCamera(ref Point mouseDifference, float timeDifference)
@@ -111,6 +116,7 @@ namespace Delve_Engine.World
             newPosition.Z = point.Y + yAddition;
 
             position = newPosition;
+            chestSphere = new BoundingSphere(position, chestSphereRadius);
 
             leftRightRot -= radians;
 
@@ -147,10 +153,16 @@ namespace Delve_Engine.World
             Vector3 rotatedVector = Vector3.Transform(toAdd, cameraRotation);
             oldPosition += localMoveSpeed * rotatedVector;
 
-            position = oldPosition;
+            addToCameraPosPrecomputed(ref oldPosition);
+        }
+
+        public void addToCameraPosPrecomputed(ref Vector3 toSet)
+        {
+            position = toSet;
+            chestSphere = new BoundingSphere(position, chestSphereRadius);
             if (HeadBobbing)
             {
-                Vector3 headBobPos = position + (new Vector3(0, (float)(Math.Cos(mils * 2.0f) / 6.0f),0 ));
+                Vector3 headBobPos = position + (new Vector3(0, (float)(Math.Cos(mils * 2.0f) / 6.0f), 0));
                 ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, headBobPos, ref matrices);
             }
             else
@@ -159,12 +171,36 @@ namespace Delve_Engine.World
             }
         }
 
+        public Vector3 examineFuturePos(ref Vector3 toAdd) 
+        {
+            float localMoveSpeed = moveSpeed;
+            Vector3 oldPosition = position;
+            Matrix cameraRotation = Matrix.Identity;
+            if (NoClip)
+            {
+                cameraRotation = Matrix.CreateRotationX(upDownRot) * Matrix.CreateRotationY(leftRightRot);
+                localMoveSpeed *= 2;
+            }
+            else
+            {
+                // We don't move in the direction we're looking if we are looking up. Discard the upDown
+                // rotation.
+                cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
+            }
+
+            Vector3 rotatedVector = Vector3.Transform(toAdd, cameraRotation);
+            oldPosition += localMoveSpeed * rotatedVector;
+
+            return oldPosition;
+        }
+
         public void setCameraPosition(Vector3 newPosition, Vector3 offset)
         {
             Matrix cameraRotation = Matrix.Identity;
             cameraRotation = Matrix.CreateRotationX(0.0f) * Matrix.CreateRotationY(leftRightRot);
             Vector3 afterOffset = newPosition - offset;
             position = afterOffset;
+            chestSphere = new BoundingSphere(position, chestSphereRadius);
             ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, position, ref matrices);
         }
 

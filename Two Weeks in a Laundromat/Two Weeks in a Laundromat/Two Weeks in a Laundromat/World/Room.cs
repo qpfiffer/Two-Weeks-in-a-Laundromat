@@ -43,6 +43,15 @@ namespace Two_Weeks_in_a_Laundromat
                 }
             }
         }
+        public List<MetaModel> AllMetas
+        {
+            get { return pieces; }
+        }
+
+        public List<GameObject> AllGOs
+        {
+            get { return things; }
+        }
 
         /// <summary>
         /// Use this one only if you're a subclass doing some dirty shit.

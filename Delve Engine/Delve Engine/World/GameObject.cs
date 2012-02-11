@@ -13,7 +13,6 @@ namespace Delve_Engine.World
     {
         #region Fields
         protected Vector3 position;
-        protected List<BoundingSphere> boundingSpheres;
         protected float leftRightRot, upDownRot;
         protected MetaModel model;
         protected BasicEffect material;
@@ -34,10 +33,6 @@ namespace Delve_Engine.World
 
                 this.position = value;
             }
-        }
-        public List<BoundingSphere> BoundingSpheres
-        {
-            get { return boundingSpheres; }
         }
         public float LeftRightRot
         {
@@ -86,7 +81,6 @@ namespace Delve_Engine.World
             this.gDevice = gDevice;
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
-            boundingSpheres = new List<BoundingSphere>();
             boundingOffsets = new List<Vector3>();
             ShouldDrawBoundingBoxes = true;
         }
@@ -101,12 +95,6 @@ namespace Delve_Engine.World
             this.model = newObject;
             this.gDevice = gDevice;
             ShouldDrawBoundingBoxes = true;
-        }
-
-        public void addNewBounding(BoundingSphere toAdd, Vector3 offset)
-        {
-            BoundingSpheres.Add(toAdd);
-            boundingOffsets.Add(offset);
         }
 
         public virtual void Load(ContentManager gManager)
@@ -152,14 +140,6 @@ namespace Delve_Engine.World
 
         public virtual void Update(GameTime gTime)
         {
-            if (boundingSpheres != null)
-            {
-                for (int i = 0; i < boundingSpheres.Count; i++)
-                {
-                    boundingSpheres[i] = new BoundingSphere(position - boundingOffsets[i],
-                        boundingSpheres[i].Radius);
-                }
-            }
         }
     }
 }

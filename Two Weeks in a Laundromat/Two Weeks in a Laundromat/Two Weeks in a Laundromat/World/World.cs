@@ -33,6 +33,8 @@ namespace Two_Weeks_in_a_Laundromat
             {
                 currentRoom = new Laundromat();
                 currentRoom.Load(gManager, gDevice);
+                this.collisionsToCheckGO.AddRange(currentRoom.AllGOs);
+                this.collisionsToCheckMeta.AddRange(currentRoom.AllMetas);
             }
 
             base.Load(gManager, gDevice);

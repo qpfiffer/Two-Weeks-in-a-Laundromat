@@ -38,6 +38,9 @@ namespace Delve_Engine.World
         protected Random WOLOLO;
         protected bool boundingBoxesDraw = false;
         protected MatrixDescriptor cMatrices;
+        // This is probably a pretty shitty way to do collision checking:
+        protected List<MetaModel> collisionsToCheckMeta;
+        protected List<GameObject> collisionsToCheckGO;
         #endregion
 
         public World()
@@ -53,6 +56,9 @@ namespace Delve_Engine.World
             mainPlayer = new Player(ref playerPos, ref playerRot, gDevice);
             modelsToDraw = new List<MetaModel>();
             releaseMouseToggle = false;
+
+            collisionsToCheckMeta = new List<MetaModel>();
+            collisionsToCheckGO = new List<GameObject>();
 
             WOLOLO = new Random();
         }
@@ -108,9 +114,39 @@ namespace Delve_Engine.World
 
         private void collideMove(float amount, Vector3 moveVector)
         {
-            // TODO: Collision, with octrees
             Vector3 finalVector = moveVector * amount;
-            mainPlayer.addToCameraPosition(ref finalVector);
+            Vector3 posToTest = mainPlayer.examineFuturePos(ref finalVector);
+
+            BoundingSphere tempSphere = new BoundingSphere(posToTest, mainPlayer.chestSphere.Radius);
+
+            if (!mainPlayer.NoClip)
+            {
+                foreach (MetaModel m in collisionsToCheckMeta)
+                {
+                    foreach (BoundingBox bbox in m.BBoxes)
+                    {
+                        if (tempSphere.Intersects(bbox))
+                        {
+                            return;
+                        }
+                    }
+                }
+
+                foreach (GameObject go in collisionsToCheckGO)
+                {
+                    MetaModel m = go.Model;
+                    foreach (BoundingBox bbox in m.BBoxes)
+                    {
+                        if (tempSphere.Intersects(bbox))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+
+            // If we got here then we didnt hit anything.
+            mainPlayer.addToCameraPosPrecomputed(ref posToTest);
         }
 
         public virtual void Update(GameTime gTime)
