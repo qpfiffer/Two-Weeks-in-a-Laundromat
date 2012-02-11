@@ -13,9 +13,9 @@ using Delve_Engine.World;
 namespace Two_Weeks_in_a_Laundromat
 {
     class Door: GameObject
-    {
-        public Door(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice)
-            : base(ref position, ref rotation, gDevice)
+    {   
+        public Door(ref MetaModel newObject, GraphicsDevice gDevice)
+            : base(ref newObject, gDevice)
         {
         }
     }

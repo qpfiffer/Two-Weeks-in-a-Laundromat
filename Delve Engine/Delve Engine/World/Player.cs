@@ -43,7 +43,7 @@ namespace Delve_Engine.World
         public const float rotationSpeed = 0.3f;
         public const float moveSpeed = 5.0f;
         // Top of the head
-        public const float playerHeight = 5.0f;
+        public const float playerHeight = 4.75f;
         // 0.5f up from the bottom of the floor (has to do with the radius
         // of the sphere we use)
         public const float floorBoxHeight = 0.5f;
