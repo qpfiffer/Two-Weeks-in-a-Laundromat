@@ -176,8 +176,34 @@ namespace Delve_Engine.Utilities
             {
                 foreach (BoundingBox bBox in generatedBBoxes)
                 {
-                    BoundingBox newBBox = new BoundingBox(Vector3.Transform(bBox.Min, translationMatrix),
-                        Vector3.Transform(bBox.Max, translationMatrix));
+                    Vector3 transformedMin = Vector3.Transform(bBox.Min, translationMatrix);
+                    Vector3 transformedMax = Vector3.Transform(bBox.Max, translationMatrix);
+
+                    Vector3 newMin = transformedMin;
+                    Vector3 newMax = transformedMax;
+
+                    if (newMax.X < newMin.X)
+                    {
+                        float temp = newMin.X;
+                        newMin.X = newMax.X;
+                        newMax.X = temp;
+                    }
+
+                    if (newMax.Y < newMin.Y)
+                    {
+                        float temp = newMin.Y;
+                        newMin.Y = newMax.Y;
+                        newMax.Y = temp;
+                    }
+
+                    if (newMax.Z < newMin.Z)
+                    {
+                        float temp = newMin.Z;
+                        newMin.Z = newMax.Z;
+                        newMax.Z = temp;
+                    }
+
+                    BoundingBox newBBox = new BoundingBox(newMin, newMax);
                     toSet.Add(newBBox);
                 }
             }
