@@ -39,8 +39,7 @@ namespace Delve_Engine.World
         protected bool boundingBoxesDraw = false;
         protected MatrixDescriptor cMatrices;
         // This is probably a pretty shitty way to do collision checking:
-        protected List<MetaModel> collisionsToCheckMeta;
-        protected List<GameObject> collisionsToCheckGO;
+        protected List<BoundingBox> collisionBoxes;
         #endregion
 
         public World()
@@ -57,8 +56,7 @@ namespace Delve_Engine.World
             modelsToDraw = new List<MetaModel>();
             releaseMouseToggle = false;
 
-            collisionsToCheckMeta = new List<MetaModel>();
-            collisionsToCheckGO = new List<GameObject>();
+            collisionBoxes = new List<BoundingBox>();
 
             WOLOLO = new Random();
         }
@@ -121,26 +119,11 @@ namespace Delve_Engine.World
 
             if (!mainPlayer.NoClip)
             {
-                foreach (MetaModel m in collisionsToCheckMeta)
+                foreach (BoundingBox bbox in collisionBoxes)
                 {
-                    foreach (BoundingBox bbox in m.BBoxes)
+                    if (tempSphere.Intersects(bbox))
                     {
-                        if (tempSphere.Intersects(bbox))
-                        {
-                            return;
-                        }
-                    }
-                }
-
-                foreach (GameObject go in collisionsToCheckGO)
-                {
-                    MetaModel m = go.Model;
-                    foreach (BoundingBox bbox in m.BBoxes)
-                    {
-                        if (tempSphere.Intersects(bbox))
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
             }

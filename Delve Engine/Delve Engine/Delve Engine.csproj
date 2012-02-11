@@ -92,7 +92,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTypes\Random.cs" />
     <Compile Include="DataTypes\Visual_Data.cs" />
     <Compile Include="DataTypes\Enums.cs" />
     <Compile Include="DataTypes\InputData.cs" />

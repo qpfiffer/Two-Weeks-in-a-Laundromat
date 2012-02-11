@@ -54,7 +54,7 @@ namespace Delve_Engine.World
         public const float floorBoxHeight = 0.5f;
         public const float gravity = 0.35f;
         public const float rightAngleRadians = 1.57079633f;
-        public const float chestSphereRadius = 0.5f;
+        public const float chestSphereRadius = 0.75f;
         #endregion
 
         public Player(ref Vector3 position, ref Vector2 rotation, GraphicsDevice gDevice) :

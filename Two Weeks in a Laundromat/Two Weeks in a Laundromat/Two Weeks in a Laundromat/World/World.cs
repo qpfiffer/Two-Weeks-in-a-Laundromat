@@ -33,8 +33,16 @@ namespace Two_Weeks_in_a_Laundromat
             {
                 currentRoom = new Laundromat();
                 currentRoom.Load(gManager, gDevice);
-                this.collisionsToCheckGO.AddRange(currentRoom.AllGOs);
-                this.collisionsToCheckMeta.AddRange(currentRoom.AllMetas);
+                foreach (MetaModel m in currentRoom.AllMetas)
+                {
+                    this.collisionBoxes.AddRange(m.BBoxes);
+                }
+
+                foreach (GameObject go in currentRoom.AllGOs)
+                {
+                    MetaModel m = go.Model;
+                    this.collisionBoxes.AddRange(m.BBoxes);
+                }
             }
 
             base.Load(gManager, gDevice);
