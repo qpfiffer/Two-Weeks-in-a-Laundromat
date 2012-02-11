@@ -98,10 +98,19 @@ namespace Two_Weeks_in_a_Laundromat
             ModelUtil.UpdateBoundingBoxes(ref pillar2);
             this.pieces.Add(pillar2);
 
+            MetaModel testFrame = new MetaModel();
+            testFrame.Position = new Vector3(roomCenter.X + dimensions.X * 2.0f, roomCenter.Y, roomCenter.Z + dimensions.Z * 2.0f);
+            testFrame.Rotation = Vector3.Zero;
+            testFrame.model = gManager.Load<Model>("Models/Segments/doorframe");
+            testFrame.Texture = gManager.Load<Texture2D>("Textures/Laundromat/doorframe");
+            testFrame.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ModelUtil.UpdateBoundingBoxes(ref testFrame);
+            this.pieces.Add(testFrame);
+
             MetaModel doorMeta = new MetaModel();
             doorMeta.Position = new Vector3(roomCenter.X + dimensions.X*2.0f, roomCenter.Y, roomCenter.Z + dimensions.Z*2.0f);
             doorMeta.Rotation = Vector3.Zero;
-            doorMeta.model = gManager.Load<Model>("Models/Segments/Door");
+            doorMeta.model = gManager.Load<Model>("Models/Segments/door");
             doorMeta.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
             doorMeta.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
             ModelUtil.UpdateBoundingBoxes(ref doorMeta);
