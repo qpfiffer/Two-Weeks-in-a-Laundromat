@@ -16,6 +16,7 @@ namespace Two_Weeks_in_a_Laundromat
         #region BackgroundItems
         private Laundromat laundro;
         private Vector3 defaultLightPos;
+        private float frames = 0.0f;
         #endregion
 
         #region Constructors
@@ -36,12 +37,12 @@ namespace Two_Weeks_in_a_Laundromat
         public override void Load(ContentManager gManager)
         {
             laundro = new Laundromat();
-            laundro.Load(gManager, gDevice);
+            laundro.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
             laundro.ShouldDrawBoundingBoxes = false;
-            foreach (MetaModel m in laundro.AllMetas)
-            {
-                m.Shader.Parameters["lightRadius"].SetValue(14.0f);
-            }
+            //foreach (MetaModel m in laundro.AllMetas)
+            //{
+            //    m.Shader.Parameters["lightRadius"].SetValue(14.0f);
+            //}
 
             defaultLightPos = cameraPos;
 
@@ -52,6 +53,14 @@ namespace Two_Weeks_in_a_Laundromat
         {
             if (!bufferCleared)
                 clearBuffer();
+
+            frames += 0.1f;
+
+            foreach (MetaModel m in laundro.AllMetas)
+            {
+                m.Shader.Parameters["screenVector"].SetValue(new Vector2(
+                    (float)Math.Cos(frames) / 2, (float)Math.Sin(frames) / 2));
+            }
             
             laundro.Draw(gDevice, ref cMatrices, defaultLightPos);
  

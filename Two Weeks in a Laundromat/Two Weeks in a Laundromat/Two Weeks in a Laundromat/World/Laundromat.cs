@@ -26,34 +26,41 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            Effect shaderToLoad = null;
+
+            if (alternateShader == null)
+                shaderToLoad = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            else
+                shaderToLoad = alternateShader;
+
             #region RoomBuilding
             floor = new MetaModel();
             floor.Position = Vector3.Zero;
             floor.Rotation = Vector3.Zero;
             floor.model = gManager.Load<Model>("Models/Segments/floor");
             floor.Texture = gManager.Load<Texture2D>("Textures/Laundromat/floor");
-            floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            floor.Shader = shaderToLoad;
 
             wall = new MetaModel();
             wall.Position = Vector3.Zero;
             wall.Rotation = Vector3.Zero;
             wall.model = gManager.Load<Model>("Models/Segments/wall");
             wall.Texture = gManager.Load<Texture2D>("Textures/Laundromat/wall");
-            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            wall.Shader = shaderToLoad;
 
             ceiling = new MetaModel();
             ceiling.Position = Vector3.Zero;
             ceiling.Rotation = Vector3.Zero;
             ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
             ceiling.Texture = gManager.Load<Texture2D>("Textures/Laundromat/ceiling");
-            ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ceiling.Shader = shaderToLoad;
 
             doorframe = new MetaModel();
             doorframe.Position = Vector3.Zero;
             doorframe.Rotation = Vector3.Zero;
             doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
             doorframe.Texture = gManager.Load<Texture2D>("Textures/Laundromat/doorframe");
-            doorframe.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            doorframe.Shader = shaderToLoad;
 
             setupPieces();
             #endregion
@@ -65,7 +72,7 @@ namespace Two_Weeks_in_a_Laundromat
                 dryer.Rotation = Vector3.Zero;
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
-                dryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+                dryer.Shader = shaderToLoad;
                 ModelUtil.UpdateBoundingBoxes(ref dryer);
                 this.pieces.Add(dryer);
 
@@ -74,7 +81,7 @@ namespace Two_Weeks_in_a_Laundromat
                 dryer.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
                 dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
                 dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
-                dryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+                dryer.Shader = shaderToLoad;
                 ModelUtil.UpdateBoundingBoxes(ref dryer);
                 this.pieces.Add(dryer);
             }
@@ -84,7 +91,7 @@ namespace Two_Weeks_in_a_Laundromat
             pillar.Rotation = new Vector3(0, 0, 0);
             pillar.model = gManager.Load<Model>("Models/Ghiblies/pillar");
             pillar.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/pillar");
-            pillar.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            pillar.Shader = shaderToLoad;
             ModelUtil.UpdateBoundingBoxes(ref pillar);
             this.pieces.Add(pillar);
 
@@ -94,7 +101,7 @@ namespace Two_Weeks_in_a_Laundromat
             pillar2.Rotation = new Vector3(0, 0, 0);
             pillar2.model = pillar.model;
             pillar2.Texture = pillar.Texture;
-            pillar2.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            pillar2.Shader = shaderToLoad;
             ModelUtil.UpdateBoundingBoxes(ref pillar2);
             this.pieces.Add(pillar2);
 
@@ -103,7 +110,7 @@ namespace Two_Weeks_in_a_Laundromat
             testFrame.Rotation = Vector3.Zero;
             testFrame.model = gManager.Load<Model>("Models/Segments/doorframe");
             testFrame.Texture = gManager.Load<Texture2D>("Textures/Laundromat/doorframe");
-            testFrame.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            testFrame.Shader = shaderToLoad;
             ModelUtil.UpdateBoundingBoxes(ref testFrame);
             this.pieces.Add(testFrame);
 
@@ -112,13 +119,19 @@ namespace Two_Weeks_in_a_Laundromat
             doorMeta.Rotation = Vector3.Zero;
             doorMeta.model = gManager.Load<Model>("Models/Segments/door");
             doorMeta.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
-            doorMeta.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            doorMeta.Shader = shaderToLoad;
             ModelUtil.UpdateBoundingBoxes(ref doorMeta);
 
             Door testDoor = new Door(ref doorMeta, gDevice);
             this.things.Add(testDoor);
             #endregion
 
+        }
+
+        public override void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
+        {
+            this.alternateShader = alternateShader;
+            base.Load(gManager, gDevice, alternateShader);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Two_Weeks_in_a_Laundromat
 {
     class Room
     {
+        protected Effect alternateShader = null;
         protected bool shouldDrawBoundingBoxes = true;
         protected List<MetaModel> pieces;
         protected List<GameObject> things;
@@ -113,35 +114,48 @@ namespace Two_Weeks_in_a_Laundromat
 
         public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            Effect shaderToLoad = null;
+
+            if (alternateShader == null)
+                shaderToLoad = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            else
+                shaderToLoad = alternateShader;
+
             floor = new MetaModel();
             floor.Position = Vector3.Zero;
             floor.Rotation = Vector3.Zero;
             floor.model = gManager.Load<Model>("Models/Segments/floor");
             floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            floor.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            floor.Shader = shaderToLoad;
 
             wall = new MetaModel();
             wall.Position = Vector3.Zero;
             wall.Rotation = Vector3.Zero;
             wall.model = gManager.Load<Model>("Models/Segments/wall");
             wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            wall.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            wall.Shader = shaderToLoad;
 
             ceiling = new MetaModel();
             ceiling.Position = Vector3.Zero;
             ceiling.Rotation = Vector3.Zero;
             ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
             ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            ceiling.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            ceiling.Shader = shaderToLoad;
 
             doorframe = new MetaModel();
             doorframe.Position = Vector3.Zero;
             doorframe.Rotation = Vector3.Zero;
             doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
             doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-            doorframe.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
+            doorframe.Shader = shaderToLoad;
 
             setupPieces();
+        }
+
+        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
+        {
+            this.alternateShader = alternateShader;
+            this.Load(gManager, gDevice);
         }
 
         /// <summary>

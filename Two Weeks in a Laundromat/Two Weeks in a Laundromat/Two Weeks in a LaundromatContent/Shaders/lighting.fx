@@ -6,7 +6,7 @@ float lightRadius = 20;
 
 // POINT LIGHT VARIABLES
 float3 LightPos;
-float LightPower;
+//float LightPower;
 
 // Texture that gets mapped onto surfaces:
 Texture UsedTexture;
