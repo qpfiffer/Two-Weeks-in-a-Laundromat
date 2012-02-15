@@ -2,6 +2,8 @@ float4x4 World;
 float4x4 View;
 float4x4 Projection;
 
+float lightRadius = 20;
+
 // POINT LIGHT VARIABLES
 float3 LightPos;
 float LightPower;
@@ -61,7 +63,6 @@ VertexToPixel PointLightVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOO
 
 float4 PointLightPS(VertexToPixel PSIn) : COLOR0
 {   
-	float lightRadius = 20;
 	// WORKING:
 	// Get the color of the texture
 	float4 defaultColor = tex2D(TextureSampler, PSIn.TexCoords);

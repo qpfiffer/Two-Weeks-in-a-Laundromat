@@ -32,10 +32,11 @@ namespace Delve_Engine.Menu
         #region Protected_Stuff
         protected List<MetaModel> models;
         protected Color clearColor;
-        protected BasicEffect globalEffect;
         protected GraphicsDevice gDevice;
         protected Vector3 cameraPos = Vector3.Zero;
         protected float leftRightRot, upDownRot;
+        protected bool bufferCleared = false;
+        protected MatrixDescriptor cMatrices;
         #endregion
 
         public Menu(GraphicsDevice gDevice, string title)
@@ -60,9 +61,6 @@ namespace Delve_Engine.Menu
 
         public virtual void Load(ContentManager gManager)
         {
-            #region Basic_Effect
-            globalEffect = ModelUtil.CreateGlobalEffect(gDevice);
-            #endregion
             #region Menu_Stuff
             mFont = gManager.Load<SpriteFont>("Fonts/mainFont");
 
@@ -83,9 +81,7 @@ namespace Delve_Engine.Menu
                 gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
             currentMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
 
-            globalEffect.View = currentMatrices.view;
-            globalEffect.Projection = currentMatrices.proj;
-            globalEffect.World = currentMatrices.world;
+            cMatrices = currentMatrices;
             #endregion
         }
 
@@ -121,22 +117,29 @@ namespace Delve_Engine.Menu
             }
         }
 
-        public virtual void Draw(SpriteBatch sBatch)
+        protected void clearBuffer()
         {
             gDevice.DepthStencilState = DepthStencilState.Default;
             gDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, clearColor, 1.0f, 0);
             gDevice.RasterizerState = rState;
 
-            foreach (MetaModel model in models)
+            bufferCleared = true;
+        }
+
+        public virtual void Draw(SpriteBatch sBatch)
+        {
+            if (!bufferCleared)
+                clearBuffer();
+
+            // TODO: Draw GameObjects. Probably not necessary.
+            foreach (MetaModel m in models)
             {
-                if (model.Shader == null)
-                {
-                    ModelUtil.DrawModel(model, globalEffect);
-                }
-                else
-                {
-                    ModelUtil.DrawModel(model);
-                }
+                // Assuming the shader is not null here.
+                // Not going to update these because the camera never moves.
+                //m.Shader.Parameters["World"].SetValue(cMatrices.world);
+                //m.Shader.Parameters["View"].SetValue(cMatrices.view);
+                //m.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
+                ModelUtil.DrawModel(m);
             }
 
             // Draw the title of the menu:
@@ -154,6 +157,8 @@ namespace Delve_Engine.Menu
                     sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.DarkBlue);
             }
             sBatch.End();
+
+            bufferCleared = false;
         }
 
         void beginFunc(object o, EventArgs e)

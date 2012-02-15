@@ -14,47 +14,48 @@ namespace Two_Weeks_in_a_Laundromat
     public class MainMenu : Menu
     {
         #region BackgroundItems
+        private Laundromat laundro;
+        private Vector3 defaultLightPos;
         #endregion
 
         #region Constructors
         public MainMenu(GraphicsDevice gDevice, string title): base(gDevice, title)
         {
-            cameraPos = new Vector3(0.8f, 2.2f, -5.4f);
-            leftRightRot = MathHelper.ToRadians(180.0f);
+            cameraPos = new Vector3(1.5f, 6.0f, 12.0f);
+            leftRightRot = MathHelper.ToRadians(-90.0f);
             upDownRot = MathHelper.ToRadians(-10.0f);
             clearColor = Color.LightBlue;
         }
         #endregion
 
-        private Vector3 defaultLightPos;
-
         public override void Update(GameTime gTime)
-        {
-            foreach (MetaModel m in models)
-            {
-                if (m.Shader != null)
-                {
-                    m.Shader.Parameters["World"].SetValue(globalEffect.World);
-                    m.Shader.Parameters["View"].SetValue(globalEffect.View);
-                    m.Shader.Parameters["Projection"].SetValue(globalEffect.Projection);
-                }
-            }
+        {            
             base.Update(gTime);
         }
 
         public override void Load(ContentManager gManager)
         {
-            defaultLightPos = new Vector3(0, 2, 0);
+            laundro = new Laundromat();
+            laundro.Load(gManager, gDevice);
+            laundro.ShouldDrawBoundingBoxes = false;
+            foreach (MetaModel m in laundro.AllMetas)
+            {
+                m.Shader.Parameters["lightRadius"].SetValue(14.0f);
+            }
 
-            MetaModel dryer = new MetaModel();
-            dryer.Position = new Vector3(0.8f, 0.0f, -6.0f);
-            dryer.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
-            dryer.model = gManager.Load<Model>("Models/Ghiblies/Dryer");
-            dryer.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/Dryer");
-            dryer.Shader = ModelUtil.CreateGlobalEffect(gDevice, gManager);
-            this.models.Add(dryer);
+            defaultLightPos = cameraPos;
 
             base.Load(gManager);
+        }
+
+        public override void Draw(SpriteBatch sBatch)
+        {
+            if (!bufferCleared)
+                clearBuffer();
+            
+            laundro.Draw(gDevice, ref cMatrices, defaultLightPos);
+ 
+            base.Draw(sBatch);
         }
     }
 }

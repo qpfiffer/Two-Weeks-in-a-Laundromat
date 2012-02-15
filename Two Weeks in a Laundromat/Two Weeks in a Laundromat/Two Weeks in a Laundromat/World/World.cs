@@ -18,7 +18,7 @@ namespace Two_Weeks_in_a_Laundromat
 
         public World(): base()
         {
-            mainPlayer.setCameraPosition(new Vector3(10, Player.playerHeight, 10), Vector3.Zero);
+            mainPlayer.setCameraPosition(new Vector3(10, Player.playerHeight, 15), Vector3.Zero);
         }
 
         public override void Update(GameTime gTime)
