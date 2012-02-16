@@ -14,6 +14,10 @@ namespace Two_Weeks_in_a_Laundromat
 {
     class Room
     {
+        #region Misc
+        protected ContentManager gManager;
+        protected GraphicsDevice gDevice;
+        #endregion
         #region 3dStuff
         protected Effect alternateShader = null;
         protected bool shouldDrawBoundingBoxes = false;
@@ -123,6 +127,9 @@ namespace Two_Weeks_in_a_Laundromat
 
         public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            this.gManager = gManager;
+            this.gDevice = gDevice;
+
             Effect shaderToLoad = null;
 
             if (alternateShader == null)
@@ -204,6 +211,27 @@ namespace Two_Weeks_in_a_Laundromat
                             if (doorHere)
                             {
                                 doorHere = false;
+
+                                MetaModel newDoorFrame = new MetaModel();
+                                newDoorFrame.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorFrame.Rotation = Vector3.Zero;
+                                newDoorFrame.model = this.doorframe.model;
+                                newDoorFrame.Texture = doorframe.Texture;
+                                newDoorFrame.Shader = doorframe.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
+                                pieces.Add(newDoorFrame);
+
+                                MetaModel newDoorMeta = new MetaModel();
+                                newDoorMeta.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorMeta.Rotation = Vector3.Zero;
+                                newDoorMeta.model = door.model;
+                                newDoorMeta.Texture = door.Texture;
+                                newDoorMeta.Shader = door.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
+
+                                Door newDoor = new Door(ref newDoorMeta, gDevice);
+                                this.things.Add(newDoor);
+
                                 continue;
                             }
 
@@ -240,6 +268,27 @@ namespace Two_Weeks_in_a_Laundromat
                             if (doorHere)
                             {
                                 doorHere = false;
+
+                                MetaModel newDoorFrame = new MetaModel();
+                                newDoorFrame.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
+                                newDoorFrame.model = this.doorframe.model;
+                                newDoorFrame.Texture = doorframe.Texture;
+                                newDoorFrame.Shader = doorframe.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
+                                pieces.Add(newDoorFrame);
+
+                                MetaModel newDoorMeta = new MetaModel();
+                                newDoorMeta.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
+                                newDoorMeta.model = door.model;
+                                newDoorMeta.Texture = door.Texture;
+                                newDoorMeta.Shader = door.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
+
+                                Door newDoor = new Door(ref newDoorMeta, gDevice);
+                                this.things.Add(newDoor);
+
                                 continue;
                             }
 
@@ -279,6 +328,27 @@ namespace Two_Weeks_in_a_Laundromat
                             if (doorHere)
                             {
                                 doorHere = false;
+
+                                MetaModel newDoorFrame = new MetaModel();
+                                newDoorFrame.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
+                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
+                                newDoorFrame.model = doorframe.model;
+                                newDoorFrame.Texture = doorframe.Texture;
+                                newDoorFrame.Shader = doorframe.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
+                                pieces.Add(newDoorFrame);
+
+                                MetaModel newDoorMeta = new MetaModel();
+                                newDoorMeta.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
+                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
+                                newDoorMeta.model = door.model;
+                                newDoorMeta.Texture = door.Texture;
+                                newDoorMeta.Shader = door.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
+
+                                Door newDoor = new Door(ref newDoorMeta, gDevice);
+                                this.things.Add(newDoor);
+
                                 continue;
                             }
                             MetaModel newWall = new MetaModel();
@@ -313,6 +383,27 @@ namespace Two_Weeks_in_a_Laundromat
                             if (doorHere)
                             {
                                 doorHere = false;
+
+                                MetaModel newDoorFrame = new MetaModel();
+                                newDoorFrame.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
+                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                                newDoorFrame.model = this.doorframe.model;
+                                newDoorFrame.Texture = doorframe.Texture;
+                                newDoorFrame.Shader = doorframe.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
+                                pieces.Add(newDoorFrame);
+
+                                MetaModel newDoorMeta = new MetaModel();
+                                newDoorMeta.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
+                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
+                                newDoorMeta.model = door.model;
+                                newDoorMeta.Texture = door.Texture;
+                                newDoorMeta.Shader = door.Shader;
+                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
+
+                                Door newDoor = new Door(ref newDoorMeta, gDevice);
+                                this.things.Add(newDoor);
+
                                 continue;
                             }
 

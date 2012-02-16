@@ -26,6 +26,9 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            this.gManager = gManager;
+            this.gDevice = gDevice;
+
             Effect shaderToLoad = null;
 
             if (alternateShader == null)
