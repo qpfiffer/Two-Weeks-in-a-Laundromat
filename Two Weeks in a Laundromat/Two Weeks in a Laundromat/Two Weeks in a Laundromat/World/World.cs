@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Delve_Engine.Utilities;
 using Delve_Engine.DataTypes;
 using Delve_Engine.World;
@@ -44,6 +45,10 @@ namespace Two_Weeks_in_a_Laundromat
                     this.collisionBoxes.AddRange(m.BBoxes);
                 }
             }
+
+            bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(bgMusic);
 
             base.Load(gManager, gDevice);
         }

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Delve_Engine.Utilities;
 using Delve_Engine.Interfaces;
 using Delve_Engine.DataTypes;
@@ -23,13 +24,8 @@ namespace Delve_Engine.Menu
         public MenuFlags Flag { get; set; }
         #endregion
 
-        #region SCENE_TO_DRAW
-        MatrixDescriptor currentMatrices;
-        SoundEffect bgSound;
-        RasterizerState rState;        
-        #endregion
-
         #region Protected_Stuff
+        protected RasterizerState rState;
         protected List<MetaModel> models;
         protected Color clearColor;
         protected GraphicsDevice gDevice;
@@ -37,6 +33,7 @@ namespace Delve_Engine.Menu
         protected float leftRightRot, upDownRot;
         protected bool bufferCleared = false;
         protected MatrixDescriptor cMatrices;
+        protected Song bgMusic;
         #endregion
 
         public Menu(GraphicsDevice gDevice, string title)
@@ -76,12 +73,10 @@ namespace Delve_Engine.Menu
             #endregion
             #region Setup3D
             // Add scenery when you override this function.
-            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, cameraPos, ref currentMatrices);
-            currentMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
+            ModelUtil.UpdateViewMatrix(upDownRot, leftRightRot, cameraPos, ref cMatrices);
+            cMatrices.proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.ToRadians(75.0f),
                 gDevice.Viewport.AspectRatio, 0.3f, 1000.0f);
-            currentMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
-
-            cMatrices = currentMatrices;
+            cMatrices.world = Matrix.CreateTranslation(Vector3.Zero);
             #endregion
         }
 

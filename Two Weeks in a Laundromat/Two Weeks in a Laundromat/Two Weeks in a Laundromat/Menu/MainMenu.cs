@@ -6,6 +6,7 @@ using Delve_Engine.Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using Delve_Engine.DataTypes;
 using Delve_Engine.Utilities;
 
@@ -16,7 +17,7 @@ namespace Two_Weeks_in_a_Laundromat
         #region BackgroundItems
         private Laundromat laundro;
         private Vector3 defaultLightPos;
-        private float frames = 0.0f;
+        //private float frames = 0.0f;
         #endregion
 
         #region Constructors
@@ -39,10 +40,15 @@ namespace Two_Weeks_in_a_Laundromat
             laundro = new Laundromat();
             laundro.Load(gManager, gDevice);
             laundro.ShouldDrawBoundingBoxes = false;
+
             foreach (MetaModel m in laundro.AllMetas)
             {
                 m.Shader.Parameters["lightRadius"].SetValue(14.0f);
             }
+
+            bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(bgMusic);
 
             defaultLightPos = cameraPos;
 

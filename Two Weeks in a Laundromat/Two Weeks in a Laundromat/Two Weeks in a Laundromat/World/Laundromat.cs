@@ -120,7 +120,7 @@ namespace Two_Weeks_in_a_Laundromat
             box.Position = new Vector3(13, 3.5f, 13);
             box.Rotation = Vector3.Zero;
             box.model = gManager.Load<Model>("Models/Ghiblies/box");
-            box.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            box.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/box");
             box.Shader = shaderToLoad;
             ModelUtil.UpdateBoundingBoxes(ref box);
             this.pieces.Add(box);

@@ -122,10 +122,6 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Delve Engine\BBoxImporter\BBoxImporter.csproj">
-      <Project>{4040585A-7282-4FDD-89D6-0A80CAEE8A9C}</Project>
-      <Name>BBoxImporter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Delve Engine\Delve Engine\Delve Engine.csproj">
       <Project>{D6252ED0-0271-4313-9898-7AB9E0BC938C}</Project>
       <Name>Delve Engine</Name>

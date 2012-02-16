@@ -203,7 +203,6 @@
       <Name>box</Name>
       <Importer>FbxImporter</Importer>
       <Processor>Importer</Processor>
-      <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +210,13 @@
       <Name>box</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sounds\Music\Headache.mp3">
+      <Name>Headache</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
