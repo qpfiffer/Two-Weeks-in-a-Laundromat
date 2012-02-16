@@ -56,8 +56,24 @@ namespace Two_Weeks_in_a_Laundromat
                 List<GameObject> objects = new List<GameObject>();
                 objects.AddRange(currentRoom.AllGOs);
 
-                this.mainPlayer.clickOnSomething(ref objects);
-            }
+                #region RetardedShit
+                // Get the object the player might have clicked on:
+                GameObject clickedOn = this.mainPlayer.clickOnSomething(ref objects);
+                // If we actually clicked on something:
+                if (clickedOn != null)
+                {
+                    // Remove the non-transformed bounding boxes from the collision list:
+                    foreach (BoundingBox bbox in clickedOn.Model.BBoxes)
+                    {
+                        collisionBoxes.Remove(bbox);
+                    }
+                    // Interact with the object
+                    clickedOn.interactedWith();
+                    // Add the newly transformed boxes back to the list:
+                    collisionBoxes.AddRange(clickedOn.Model.BBoxes);
+                }
+                #endregion
+            }                
 #if DEBUG
             // Toggles on brighter light settings.
             if (info.curKBDState.IsKeyDown(Keys.F) &&

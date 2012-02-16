@@ -38,7 +38,6 @@ namespace Delve_Engine.World
         protected Random WOLOLO;
         protected bool boundingBoxesDraw = false;
         protected MatrixDescriptor cMatrices;
-        // This is probably a pretty shitty way to do collision checking:
         protected List<BoundingBox> collisionBoxes;
         #endregion
 
@@ -57,9 +56,7 @@ namespace Delve_Engine.World
 #if DEBUG
             releaseMouseToggle = false;
 #endif
-
             collisionBoxes = new List<BoundingBox>();
-
             WOLOLO = new Random();
         }
 
@@ -114,7 +111,7 @@ namespace Delve_Engine.World
             mainPlayer.Matrices = cMatrices;
         }
 
-        private void collideMove(float amount, Vector3 moveVector)
+        private void collideMove(float amount, Vector3 moveVector, List<BoundingBox> bboxes)
         {
             Vector3 finalVector = moveVector * amount;
             Vector3 posToTest = mainPlayer.examineFuturePos(ref finalVector);
@@ -123,7 +120,7 @@ namespace Delve_Engine.World
 
             if (!mainPlayer.NoClip)
             {
-                foreach (BoundingBox bbox in collisionBoxes)
+                foreach (BoundingBox bbox in bboxes)
                 {
                     if (tempSphere.Intersects(bbox))
                     {
@@ -212,7 +209,7 @@ namespace Delve_Engine.World
             if (moveVector != Vector3.Zero)
             {
                 mainPlayer.HeadBobbing = true;
-                collideMove(info.timeDifference, moveVector);
+                collideMove(info.timeDifference, moveVector, collisionBoxes);
             }
             else
             {

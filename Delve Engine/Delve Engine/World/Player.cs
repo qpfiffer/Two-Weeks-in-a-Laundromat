@@ -45,7 +45,7 @@ namespace Delve_Engine.World
         #endregion
         #region Constants
         // Default constants.
-        public const float maxReachDistance = 2.5f;
+        public const float maxReachDistance = 3.5f;
         public const float rotationSpeed = 0.3f;
         public const float moveSpeed = 5.0f;
         // Top of the head
@@ -68,7 +68,7 @@ namespace Delve_Engine.World
             BoundingSphere chestSphere = new BoundingSphere(position, chestSphereRadius);
         }
 
-        public void clickOnSomething(ref List<GameObject> toCheck)
+        public GameObject clickOnSomething(ref List<GameObject> toCheck)
         {
             Ray lookRay;
 #region SetupTehRei
@@ -109,9 +109,11 @@ namespace Delve_Engine.World
             }
 
             if (closest != null)
-            {
-                closest.interactedWith();
+            {                
+                return closest;
             }
+
+            return null;
 
         }
 

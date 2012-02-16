@@ -21,7 +21,8 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void interactedWith()
         {
-            System.Diagnostics.Debug.WriteLine("Clicked on a fuckin door!");
+            this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
+            ModelUtil.UpdateBoundingBoxes(ref model);
             base.interactedWith();
         }
     }
