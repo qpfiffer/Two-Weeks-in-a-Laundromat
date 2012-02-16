@@ -15,8 +15,14 @@ namespace Two_Weeks_in_a_Laundromat
     class Door: GameObject
     {   
         public Door(ref MetaModel newObject, GraphicsDevice gDevice)
-            : base(ref newObject, gDevice)
+            : base(ref newObject, gDevice) 
         {
+        }
+
+        public override void interactedWith()
+        {
+            System.Diagnostics.Debug.WriteLine("Clicked on a fuckin door!");
+            base.interactedWith();
         }
     }
 }

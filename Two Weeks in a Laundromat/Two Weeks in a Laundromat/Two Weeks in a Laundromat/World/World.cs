@@ -50,6 +50,14 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void handleInput(ref InputInfo info)
         {
+            if (info.curKBDState.IsKeyDown(Keys.E) &&
+                info.oldKBDState.IsKeyUp(Keys.E))
+            {
+                List<GameObject> objects = new List<GameObject>();
+                objects.AddRange(currentRoom.AllGOs);
+
+                this.mainPlayer.clickOnSomething(ref objects);
+            }
 #if DEBUG
             // Toggles on brighter light settings.
             if (info.curKBDState.IsKeyDown(Keys.F) &&

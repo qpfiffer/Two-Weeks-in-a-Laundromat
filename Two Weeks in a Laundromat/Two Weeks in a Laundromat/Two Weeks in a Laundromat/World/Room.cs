@@ -15,7 +15,7 @@ namespace Two_Weeks_in_a_Laundromat
     class Room
     {
         protected Effect alternateShader = null;
-        protected bool shouldDrawBoundingBoxes = true;
+        protected bool shouldDrawBoundingBoxes = false;
         protected List<MetaModel> pieces;
         protected List<GameObject> things;
         protected const float tileSize = 4.0f;
@@ -61,14 +61,12 @@ namespace Two_Weeks_in_a_Laundromat
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
-            ShouldDrawBoundingBoxes = true;
         }
 
         public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
-            ShouldDrawBoundingBoxes = true;
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
         }

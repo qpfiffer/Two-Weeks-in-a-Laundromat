@@ -45,6 +45,7 @@ namespace Delve_Engine.World
         #endregion
         #region Constants
         // Default constants.
+        public const float maxReachDistance = 2.5f;
         public const float rotationSpeed = 0.3f;
         public const float moveSpeed = 5.0f;
         // Top of the head
@@ -65,6 +66,53 @@ namespace Delve_Engine.World
             matrices = new MatrixDescriptor();
             // A bounding sphere right at the chest
             BoundingSphere chestSphere = new BoundingSphere(position, chestSphereRadius);
+        }
+
+        public void clickOnSomething(ref List<GameObject> toCheck)
+        {
+            Ray lookRay;
+#region SetupTehRei
+            int width = gDevice.Viewport.Width / 2;
+            int height = gDevice.Viewport.Height / 2;
+            Viewport vp = gDevice.Viewport;
+
+            Vector3 pos1 = vp.Unproject(new Vector3(width, height / 2, 0),
+                matrices.proj,
+                matrices.view,
+                matrices.world);
+            Vector3 pos2 = vp.Unproject(new Vector3(width, height / 2, 1),
+                matrices.proj,
+                matrices.view,
+                matrices.world);
+
+            Vector3 dir = Vector3.Normalize(pos2 - pos1);
+#endregion
+            lookRay = new Ray(position, dir);
+            float distanceToClosest = float.MaxValue;
+            GameObject closest = null;
+
+            foreach (GameObject go in toCheck)
+            {
+                foreach (BoundingBox bbox in go.Model.BBoxes)
+                {
+                    float? distanceToObj = lookRay.Intersects(bbox);
+
+                    if (distanceToObj != null &&
+                        distanceToObj < distanceToClosest &&
+                        distanceToObj < Player.maxReachDistance)
+                    {
+                        closest = go;
+                        distanceToClosest = (float)distanceToObj;
+                        break;
+                    }
+                }
+            }
+
+            if (closest != null)
+            {
+                closest.interactedWith();
+            }
+
         }
 
         public void rotateCamera(ref Point mouseDifference, float timeDifference)

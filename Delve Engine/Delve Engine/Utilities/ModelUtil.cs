@@ -150,7 +150,6 @@ namespace Delve_Engine.Utilities
         {
             Effect shader = gManager.Load<Effect>("Shaders/lighting");
             shader.Parameters["LightPos"].SetValue(defaultLightPos);
-            shader.Parameters["LightPower"].SetValue(defaultLightPower);
 
             return shader;
         }

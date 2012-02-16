@@ -11,6 +11,7 @@ namespace Delve_Engine.World
 {
     public class GameObject
     {
+        private const bool ShouldDrawBBoxesDefault = false;
         #region Fields
         protected Vector3 position;
         protected float leftRightRot, upDownRot;
@@ -33,6 +34,11 @@ namespace Delve_Engine.World
 
                 this.position = value;
             }
+        }
+        public GraphicsDevice GDevice
+        {
+            get { return gDevice; }
+            set { gDevice = value; }
         }
         public float LeftRightRot
         {
@@ -82,7 +88,7 @@ namespace Delve_Engine.World
             leftRightRot = rotation.X;
             upDownRot = rotation.Y;
             boundingOffsets = new List<Vector3>();
-            ShouldDrawBoundingBoxes = true;
+            ShouldDrawBoundingBoxes = ShouldDrawBBoxesDefault;
         }
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace Delve_Engine.World
         {
             this.model = newObject;
             this.gDevice = gDevice;
-            ShouldDrawBoundingBoxes = true;
+            ShouldDrawBoundingBoxes = ShouldDrawBBoxesDefault;
         }
 
         public virtual void Load(ContentManager gManager)
@@ -110,6 +116,11 @@ namespace Delve_Engine.World
         public void ToggleFog()
         {
             material.FogEnabled = !material.FogEnabled;
+        }
+
+        public virtual void interactedWith()
+        {
+            // Do nothing by default.
         }
 
         public void Draw(ref MatrixDescriptor cMatrices, ref Vector3 playerPos)

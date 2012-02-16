@@ -52,7 +52,7 @@ namespace Delve_Engine.World
             rState.CullMode = CullMode.CullCounterClockwiseFace;
             rState.ScissorTestEnable = true;
 
-            mainPlayer = new Player(ref playerPos, ref playerRot, gDevice);
+            mainPlayer = new Player(ref playerPos, ref playerRot, null);
             modelsToDraw = new List<MetaModel>();
 #if DEBUG
             releaseMouseToggle = false;
@@ -67,6 +67,8 @@ namespace Delve_Engine.World
         {
             this.gDevice = gDevice;
             this.gManager = gManager;
+
+            mainPlayer.GDevice = gDevice;
 
             Setup3D(gDevice);
         }
@@ -141,12 +143,6 @@ namespace Delve_Engine.World
 
         public virtual void handleInput(ref InputInfo info)
         {
-            if (info.curKBDState.IsKeyDown(Keys.E) &&
-                info.oldKBDState.IsKeyUp(Keys.E))
-            {
-                // TODO: Object interaction.
-            }
-
 #if DEBUG
             if (info.curKBDState.IsKeyDown(Keys.N) &&
                 info.oldKBDState.IsKeyUp(Keys.N))
