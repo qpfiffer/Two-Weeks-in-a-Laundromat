@@ -116,6 +116,15 @@ namespace Two_Weeks_in_a_Laundromat
             ModelUtil.UpdateBoundingBoxes(ref pillar2);
             this.pieces.Add(pillar2);
 
+            MetaModel box = new MetaModel();
+            box.Position = new Vector3(13, 3.5f, 13);
+            box.Rotation = Vector3.Zero;
+            box.model = gManager.Load<Model>("Models/Ghiblies/box");
+            box.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+            box.Shader = shaderToLoad;
+            ModelUtil.UpdateBoundingBoxes(ref box);
+            this.pieces.Add(box);
+
             //MetaModel testFrame = new MetaModel();
             //testFrame.Position = new Vector3(roomCenter.X + dimensions.X * 2.0f, roomCenter.Y, roomCenter.Z + dimensions.Z * 2.0f);
             //testFrame.Rotation = Vector3.Zero;
@@ -136,6 +145,8 @@ namespace Two_Weeks_in_a_Laundromat
             //Door testDoor = new Door(ref doorMeta, gDevice);
             //this.things.Add(testDoor);
             #endregion
+
+
 
         }
 
