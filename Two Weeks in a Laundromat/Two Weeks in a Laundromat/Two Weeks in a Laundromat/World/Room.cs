@@ -14,18 +14,26 @@ namespace Two_Weeks_in_a_Laundromat
 {
     class Room
     {
+        #region 3dStuff
         protected Effect alternateShader = null;
         protected bool shouldDrawBoundingBoxes = false;
+        protected MetaModel doorframe, wall, ceiling, floor, door;
+        #endregion
+        #region WorldStuff
         protected List<MetaModel> pieces;
         protected List<GameObject> things;
+        #endregion
+        #region Constants
         protected const float tileSize = 4.0f;
         protected const float tileHalf = tileSize / 2.0f;
+        #endregion
+        #region RoomShit
         protected Vector3 dimensions;
         // Remember, roomCenter is actually the top left!
         protected Vector3 roomCenter;
-
-        protected MetaModel doorframe, wall, ceiling, floor;
-
+        protected List<DoorData> doors;
+        #endregion        
+        #region Properties
         public bool ShouldDrawBoundingBoxes {
             get
             {
@@ -53,6 +61,7 @@ namespace Two_Weeks_in_a_Laundromat
         {
             get { return things; }
         }
+        #endregion
 
         /// <summary>
         /// Use this one only if you're a subclass doing some dirty shit.
@@ -61,12 +70,14 @@ namespace Two_Weeks_in_a_Laundromat
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
+            doors = new List<DoorData>();
         }
 
         public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
+            doors = new List<DoorData>();
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
         }
@@ -120,32 +131,29 @@ namespace Two_Weeks_in_a_Laundromat
                 shaderToLoad = alternateShader;
 
             floor = new MetaModel();
-            floor.Position = Vector3.Zero;
-            floor.Rotation = Vector3.Zero;
             floor.model = gManager.Load<Model>("Models/Segments/floor");
             floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             floor.Shader = shaderToLoad;
 
             wall = new MetaModel();
-            wall.Position = Vector3.Zero;
-            wall.Rotation = Vector3.Zero;
             wall.model = gManager.Load<Model>("Models/Segments/wall");
             wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             wall.Shader = shaderToLoad;
 
             ceiling = new MetaModel();
-            ceiling.Position = Vector3.Zero;
-            ceiling.Rotation = Vector3.Zero;
             ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
             ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
             ceiling.Shader = shaderToLoad;
 
             doorframe = new MetaModel();
-            doorframe.Position = Vector3.Zero;
-            doorframe.Rotation = Vector3.Zero;
             doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
             doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
             doorframe.Shader = shaderToLoad;
+
+            door = new MetaModel();
+            door.model = gManager.Load<Model>("Models/segments/door");
+            door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+            door.Shader = shaderToLoad;
 
             setupPieces();
         }
@@ -165,16 +173,40 @@ namespace Two_Weeks_in_a_Laundromat
             Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
             Vector3 worldSpaceSize = new Vector3(roomCenter.X + dimensions.X, roomCenter.Y + dimensions.Y, roomCenter.Z + dimensions.Z);
 
-            // TODO: Make it handle multilevel buildings. Should be as easy as adding another loop.
+            int zIncrement = 0;
+            int xIncrement = 0;
             for (float z = topLeft.Z; z < (topLeft.Z + dimensions.Z); z++)
             {
+                xIncrement = 0;
                 for (float x = topLeft.X; x < (topLeft.X + dimensions.X); x++)
                 {
                     #region XWalls
+                    #region Wall8
                     if (x == topLeft.X)
                     {
+                        bool doorHere = false;
+                        // Loop through all the doors we have in this place
+                        foreach (DoorData dd in doors)
+                        {
+                            // If this isn't my wall skip it
+                            if (dd.myWall != WallSide.West)
+                                continue;
+                            else if (dd.myTilePos == zIncrement)
+                            {
+                                // Is this where the door is?
+                                doorHere = true;
+                            }
+                        }
+                        // Loop through all heights as well.
                         for (int i = 0; i < dimensions.Y; i++)
                         {
+                            // Only place the door on the ground level.
+                            if (doorHere)
+                            {
+                                doorHere = false;
+                                continue;
+                            }
+
                             MetaModel newWall = new MetaModel();
                             newWall.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
@@ -185,10 +217,32 @@ namespace Two_Weeks_in_a_Laundromat
                             pieces.Add(newWall);
                         }
                     }
+                    #endregion
+                    #region Wall2
                     else if (x == worldSpaceSize.X - 1)
                     {
+                        bool doorHere = false;
+                        // Loop through all the doors we have in this place
+                        foreach (DoorData dd in doors)
+                        {
+                            // If this isn't my wall skip it
+                            if (dd.myWall != WallSide.East)
+                                continue;
+                            else if (dd.myTilePos == zIncrement)
+                            {
+                                // Is this where the door is?
+                                doorHere = true;
+                            }
+                        }
                         for (int i = 0; i < dimensions.Y; i++)
                         {
+                            // Only place the door on the ground level.
+                            if (doorHere)
+                            {
+                                doorHere = false;
+                                continue;
+                            }
+
                             MetaModel newWall = new MetaModel();
                             newWall.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
@@ -200,12 +254,33 @@ namespace Two_Weeks_in_a_Laundromat
                         }
                     }
                     #endregion
+                    #endregion
 
                     #region ZWalls
+                    #region Wall1
                     if (z == topLeft.Z)
                     {
+                        bool doorHere = false;
+                        // Loop through all the doors we have in this place
+                        foreach (DoorData dd in doors)
+                        {
+                            // If this isn't my wall skip it
+                            if (dd.myWall != WallSide.North)
+                                continue;
+                            else if (dd.myTilePos == xIncrement)
+                            {
+                                // Is this where the door is?
+                                doorHere = true;
+                            }
+                        }
+
                         for (int i = 0; i < dimensions.Y; i++)
                         {
+                            if (doorHere)
+                            {
+                                doorHere = false;
+                                continue;
+                            }
                             MetaModel newWall = new MetaModel();
                             newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
                             newWall.Rotation = Vector3.Zero;
@@ -216,10 +291,31 @@ namespace Two_Weeks_in_a_Laundromat
                             pieces.Add(newWall);
                         }
                     }
+                    #endregion
+                    #region Wall4
                     else if (z == worldSpaceSize.Z - 1)
                     {
+                        bool doorHere = false;
+                        // Loop through all the doors we have in this place
+                        foreach (DoorData dd in doors)
+                        {
+                            // If this isn't my wall skip it
+                            if (dd.myWall != WallSide.South)
+                                continue;
+                            else if (dd.myTilePos == xIncrement)
+                            {
+                                // Is this where the door is?
+                                doorHere = true;
+                            }
+                        }
                         for (int i = 0; i < dimensions.Y; i++)
                         {
+                            if (doorHere)
+                            {
+                                doorHere = false;
+                                continue;
+                            }
+
                             MetaModel newWall = new MetaModel();
                             newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
                             newWall.Rotation = Vector3.Zero;
@@ -230,6 +326,7 @@ namespace Two_Weeks_in_a_Laundromat
                             pieces.Add(newWall);
                         }
                     }
+                    #endregion
                     #endregion
 
                     MetaModel floorPiece = new MetaModel();
@@ -249,7 +346,10 @@ namespace Two_Weeks_in_a_Laundromat
                     ceilingPiece.Shader = ceiling.Shader;
                     ModelUtil.UpdateBoundingBoxes(ref ceilingPiece);
                     pieces.Add(ceilingPiece);
+
+                    xIncrement++;
                 }
+                zIncrement++;
             }
         }
     }

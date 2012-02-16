@@ -17,6 +17,29 @@ namespace Delve_Engine.DataTypes
         public Effect Shader { get; set; }
     }
 
+    public enum WallSide {
+        North = 1,
+        East = 2, 
+        South = 4,
+        West = 8 
+    };
+
+    /// <summary>
+    /// The way this works is you specify a wall,
+    /// and then how many tiles in the wall is.
+    /// </summary>
+    public struct DoorData
+    {
+        public DoorData(WallSide myWall, float myTile)
+        {
+            this.myWall = myWall;
+            this.myTilePos = myTile;
+        }
+
+        public WallSide myWall;
+        public float myTilePos;        
+    }
+
     public struct TexturedPlane
     {
         public Texture2D texture;

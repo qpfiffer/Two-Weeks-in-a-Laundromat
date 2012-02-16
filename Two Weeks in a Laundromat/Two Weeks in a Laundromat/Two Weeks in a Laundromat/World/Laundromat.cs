@@ -62,6 +62,14 @@ namespace Two_Weeks_in_a_Laundromat
             doorframe.Texture = gManager.Load<Texture2D>("Textures/Laundromat/doorframe");
             doorframe.Shader = shaderToLoad;
 
+            door = new MetaModel();
+            door.model = gManager.Load<Model>("Models/segments/door");
+            door.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
+            door.Shader = shaderToLoad;
+
+
+            this.doors.Add(new DoorData(WallSide.North, 3));
+
             setupPieces();
             #endregion
             #region GhibliesBuilding
@@ -114,16 +122,16 @@ namespace Two_Weeks_in_a_Laundromat
             //ModelUtil.UpdateBoundingBoxes(ref testFrame);
             //this.pieces.Add(testFrame);
 
-            MetaModel doorMeta = new MetaModel();
-            doorMeta.Position = new Vector3(roomCenter.X + dimensions.X*2.0f, roomCenter.Y, roomCenter.Z + dimensions.Z*2.0f);
-            doorMeta.Rotation = Vector3.Zero;
-            doorMeta.model = gManager.Load<Model>("Models/Segments/door");
-            doorMeta.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
-            doorMeta.Shader = shaderToLoad;
-            ModelUtil.UpdateBoundingBoxes(ref doorMeta);
+            //MetaModel doorMeta = new MetaModel();
+            //doorMeta.Position = new Vector3(roomCenter.X + dimensions.X*2.0f, roomCenter.Y, roomCenter.Z + dimensions.Z*2.0f);
+            //doorMeta.Rotation = Vector3.Zero;
+            //doorMeta.model = gManager.Load<Model>("Models/Segments/door");
+            //doorMeta.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
+            //doorMeta.Shader = shaderToLoad;
+            //ModelUtil.UpdateBoundingBoxes(ref doorMeta);
 
-            Door testDoor = new Door(ref doorMeta, gDevice);
-            this.things.Add(testDoor);
+            //Door testDoor = new Door(ref doorMeta, gDevice);
+            //this.things.Add(testDoor);
             #endregion
 
         }
