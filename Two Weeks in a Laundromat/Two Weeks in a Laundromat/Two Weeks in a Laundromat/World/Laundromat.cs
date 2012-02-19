@@ -148,7 +148,7 @@ namespace Two_Weeks_in_a_Laundromat
             //this.things.Add(testDoor);
             #endregion
 
-
+            loaded = true;
 
         }
 

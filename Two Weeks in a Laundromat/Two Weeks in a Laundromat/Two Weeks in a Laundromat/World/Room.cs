@@ -17,6 +17,8 @@ namespace Two_Weeks_in_a_Laundromat
         #region Misc
         protected ContentManager gManager;
         protected GraphicsDevice gDevice;
+        protected bool loaded = false;
+        private float frames = 0f;
         #endregion
         #region 3dStuff
         protected Effect alternateShader = null;
@@ -99,8 +101,43 @@ namespace Two_Weeks_in_a_Laundromat
             this.roomTheme = theme;
         }
 
+        public void addDoor(ref DoorData newDoor)
+        {
+            this.doors.Add(newDoor);
+        }
+
+        public void addRandomDoor(Random wololo)
+        {
+            if (loaded)
+                throw new Exception("Room already loaded. This won't do anything.");
+
+            DoorData toAdd;            
+
+            switch (wololo.Next(4))
+            {
+                case 0:
+                    toAdd = new DoorData(WallSide.North, wololo.Next((int)dimensions.X));
+                    break;
+                case 1:
+                    toAdd = new DoorData(WallSide.West, wololo.Next((int)dimensions.Z));
+                    break;
+                case 2:
+                    toAdd = new DoorData(WallSide.East, wololo.Next((int)dimensions.Z));
+                    break;
+                case 3:
+                    toAdd = new DoorData(WallSide.South, wololo.Next((int)dimensions.X));
+                    break;
+                default:
+                    toAdd = new DoorData(WallSide.West, wololo.Next((int)dimensions.Z));
+                    break;
+            }
+
+            this.doors.Add(toAdd);
+        }
+
         public void Draw(GraphicsDevice gDevice, ref MatrixDescriptor cMatrices, Vector3 playerPos)
         {
+            frames += 0.1f;
             foreach (GameObject g in things)
             {
                 g.Draw(ref cMatrices, ref playerPos);
@@ -112,6 +149,9 @@ namespace Two_Weeks_in_a_Laundromat
                 m.Shader.Parameters["View"].SetValue(cMatrices.view);
                 m.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
                 m.Shader.Parameters["LightPos"].SetValue(playerPos);
+
+                m.Shader.Parameters["screenVector"].SetValue(new Vector2((float)Math.Cos(frames) / 2,
+                    (float)Math.Sin(frames) / 2));
 
                 ModelUtil.DrawModel(m);
 #if DEBUG
@@ -179,6 +219,7 @@ namespace Two_Weeks_in_a_Laundromat
             door.Shader = shaderToLoad;
 
             setupPieces();
+            loaded = true;
         }
 
         public virtual void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)

@@ -4,6 +4,9 @@ float4x4 Projection;
 
 float lightRadius = 20;
 
+// IGNOREEEEE MEEEE:
+float2 screenVector;
+
 // POINT LIGHT VARIABLES
 float3 LightPos;
 //float LightPower;

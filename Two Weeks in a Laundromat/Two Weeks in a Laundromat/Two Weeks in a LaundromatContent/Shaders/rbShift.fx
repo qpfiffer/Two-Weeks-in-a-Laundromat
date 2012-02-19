@@ -47,14 +47,14 @@ VertexToPixel stupidVS(float3 inPos : POSITION0, float2 inTexCoords : TEXCOORD0,
 
 float4 uglyPixelShader(VertexToPixel PSIn) : COLOR 
 { 
-    float4 toReturn;
 	float4 leftColor;
 	float4 midColor;
 	float4 rightColor;
+	float4 finalColor;
 
 	float2 uv = PSIn.TexCoords;
 
-	// Double vision effect:
+	// ANAGLYPH MADNESS:
 	midColor = tex2D(TextureSampler , uv.xy);
 
 	uv.xy = uv.xy - (0.015 * screenVector.xy);
@@ -65,8 +65,20 @@ float4 uglyPixelShader(VertexToPixel PSIn) : COLOR
 	rightColor = tex2D(TextureSampler , uv.xy);
 	rightColor.b = 0.4;
 
-	toReturn = lerp(midColor, lerp(leftColor, rightColor, 0.5), 0.5);
-    return toReturn; 
+	finalColor = lerp(midColor, lerp(leftColor, rightColor, 0.5), 0.5);
+
+	// POINT LIGHT STUFF:
+	float lightDistance = distance(LightPos, PSIn.WorldPosition);
+	float3 directionToLight = LightPos - PSIn.WorldPosition;
+	float attenuation = saturate(1.0f - (lightDistance/lightRadius));
+	directionToLight = normalize(directionToLight);	
+	float diffuseIntensity = max(0,dot(PSIn.Normal,directionToLight));
+	float4 diffuse = finalColor * diffuseIntensity * attenuation;
+	//diffuse = lerp(defaultColor, (0,0,0,0), lightDistance/20);
+    
+	float4 color = diffuse;
+	color.a = finalColor.a;
+    return finalColor; 
 }
 
 technique Technique1

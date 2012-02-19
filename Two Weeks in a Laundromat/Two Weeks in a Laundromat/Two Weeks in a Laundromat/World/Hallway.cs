@@ -38,7 +38,7 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            base.Load(gManager, gDevice);
+            loaded = true;
         }
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
