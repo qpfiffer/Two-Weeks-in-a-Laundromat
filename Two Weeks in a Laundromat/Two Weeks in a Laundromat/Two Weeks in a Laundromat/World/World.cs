@@ -15,40 +15,46 @@ namespace Two_Weeks_in_a_Laundromat
 {
     public class World: Delve_Engine.World.World
     {
-        private Room currentRoom = null;
+        private List<Room> liveRooms;
 
         public World(): base()
         {
             mainPlayer.setCameraPosition(new Vector3(10, Player.playerHeight, 15), Vector3.Zero);
+            liveRooms = new List<Room>();
         }
 
         public override void Update(GameTime gTime)
         {
-            currentRoom.Update(gTime);
+            foreach (Room room in liveRooms)
+            {
+                room.Update(gTime);
+            }
             base.Update(gTime);
         }
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
-            if (currentRoom == null)
+            if (liveRooms.Count == 0)
             {
-                currentRoom = new Laundromat();
-                currentRoom.Load(gManager, gDevice);
-                foreach (MetaModel m in currentRoom.AllMetas)
+                Room laundromat = new Laundromat();
+                laundromat.Load(gManager, gDevice);
+                foreach (MetaModel m in laundromat.AllMetas)
                 {
                     this.collisionBoxes.AddRange(m.BBoxes);
                 }
 
-                foreach (GameObject go in currentRoom.AllGOs)
+                foreach (GameObject go in laundromat.AllGOs)
                 {
                     MetaModel m = go.Model;
                     this.collisionBoxes.AddRange(m.BBoxes);
                 }
+
+                liveRooms.Add(laundromat);
             }
 
-            bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(bgMusic);
+            //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
+            //MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(bgMusic);
 
             base.Load(gManager, gDevice);
         }
@@ -59,7 +65,10 @@ namespace Two_Weeks_in_a_Laundromat
                 info.oldKBDState.IsKeyUp(Keys.E))
             {
                 List<GameObject> objects = new List<GameObject>();
-                objects.AddRange(currentRoom.AllGOs);
+                foreach (Room room in liveRooms)
+                {
+                    objects.AddRange(room.AllGOs);
+                }
 
                 #region RetardedShit
                 // Get the object the player might have clicked on:
@@ -85,7 +94,10 @@ namespace Two_Weeks_in_a_Laundromat
                 info.oldKBDState.IsKeyUp(Keys.F))
             {
                 boundingBoxesDraw = !boundingBoxesDraw;
-                currentRoom.ShouldDrawBoundingBoxes = !currentRoom.ShouldDrawBoundingBoxes;
+                foreach (Room room in liveRooms)
+                {
+                    room.ShouldDrawBoundingBoxes = !room.ShouldDrawBoundingBoxes;
+                }
             }
 #endif
 
@@ -95,7 +107,10 @@ namespace Two_Weeks_in_a_Laundromat
         public override void Draw()
         {
             clearBuffer();
-            currentRoom.Draw(gDevice, ref cMatrices, this.mainPlayer.Position);
+            foreach (Room room in liveRooms)
+            {
+                room.Draw(gDevice, ref cMatrices, this.mainPlayer.Position);
+            }
 
             base.Draw();
         }

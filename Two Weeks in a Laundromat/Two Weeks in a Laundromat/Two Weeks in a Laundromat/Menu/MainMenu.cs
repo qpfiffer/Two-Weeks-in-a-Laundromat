@@ -46,9 +46,9 @@ namespace Two_Weeks_in_a_Laundromat
                 m.Shader.Parameters["lightRadius"].SetValue(14.0f);
             }
 
-            bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(bgMusic);
+            //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
+            //MediaPlayer.IsRepeating = true;
+            //MediaPlayer.Play(bgMusic);
 
             defaultLightPos = cameraPos;
 

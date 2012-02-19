@@ -12,7 +12,7 @@ using Delve_Engine.World;
 
 namespace Two_Weeks_in_a_Laundromat
 {
-    class Hallway
+    class Hallway: Room
     {
     }
 }
