@@ -38,34 +38,34 @@ namespace Two_Weeks_in_a_Laundromat
             {
                 Room laundromat = new Laundromat(string.Empty);
                 laundromat.Load(gManager, gDevice);
-                //foreach (MetaModel m in laundromat.AllMetas)
-                //{
-                //    this.collisionBoxes.AddRange(m.BBoxes);
-                //}
-
-                //foreach (GameObject go in laundromat.AllGOs)
-                //{
-                //    MetaModel m = go.Model;
-                //    this.collisionBoxes.AddRange(m.BBoxes);
-                //}
-
-                //liveRooms.Add(laundromat);
-
-                for (int x = 0; x < 5; x++)
+                foreach (MetaModel m in laundromat.AllMetas)
                 {
-                    for (int y = 0; y < 5; y++)
-                    {
-                        Vector3 testRoomDim = new Vector3(WOLOLO.Next(2, 10), WOLOLO.Next(1, 6), WOLOLO.Next(2, 10));
-                        Vector3 testRoomStart = new Vector3(x + (x * 30), 0f, y + (y * 30));
-                        Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
-                        testRoom.addRandomDoor(WOLOLO);
-                        testRoom.addRandomDoor(WOLOLO);
-                        testRoom.addRandomDoor(WOLOLO);
-                        testRoom.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
-                        //testRoom.Load(gManager, gDevice);
-                        liveRooms.Add(testRoom);
-                    }
+                    this.collisionBoxes.AddRange(m.BBoxes);
                 }
+
+                foreach (GameObject go in laundromat.AllGOs)
+                {
+                    MetaModel m = go.Model;
+                    this.collisionBoxes.AddRange(m.BBoxes);
+                }
+                liveRooms.Add(laundromat);
+
+                // To generated a bunch of random rooms:
+                //for (int x = 0; x < 5; x++)
+                //{
+                //    for (int y = 0; y < 5; y++)
+                //    {
+                //        Vector3 testRoomDim = new Vector3(WOLOLO.Next(2, 10), WOLOLO.Next(1, 6), WOLOLO.Next(2, 10));
+                //        Vector3 testRoomStart = new Vector3(x + (x * 30), 0f, y + (y * 30));
+                //        Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
+                //        testRoom.addRandomDoor(WOLOLO);
+                //        testRoom.addRandomDoor(WOLOLO);
+                //        testRoom.addRandomDoor(WOLOLO);
+                //        testRoom.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
+                //        //testRoom.Load(gManager, gDevice);
+                //        liveRooms.Add(testRoom);
+                //    }
+                //}
             }
 
             //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");

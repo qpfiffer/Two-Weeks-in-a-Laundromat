@@ -18,7 +18,7 @@ namespace Two_Weeks_in_a_Laundromat
         protected ContentManager gManager;
         protected GraphicsDevice gDevice;
         protected bool loaded = false;
-        private float frames = 0f;
+        //private float frames = 0f;
         #endregion
         #region 3dStuff
         protected Effect alternateShader = null;
@@ -137,7 +137,7 @@ namespace Two_Weeks_in_a_Laundromat
 
         public void Draw(GraphicsDevice gDevice, ref MatrixDescriptor cMatrices, Vector3 playerPos)
         {
-            frames += 0.1f;
+            //frames += 0.1f;
             foreach (GameObject g in things)
             {
                 g.Draw(ref cMatrices, ref playerPos);
@@ -150,8 +150,8 @@ namespace Two_Weeks_in_a_Laundromat
                 m.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
                 m.Shader.Parameters["LightPos"].SetValue(playerPos);
 
-                m.Shader.Parameters["screenVector"].SetValue(new Vector2((float)Math.Cos(frames) / 2,
-                    (float)Math.Sin(frames) / 2));
+                //m.Shader.Parameters["screenVector"].SetValue(new Vector2((float)Math.Cos(frames) / 2,
+                //    (float)Math.Sin(frames) / 2));
 
                 ModelUtil.DrawModel(m);
 #if DEBUG

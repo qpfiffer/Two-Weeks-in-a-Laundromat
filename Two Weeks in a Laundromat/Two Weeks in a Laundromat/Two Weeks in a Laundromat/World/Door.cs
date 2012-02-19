@@ -13,7 +13,8 @@ using Delve_Engine.World;
 namespace Two_Weeks_in_a_Laundromat
 {
     class Door: GameObject
-    {   
+    {
+        private bool open = false;
         public Door(ref MetaModel newObject, GraphicsDevice gDevice)
             : base(ref newObject, gDevice) 
         {
@@ -21,7 +22,17 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void interactedWith()
         {
-            this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
+            if (open)
+            {
+                this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(-90.0f), 0);
+                open = false;
+            }
+            else
+            {
+                this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
+                open = true;
+            }
+
             ModelUtil.UpdateBoundingBoxes(ref model);
             base.interactedWith();
         }
