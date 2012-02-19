@@ -50,6 +50,12 @@ namespace Two_Weeks_in_a_Laundromat
                 }
 
                 liveRooms.Add(laundromat);
+
+                Vector3 testRoomDim = new Vector3(4f,2f,6f);
+                Vector3 testRoomStart = new Vector3(-20.0f, 0f, -10.0f);
+                Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
+                testRoom.Load(gManager, gDevice);
+                liveRooms.Add(testRoom);
             }
 
             //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");

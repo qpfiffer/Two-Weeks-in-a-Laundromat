@@ -151,61 +151,32 @@ namespace Two_Weeks_in_a_Laundromat
                 shaderToLoad = alternateShader;
 
             if (roomTheme == string.Empty)
-            {
-                #region Default_Theme
-                floor = new MetaModel();
-                floor.model = gManager.Load<Model>("Models/Segments/floor");
-                floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                floor.Shader = shaderToLoad;
+                roomTheme = "Concrete";
 
-                wall = new MetaModel();
-                wall.model = gManager.Load<Model>("Models/Segments/wall");
-                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                wall.Shader = shaderToLoad;
+            floor = new MetaModel();
+            floor.model = gManager.Load<Model>("Models/Segments/floor");
+            floor.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/floor");
+            floor.Shader = shaderToLoad;
 
-                ceiling = new MetaModel();
-                ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
-                ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                ceiling.Shader = shaderToLoad;
+            wall = new MetaModel();
+            wall.model = gManager.Load<Model>("Models/Segments/wall");
+            wall.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/wall");
+            wall.Shader = shaderToLoad;
 
-                doorframe = new MetaModel();
-                doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
-                doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-                doorframe.Shader = shaderToLoad;
+            ceiling = new MetaModel();
+            ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
+            ceiling.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/ceiling");
+            ceiling.Shader = shaderToLoad;
 
-                door = new MetaModel();
-                door.model = gManager.Load<Model>("Models/segments/door");
-                door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-                door.Shader = shaderToLoad;
-                #endregion
-            }
-            else
-            {
-                floor = new MetaModel();
-                floor.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/floor");
-                floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                floor.Shader = shaderToLoad;
+            doorframe = new MetaModel();
+            doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
+            doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/doorframe");
+            doorframe.Shader = shaderToLoad;
 
-                wall = new MetaModel();
-                wall.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/wall");
-                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                wall.Shader = shaderToLoad;
-
-                ceiling = new MetaModel();
-                ceiling.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/ceiling");
-                ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-                ceiling.Shader = shaderToLoad;
-
-                doorframe = new MetaModel();
-                doorframe.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/doorframe");
-                doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-                doorframe.Shader = shaderToLoad;
-
-                door = new MetaModel();
-                door.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/door");
-                door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-                door.Shader = shaderToLoad;
-            }
+            door = new MetaModel();
+            door.model = gManager.Load<Model>("Models/Segments/door");
+            door.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/door");
+            door.Shader = shaderToLoad;
 
             setupPieces();
         }
@@ -223,14 +194,15 @@ namespace Two_Weeks_in_a_Laundromat
         {
             // Find the top left portion of the room:
             Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
-            Vector3 worldSpaceSize = new Vector3(roomCenter.X + dimensions.X, roomCenter.Y + dimensions.Y, roomCenter.Z + dimensions.Z);
+            Vector3 worldSpaceSize = new Vector3(roomCenter.X + (dimensions.X * tileSize),
+                roomCenter.Y + dimensions.Y, roomCenter.Z + (dimensions.Z * tileSize));
 
             int zIncrement = 0;
             int xIncrement = 0;
-            for (float z = topLeft.Z; z < (topLeft.Z + dimensions.Z); z++)
+            for (float z = topLeft.Z; z < worldSpaceSize.Z; z += tileSize)
             {
                 xIncrement = 0;
-                for (float x = topLeft.X; x < (topLeft.X + dimensions.X); x++)
+                for (float x = topLeft.X; x < worldSpaceSize.X; x += tileSize)
                 {
                     #region XWalls
                     #region Wall8
@@ -258,7 +230,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 doorHere = false;
 
                                 MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorFrame.Position = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
                                 newDoorFrame.Rotation = Vector3.Zero;
                                 newDoorFrame.model = this.doorframe.model;
                                 newDoorFrame.Texture = doorframe.Texture;
@@ -267,7 +239,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 pieces.Add(newDoorFrame);
 
                                 MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorMeta.Position = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
                                 newDoorMeta.Rotation = Vector3.Zero;
                                 newDoorMeta.model = door.model;
                                 newDoorMeta.Texture = door.Texture;
@@ -281,7 +253,7 @@ namespace Two_Weeks_in_a_Laundromat
                             }
 
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * tileSize) - tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                            newWall.Position = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -292,7 +264,7 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                     #endregion
                     #region Wall2
-                    else if (x == worldSpaceSize.X - 1)
+                    else if (x == worldSpaceSize.X - tileSize)
                     {
                         bool doorHere = false;
                         // Loop through all the doors we have in this place
@@ -315,7 +287,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 doorHere = false;
 
                                 MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorFrame.Position = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
                                 newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
                                 newDoorFrame.model = this.doorframe.model;
                                 newDoorFrame.Texture = doorframe.Texture;
@@ -324,7 +296,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 pieces.Add(newDoorFrame);
 
                                 MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                                newDoorMeta.Position = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
                                 newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
                                 newDoorMeta.model = door.model;
                                 newDoorMeta.Texture = door.Texture;
@@ -338,7 +310,7 @@ namespace Two_Weeks_in_a_Laundromat
                             }
 
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * tileSize) + tileHalf, topLeft.Y + (i * 8), (z * tileSize));
+                            newWall.Position = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
                             newWall.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -375,7 +347,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 doorHere = false;
 
                                 MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
+                                newDoorFrame.Position = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
                                 newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
                                 newDoorFrame.model = doorframe.model;
                                 newDoorFrame.Texture = doorframe.Texture;
@@ -384,7 +356,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 pieces.Add(newDoorFrame);
 
                                 MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
+                                newDoorMeta.Position = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
                                 newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
                                 newDoorMeta.model = door.model;
                                 newDoorMeta.Texture = door.Texture;
@@ -397,7 +369,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 continue;
                             }
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) - tileHalf);
+                            newWall.Position = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
                             newWall.Rotation = Vector3.Zero;
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -408,7 +380,7 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                     #endregion
                     #region Wall4
-                    else if (z == worldSpaceSize.Z - 1)
+                    else if (z == worldSpaceSize.Z - tileSize)
                     {
                         bool doorHere = false;
                         // Loop through all the doors we have in this place
@@ -430,7 +402,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 doorHere = false;
 
                                 MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
+                                newDoorFrame.Position = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
                                 newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                                 newDoorFrame.model = this.doorframe.model;
                                 newDoorFrame.Texture = doorframe.Texture;
@@ -439,7 +411,7 @@ namespace Two_Weeks_in_a_Laundromat
                                 pieces.Add(newDoorFrame);
 
                                 MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
+                                newDoorMeta.Position = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
                                 newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
                                 newDoorMeta.model = door.model;
                                 newDoorMeta.Texture = door.Texture;
@@ -453,7 +425,7 @@ namespace Two_Weeks_in_a_Laundromat
                             }
 
                             MetaModel newWall = new MetaModel();
-                            newWall.Position = new Vector3((x * tileSize), topLeft.Y + (i * 8), (z * tileSize) + tileHalf);
+                            newWall.Position = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
                             newWall.Rotation = Vector3.Zero;
                             newWall.model = wall.model;
                             newWall.Texture = wall.Texture;
@@ -466,7 +438,7 @@ namespace Two_Weeks_in_a_Laundromat
                     #endregion
 
                     MetaModel floorPiece = new MetaModel();
-                    floorPiece.Position = new Vector3((x * 4), topLeft.Y, (z * 4));
+                    floorPiece.Position = new Vector3(x, topLeft.Y, z);
                     floorPiece.Rotation = Vector3.Zero;
                     floorPiece.model = floor.model;
                     floorPiece.Texture = floor.Texture;
@@ -475,7 +447,7 @@ namespace Two_Weeks_in_a_Laundromat
                     pieces.Add(floorPiece);
 
                     MetaModel ceilingPiece = new MetaModel();
-                    ceilingPiece.Position = new Vector3((x * 4), topLeft.Y + ((dimensions.Y-1) * 8), (z * 4));
+                    ceilingPiece.Position = new Vector3(x, topLeft.Y + ((dimensions.Y-1) * 8), z);
                     ceilingPiece.Rotation = Vector3.Zero;
                     ceilingPiece.model = ceiling.model;
                     ceilingPiece.Texture = ceiling.Texture;
