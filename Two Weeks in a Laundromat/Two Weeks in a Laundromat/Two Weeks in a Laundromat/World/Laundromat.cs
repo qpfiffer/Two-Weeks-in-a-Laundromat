@@ -18,10 +18,12 @@ namespace Two_Weeks_in_a_Laundromat
         const int height = 1;
         const int length = 10;
 
-        public Laundromat()
+        public Laundromat(string theme):
+            base(theme)
         {
             this.dimensions = new Vector3(width, height, length);
             this.roomCenter = Vector3.Zero;
+            this.roomTheme = theme;
         }
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)

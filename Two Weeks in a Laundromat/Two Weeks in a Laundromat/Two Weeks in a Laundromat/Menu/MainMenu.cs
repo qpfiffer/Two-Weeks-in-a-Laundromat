@@ -37,7 +37,7 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager)
         {
-            laundro = new Laundromat();
+            laundro = new Laundromat(string.Empty);
             laundro.Load(gManager, gDevice);
             laundro.ShouldDrawBoundingBoxes = false;
 

@@ -36,6 +36,7 @@ namespace Two_Weeks_in_a_Laundromat
         // Remember, roomCenter is actually the top left!
         protected Vector3 roomCenter;
         protected List<DoorData> doors;
+        protected string roomTheme = string.Empty;
         #endregion        
         #region Properties
         public bool ShouldDrawBoundingBoxes {
@@ -56,6 +57,16 @@ namespace Two_Weeks_in_a_Laundromat
                 }
             }
         }
+
+        /// <summary>
+        /// What kind of textures to use for the room.
+        /// </summary>
+        public string Theme
+        {
+            get { return roomTheme; }
+            set { roomTheme = value; }
+        }
+        
         public List<MetaModel> AllMetas
         {
             get { return pieces; }
@@ -70,20 +81,22 @@ namespace Two_Weeks_in_a_Laundromat
         /// <summary>
         /// Use this one only if you're a subclass doing some dirty shit.
         /// </summary>
-        protected Room()
+        protected Room(string theme)
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
             doors = new List<DoorData>();
+            this.roomTheme = theme;
         }
 
-        public Room(ref Vector3 dimensions, ref Vector3 roomCenter)
+        public Room(ref Vector3 dimensions, ref Vector3 roomCenter, string theme)
         {
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
             doors = new List<DoorData>();
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
+            this.roomTheme = theme;
         }
 
         public void Draw(GraphicsDevice gDevice, ref MatrixDescriptor cMatrices, Vector3 playerPos)
@@ -137,30 +150,62 @@ namespace Two_Weeks_in_a_Laundromat
             else
                 shaderToLoad = alternateShader;
 
-            floor = new MetaModel();
-            floor.model = gManager.Load<Model>("Models/Segments/floor");
-            floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            floor.Shader = shaderToLoad;
+            if (roomTheme == string.Empty)
+            {
+                #region Default_Theme
+                floor = new MetaModel();
+                floor.model = gManager.Load<Model>("Models/Segments/floor");
+                floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                floor.Shader = shaderToLoad;
 
-            wall = new MetaModel();
-            wall.model = gManager.Load<Model>("Models/Segments/wall");
-            wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            wall.Shader = shaderToLoad;
+                wall = new MetaModel();
+                wall.model = gManager.Load<Model>("Models/Segments/wall");
+                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                wall.Shader = shaderToLoad;
 
-            ceiling = new MetaModel();
-            ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
-            ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
-            ceiling.Shader = shaderToLoad;
+                ceiling = new MetaModel();
+                ceiling.model = gManager.Load<Model>("Models/Segments/ceiling");
+                ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                ceiling.Shader = shaderToLoad;
 
-            doorframe = new MetaModel();
-            doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
-            doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-            doorframe.Shader = shaderToLoad;
+                doorframe = new MetaModel();
+                doorframe.model = gManager.Load<Model>("Models/Segments/doorframe");
+                doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+                doorframe.Shader = shaderToLoad;
 
-            door = new MetaModel();
-            door.model = gManager.Load<Model>("Models/segments/door");
-            door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
-            door.Shader = shaderToLoad;
+                door = new MetaModel();
+                door.model = gManager.Load<Model>("Models/segments/door");
+                door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+                door.Shader = shaderToLoad;
+                #endregion
+            }
+            else
+            {
+                floor = new MetaModel();
+                floor.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/floor");
+                floor.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                floor.Shader = shaderToLoad;
+
+                wall = new MetaModel();
+                wall.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/wall");
+                wall.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                wall.Shader = shaderToLoad;
+
+                ceiling = new MetaModel();
+                ceiling.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/ceiling");
+                ceiling.Texture = gManager.Load<Texture2D>("Textures/Ghiblies/textureless");
+                ceiling.Shader = shaderToLoad;
+
+                doorframe = new MetaModel();
+                doorframe.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/doorframe");
+                doorframe.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+                doorframe.Shader = shaderToLoad;
+
+                door = new MetaModel();
+                door.model = gManager.Load<Model>("Models/Segments/" + roomTheme + "/door");
+                door.Texture = gManager.Load<Texture2D>("Textures/Segments/textureless");
+                door.Shader = shaderToLoad;
+            }
 
             setupPieces();
         }

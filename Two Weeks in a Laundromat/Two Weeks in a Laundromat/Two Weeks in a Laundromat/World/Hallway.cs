@@ -12,7 +12,39 @@ using Delve_Engine.World;
 
 namespace Two_Weeks_in_a_Laundromat
 {
-    class Hallway: Room
+    /// <summary>
+    /// Special motherfucking room. Surprise! Its a hallway.
+    /// </summary>
+    class Hallway : Room
     {
+        #region MetaData
+        private Vector3 entranceDoorDirection;
+        #endregion
+
+        public Hallway(string theme)
+            : base(theme)
+        {
+            this.dimensions = new Vector3(-1.0f);
+            this.roomCenter = Vector3.Zero;
+        }
+
+        public Hallway(ref Vector3 startPos, ref Vector3 doorDirection, string theme)
+            : base(theme)
+        {
+            this.dimensions = new Vector3(-1.0f);
+            this.roomCenter = startPos;
+            this.entranceDoorDirection = doorDirection;
+        }
+
+        public override void Load(ContentManager gManager, GraphicsDevice gDevice)
+        {
+            base.Load(gManager, gDevice);
+        }
+
+        public override void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
+        {
+            this.alternateShader = alternateShader;
+            this.Load(gManager, gDevice);
+        }
     }
 }

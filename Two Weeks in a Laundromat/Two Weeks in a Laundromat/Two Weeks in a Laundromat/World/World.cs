@@ -36,7 +36,7 @@ namespace Two_Weeks_in_a_Laundromat
         {
             if (liveRooms.Count == 0)
             {
-                Room laundromat = new Laundromat();
+                Room laundromat = new Laundromat(string.Empty);
                 laundromat.Load(gManager, gDevice);
                 foreach (MetaModel m in laundromat.AllMetas)
                 {
