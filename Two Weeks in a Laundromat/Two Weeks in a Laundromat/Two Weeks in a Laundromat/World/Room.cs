@@ -299,8 +299,10 @@ namespace Two_Weeks_in_a_Laundromat
                         {
                             doorHere = true;
                         }
-                        else if (absentWalls.Contains(foundADoor))
+
+                        if (absentWalls.Contains(foundADoor))
                         {
+                            doorHere = false;
                             wallAbsenceHere = true;
                         }
                         // Loop through all heights as well.
@@ -344,8 +346,10 @@ namespace Two_Weeks_in_a_Laundromat
                         {
                             doorHere = true;
                         }
-                        else if (absentWalls.Contains(foundADoor))
+
+                        if (absentWalls.Contains(foundADoor))
                         {
+                            doorHere = false;
                             wallAbsenceHere = true;
                         }
 
@@ -392,8 +396,10 @@ namespace Two_Weeks_in_a_Laundromat
                         {
                             doorHere = true;
                         }
-                        else if (absentWalls.Contains(foundADoor))
+
+                        if (absentWalls.Contains(foundADoor))
                         {
+                            doorHere = false;
                             wallAbsenceHere = true;
                         }
 
@@ -435,8 +441,10 @@ namespace Two_Weeks_in_a_Laundromat
                         {
                             doorHere = true;
                         }
-                        else if (absentWalls.Contains(foundADoor))
+                        
+                        if (absentWalls.Contains(foundADoor))
                         {
+                            doorHere = false;
                             wallAbsenceHere = true;
                         }
 
