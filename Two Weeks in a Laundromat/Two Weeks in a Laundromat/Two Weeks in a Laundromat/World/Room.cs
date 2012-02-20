@@ -254,7 +254,7 @@ namespace Two_Weeks_in_a_Laundromat
             {
                 // Make positive
                 dimensions.X *= -1.0f;
-                topLeft.X -= dimensions.X;
+                topLeft.X -= dimensions.X * tileSize - tileSize;
             }
             if (dimensions.Y <= 0f)
             {
@@ -265,7 +265,7 @@ namespace Two_Weeks_in_a_Laundromat
             {
                 // Make positive
                 dimensions.Z *= -1.0f;
-                topLeft.Z -= dimensions.Z;
+                topLeft.Z -= dimensions.Z * tileSize - tileSize;
             }
             #endregion
 

@@ -55,28 +55,7 @@ namespace Two_Weeks_in_a_Laundromat
                 //Room laundromat = new Laundromat(string.Empty);
                 //addNewRoom(laundromat);
 
-                // To generated a bunch of random rooms:
-                //for (int x = 0; x < 5; x++)
-                //{
-                //    for (int y = 0; y < 5; y++)
-                //    {
-                //        Vector3 testRoomDim = new Vector3(WOLOLO.Next(2, 10), WOLOLO.Next(1, 6), WOLOLO.Next(2, 10));
-                //        Vector3 testRoomStart = new Vector3(x + (x * 30), 0f, y + (y * 30));
-                //        Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
-                //        testRoom.addRandomDoor(WOLOLO);
-                //        testRoom.addRandomDoor(WOLOLO);
-                //        testRoom.addRandomDoor(WOLOLO);
-                //        addNewRoom(testRoom);
-                //    }
-                //}
-
-                Vector3 testRoomDim = new Vector3(WOLOLO.Next(3, 10), WOLOLO.Next(1, 6), WOLOLO.Next(3, 10));
-                Vector3 testRoomStart = new Vector3(10, 0, 15);
-                Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
-                testRoom.addRandomDoor(WOLOLO);
-                testRoom.addRandomDoor(WOLOLO);
-                testRoom.addRandomDoor(WOLOLO);
-                addNewRoom(testRoom);
+                createTestRooms();
             }
 
             //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
@@ -84,6 +63,40 @@ namespace Two_Weeks_in_a_Laundromat
             //MediaPlayer.Play(bgMusic);
 
             base.Load(gManager, gDevice);
+        }
+
+        private void createTestRooms()
+        {
+            // To generated a bunch of random rooms:
+            //for (int x = 0; x < 5; x++)
+            //{
+            //    for (int y = 0; y < 5; y++)
+            //    {
+            //        Vector3 testRoomDim = new Vector3(WOLOLO.Next(2, 10), WOLOLO.Next(1, 6), WOLOLO.Next(2, 10));
+            //        Vector3 testRoomStart = new Vector3(x + (x * 30), 0f, y + (y * 30));
+            //        Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
+            //        testRoom.addRandomDoor(WOLOLO);
+            //        testRoom.addRandomDoor(WOLOLO);
+            //        testRoom.addRandomDoor(WOLOLO);
+            //        addNewRoom(testRoom);
+            //    }
+            //}
+
+            Vector3 testRoomDim = new Vector3(3, 2, 3);
+            Vector3 testRoomStart = new Vector3(5, 0, 10);
+            Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
+            DoorData newDoor = new DoorData(WallSide.North, 1.0f);
+            testRoom.addDoor(ref newDoor);
+            newDoor = new DoorData(WallSide.West, 1.0f);
+            testRoom.addDoor(ref newDoor);
+            newDoor = new DoorData(WallSide.East, 1.0f);
+            testRoom.addDoor(ref newDoor);
+            newDoor = new DoorData(WallSide.South, 1.0f);
+            testRoom.addDoor(ref newDoor);
+            //testRoom.addRandomDoor(WOLOLO);
+            //testRoom.addRandomDoor(WOLOLO);
+            //testRoom.addRandomDoor(WOLOLO);
+            addNewRoom(testRoom);
         }
 
         private void addNewRoom(Room toAdd)

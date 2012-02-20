@@ -38,6 +38,7 @@ namespace Two_Weeks_in_a_Laundromat
             #region DimensionalFuckery
             // Figure out a random straight hallway in the direction we want
             this.dimensions = new Vector3(wololo.Next(4, 10), 1.0f, wololo.Next(4, 10));
+            //this.dimensions = new Vector3(4, 1.0f, 4);
             // Make one dimensional:
             this.dimensions *= doorDirection;
             // Make sure the other dimension is at least one:
