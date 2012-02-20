@@ -336,7 +336,7 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                     #endregion
                     #region Wall2
-                    else if (x == worldSpaceSize.X - tileSize)
+                    if (x == worldSpaceSize.X - tileSize)
                     {
                         bool doorHere = false;
                         bool wallAbsenceHere = false;
@@ -431,7 +431,7 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                     #endregion
                     #region Wall4
-                    else if (z == worldSpaceSize.Z - tileSize)
+                    if (z == worldSpaceSize.Z - tileSize)
                     {
                         bool doorHere = false;
                         bool wallAbsenceHere = false;
