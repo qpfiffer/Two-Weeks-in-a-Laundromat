@@ -178,11 +178,8 @@ namespace Two_Weeks_in_a_Laundromat
             }
         }
 
-        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
+        protected void preloadPieces()
         {
-            this.gManager = gManager;
-            this.gDevice = gDevice;
-
             Effect shaderToLoad = null;
 
             if (alternateShader == null)
@@ -217,7 +214,13 @@ namespace Two_Weeks_in_a_Laundromat
             door.model = gManager.Load<Model>("Models/Segments/door");
             door.Texture = gManager.Load<Texture2D>("Textures/Segments/" + roomTheme + "/door");
             door.Shader = shaderToLoad;
+        }
 
+        public virtual void Load(ContentManager gManager, GraphicsDevice gDevice)
+        {
+            this.gManager = gManager;
+            this.gDevice = gDevice;
+            preloadPieces();
             setupPieces();
             loaded = true;
         }
@@ -231,7 +234,7 @@ namespace Two_Weeks_in_a_Laundromat
         /// <summary>
         /// Call this to create the room.
         /// </summary>
-        protected void setupPieces()
+        protected virtual void setupPieces()
         {
             // Find the top left portion of the room:
             Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
@@ -250,6 +253,7 @@ namespace Two_Weeks_in_a_Laundromat
                     if (x == topLeft.X)
                     {
                         bool doorHere = false;
+                        DoorData foundADoor = new DoorData();
                         // Loop through all the doors we have in this place
                         foreach (DoorData dd in doors)
                         {
@@ -260,6 +264,7 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 // Is this where the door is?
                                 doorHere = true;
+                                foundADoor = dd;
                             }
                         }
                         // Loop through all heights as well.
@@ -270,25 +275,9 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 doorHere = false;
 
-                                MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
-                                newDoorFrame.Rotation = Vector3.Zero;
-                                newDoorFrame.model = this.doorframe.model;
-                                newDoorFrame.Texture = doorframe.Texture;
-                                newDoorFrame.Shader = doorframe.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
-                                pieces.Add(newDoorFrame);
-
-                                MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
-                                newDoorMeta.Rotation = Vector3.Zero;
-                                newDoorMeta.model = door.model;
-                                newDoorMeta.Texture = door.Texture;
-                                newDoorMeta.Shader = door.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
-
-                                Door newDoor = new Door(ref newDoorMeta, gDevice);
-                                this.things.Add(newDoor);
+                                Vector3 rotVector = Vector3.Zero;
+                                Vector3 posVector = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
+                                addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
                                 continue;
                             }
@@ -308,6 +297,7 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (x == worldSpaceSize.X - tileSize)
                     {
                         bool doorHere = false;
+                        DoorData foundADoor = new DoorData();
                         // Loop through all the doors we have in this place
                         foreach (DoorData dd in doors)
                         {
@@ -318,6 +308,7 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 // Is this where the door is?
                                 doorHere = true;
+                                foundADoor = dd;
                             }
                         }
                         for (int i = 0; i < dimensions.Y; i++)
@@ -327,25 +318,9 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 doorHere = false;
 
-                                MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
-                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
-                                newDoorFrame.model = this.doorframe.model;
-                                newDoorFrame.Texture = doorframe.Texture;
-                                newDoorFrame.Shader = doorframe.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
-                                pieces.Add(newDoorFrame);
-
-                                MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
-                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(180.0f), 0);
-                                newDoorMeta.model = door.model;
-                                newDoorMeta.Texture = door.Texture;
-                                newDoorMeta.Shader = door.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
-
-                                Door newDoor = new Door(ref newDoorMeta, gDevice);
-                                this.things.Add(newDoor);
+                                Vector3 rotVector = new Vector3(0, MathHelper.ToRadians(180.0f), 0f);
+                                Vector3 posVector = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
+                                addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
                                 continue;
                             }
@@ -368,6 +343,7 @@ namespace Two_Weeks_in_a_Laundromat
                     if (z == topLeft.Z)
                     {
                         bool doorHere = false;
+                        DoorData foundADoor = new DoorData();
                         // Loop through all the doors we have in this place
                         foreach (DoorData dd in doors)
                         {
@@ -378,6 +354,7 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 // Is this where the door is?
                                 doorHere = true;
+                                foundADoor = dd;
                             }
                         }
 
@@ -387,25 +364,9 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 doorHere = false;
 
-                                MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
-                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
-                                newDoorFrame.model = doorframe.model;
-                                newDoorFrame.Texture = doorframe.Texture;
-                                newDoorFrame.Shader = doorframe.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
-                                pieces.Add(newDoorFrame);
-
-                                MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
-                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(-90.0f), 0);
-                                newDoorMeta.model = door.model;
-                                newDoorMeta.Texture = door.Texture;
-                                newDoorMeta.Shader = door.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
-
-                                Door newDoor = new Door(ref newDoorMeta, gDevice);
-                                this.things.Add(newDoor);
+                                Vector3 rotVector = new Vector3(0, MathHelper.ToRadians(-90.0f), 0f);
+                                Vector3 posVector = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
+                                addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
                                 continue;
                             }
@@ -424,6 +385,7 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (z == worldSpaceSize.Z - tileSize)
                     {
                         bool doorHere = false;
+                        DoorData foundADoor = new DoorData();
                         // Loop through all the doors we have in this place
                         foreach (DoorData dd in doors)
                         {
@@ -434,6 +396,7 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 // Is this where the door is?
                                 doorHere = true;
+                                foundADoor = dd;
                             }
                         }
                         for (int i = 0; i < dimensions.Y; i++)
@@ -442,25 +405,9 @@ namespace Two_Weeks_in_a_Laundromat
                             {
                                 doorHere = false;
 
-                                MetaModel newDoorFrame = new MetaModel();
-                                newDoorFrame.Position = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
-                                newDoorFrame.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                                newDoorFrame.model = this.doorframe.model;
-                                newDoorFrame.Texture = doorframe.Texture;
-                                newDoorFrame.Shader = doorframe.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
-                                pieces.Add(newDoorFrame);
-
-                                MetaModel newDoorMeta = new MetaModel();
-                                newDoorMeta.Position = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
-                                newDoorMeta.Rotation = new Vector3(0, MathHelper.ToRadians(90.0f), 0);
-                                newDoorMeta.model = door.model;
-                                newDoorMeta.Texture = door.Texture;
-                                newDoorMeta.Shader = door.Shader;
-                                ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
-
-                                Door newDoor = new Door(ref newDoorMeta, gDevice);
-                                this.things.Add(newDoor);
+                                Vector3 rotVector = new Vector3(0, MathHelper.ToRadians(90.0f), 0f);
+                                Vector3 posVector = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
+                                addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
                                 continue;
                             }
@@ -500,6 +447,35 @@ namespace Two_Weeks_in_a_Laundromat
                 }
                 zIncrement++;
             }
+        }
+
+        /// <summary>
+        /// If a door is discovered you can create a new GameObject pretty easily with this.
+        /// </summary>
+        /// <param name="rotVector">How the door is rotated.</param>
+        /// <param name="posVector">Where the door is</param>
+        /// <param name="foundADoor">The MetaData to associate with the door.</param>
+        private void addNewDoor(ref Vector3 rotVector, ref Vector3 posVector, ref DoorData foundADoor)
+        {
+            MetaModel newDoorFrame = new MetaModel();
+            newDoorFrame.Position = posVector;
+            newDoorFrame.Rotation = rotVector;
+            newDoorFrame.model = this.doorframe.model;
+            newDoorFrame.Texture = doorframe.Texture;
+            newDoorFrame.Shader = doorframe.Shader;
+            ModelUtil.UpdateBoundingBoxes(ref newDoorFrame);
+            pieces.Add(newDoorFrame);
+
+            MetaModel newDoorMeta = new MetaModel();
+            newDoorMeta.Position = posVector;
+            newDoorMeta.Rotation = rotVector;
+            newDoorMeta.model = door.model;
+            newDoorMeta.Texture = door.Texture;
+            newDoorMeta.Shader = door.Shader;
+            ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
+
+            Door newDoor = new Door(ref newDoorMeta, foundADoor, gDevice);
+            this.things.Add(newDoor);
         }
     }
 }

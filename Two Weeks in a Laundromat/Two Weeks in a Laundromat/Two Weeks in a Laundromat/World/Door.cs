@@ -15,9 +15,17 @@ namespace Two_Weeks_in_a_Laundromat
     class Door: GameObject
     {
         private bool open = false;
-        public Door(ref MetaModel newObject, GraphicsDevice gDevice)
+        private DoorData metaDoor;
+
+        public DoorData MetaDoor
+        {
+            get { return metaDoor; }
+        }
+
+        public Door(ref MetaModel newObject, DoorData metaData, GraphicsDevice gDevice)
             : base(ref newObject, gDevice) 
         {
+            this.metaDoor = metaData;
         }
 
         public override void interactedWith()

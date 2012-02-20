@@ -16,11 +16,20 @@ namespace Two_Weeks_in_a_Laundromat
     public class World: Delve_Engine.World.World
     {
         private List<Room> liveRooms;
+        private Dictionary<WallSide, Vector3> wallToDirectionMap;
 
         public World(): base()
         {
             mainPlayer.setCameraPosition(new Vector3(10, Player.playerHeight, 15), Vector3.Zero);
             liveRooms = new List<Room>();
+            
+            // AREN'T I JUST THE FUCKING CLEVEREST
+            wallToDirectionMap = new Dictionary<WallSide,Vector3>();
+            wallToDirectionMap.Add(WallSide.East, new Vector3(1.0f,0f,0f));
+            wallToDirectionMap.Add(WallSide.West, new Vector3(-1.0f,0f,0f));
+            wallToDirectionMap.Add(WallSide.North, new Vector3(0.0f,0f,1.0f));
+            wallToDirectionMap.Add(WallSide.South, new Vector3(0.0f,0f,-1.0f));
+
         }
 
         public override void Update(GameTime gTime)
@@ -34,21 +43,13 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            this.gManager = gManager;
+            this.gDevice = gDevice;
+
             if (liveRooms.Count == 0)
             {
                 Room laundromat = new Laundromat(string.Empty);
-                laundromat.Load(gManager, gDevice);
-                foreach (MetaModel m in laundromat.AllMetas)
-                {
-                    this.collisionBoxes.AddRange(m.BBoxes);
-                }
-
-                foreach (GameObject go in laundromat.AllGOs)
-                {
-                    MetaModel m = go.Model;
-                    this.collisionBoxes.AddRange(m.BBoxes);
-                }
-                liveRooms.Add(laundromat);
+                addNewRoom(laundromat);
 
                 // To generated a bunch of random rooms:
                 //for (int x = 0; x < 5; x++)
@@ -61,9 +62,7 @@ namespace Two_Weeks_in_a_Laundromat
                 //        testRoom.addRandomDoor(WOLOLO);
                 //        testRoom.addRandomDoor(WOLOLO);
                 //        testRoom.addRandomDoor(WOLOLO);
-                //        testRoom.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
-                //        //testRoom.Load(gManager, gDevice);
-                //        liveRooms.Add(testRoom);
+                //        addNewRoom(testRoom);
                 //    }
                 //}
             }
@@ -73,6 +72,24 @@ namespace Two_Weeks_in_a_Laundromat
             //MediaPlayer.Play(bgMusic);
 
             base.Load(gManager, gDevice);
+        }
+
+        private void addNewRoom(Room toAdd)
+        {
+            toAdd.Load(gManager, gDevice);
+
+            foreach (MetaModel m in toAdd.AllMetas)
+            {
+                this.collisionBoxes.AddRange(m.BBoxes);
+            }
+
+            foreach (GameObject go in toAdd.AllGOs)
+            {
+                MetaModel m = go.Model;
+                this.collisionBoxes.AddRange(m.BBoxes);
+            }
+
+            liveRooms.Add(toAdd);
         }
 
         public override void handleInput(ref InputInfo info)
@@ -105,7 +122,10 @@ namespace Two_Weeks_in_a_Laundromat
                     Door clickedDoor = clickedOn as Door;
                     if (clickedDoor != null)
                     {
-                        // We opened a door.
+                        Vector3 startPos = clickedDoor.Model.Position;
+                        Vector3 direction = wallToDirectionMap[clickedDoor.MetaDoor.myWall];
+                        Hallway newHallway = new Hallway(ref startPos, ref direction, string.Empty);
+                        addNewRoom(newHallway as Room);
                     }
                 }
                 #endregion

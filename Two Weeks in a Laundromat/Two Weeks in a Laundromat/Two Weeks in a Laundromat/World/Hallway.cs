@@ -38,7 +38,18 @@ namespace Two_Weeks_in_a_Laundromat
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice)
         {
+            this.gManager = gManager;
+            this.gDevice = gDevice;
+            preloadPieces();
+            this.setupPieces();
             loaded = true;
+        }
+
+        protected override void setupPieces()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+            }
         }
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
