@@ -38,6 +38,7 @@ namespace Two_Weeks_in_a_Laundromat
         // Remember, roomCenter is actually the top left!
         protected Vector3 roomCenter;
         protected List<DoorData> doors;
+        protected List<DoorData> absentWalls;
         protected string roomTheme = string.Empty;
         #endregion        
         #region Properties
@@ -88,6 +89,7 @@ namespace Two_Weeks_in_a_Laundromat
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
             doors = new List<DoorData>();
+            absentWalls = new List<DoorData>();
             this.roomTheme = theme;
         }
 
@@ -96,6 +98,7 @@ namespace Two_Weeks_in_a_Laundromat
             pieces = new List<MetaModel>();
             things = new List<GameObject>();
             doors = new List<DoorData>();
+            absentWalls = new List<DoorData>();
             this.dimensions = dimensions;
             this.roomCenter = roomCenter;
             this.roomTheme = theme;
@@ -104,6 +107,11 @@ namespace Two_Weeks_in_a_Laundromat
         public void addDoor(ref DoorData newDoor)
         {
             this.doors.Add(newDoor);
+        }
+
+        public void removeWallSection(ref DoorData toRemove)
+        {
+            this.absentWalls.Add(toRemove);
         }
 
         public void addRandomDoor(Random wololo)
@@ -284,11 +292,16 @@ namespace Two_Weeks_in_a_Laundromat
                     if (x == topLeft.X)
                     {
                         bool doorHere = false;
+                        bool wallAbsenceHere = false;
                         DoorData foundADoor = new DoorData(WallSide.West, zIncrement);
                         // See if we have a door here
                         if (doors.Contains(foundADoor)) 
                         {
                             doorHere = true;
+                        }
+                        else if (absentWalls.Contains(foundADoor))
+                        {
+                            wallAbsenceHere = true;
                         }
                         // Loop through all heights as well.
                         for (int i = 0; i < dimensions.Y; i++)
@@ -302,6 +315,10 @@ namespace Two_Weeks_in_a_Laundromat
                                 Vector3 posVector = new Vector3(x - tileHalf, topLeft.Y + (i * 8), z);
                                 addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
+                                continue;
+                            }
+                            else if (wallAbsenceHere)
+                            {
                                 continue;
                             }
 
@@ -320,11 +337,16 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (x == worldSpaceSize.X - tileSize)
                     {
                         bool doorHere = false;
+                        bool wallAbsenceHere = false;
                         
                         DoorData foundADoor = new DoorData(WallSide.East, zIncrement);
                         if (doors.Contains(foundADoor))
                         {
                             doorHere = true;
+                        }
+                        else if (absentWalls.Contains(foundADoor))
+                        {
+                            wallAbsenceHere = true;
                         }
 
                         for (int i = 0; i < dimensions.Y; i++)
@@ -338,6 +360,10 @@ namespace Two_Weeks_in_a_Laundromat
                                 Vector3 posVector = new Vector3(x + tileHalf, topLeft.Y + (i * 8), z);
                                 addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
+                                continue;
+                            }
+                            else if (wallAbsenceHere)
+                            {
                                 continue;
                             }
 
@@ -359,11 +385,16 @@ namespace Two_Weeks_in_a_Laundromat
                     if (z == topLeft.Z)
                     {
                         bool doorHere = false;
+                        bool wallAbsenceHere = false;
 
                         DoorData foundADoor = new DoorData(WallSide.North, xIncrement);
                         if (doors.Contains(foundADoor))
                         {
                             doorHere = true;
+                        }
+                        else if (absentWalls.Contains(foundADoor))
+                        {
+                            wallAbsenceHere = true;
                         }
 
                         for (int i = 0; i < dimensions.Y; i++)
@@ -376,6 +407,10 @@ namespace Two_Weeks_in_a_Laundromat
                                 Vector3 posVector = new Vector3(x, topLeft.Y + (i * 8), z - tileHalf);
                                 addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
+                                continue;
+                            }
+                            else if (wallAbsenceHere)
+                            {
                                 continue;
                             }
                             MetaModel newWall = new MetaModel();
@@ -393,11 +428,16 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (z == worldSpaceSize.Z - tileSize)
                     {
                         bool doorHere = false;
+                        bool wallAbsenceHere = false;
 
                         DoorData foundADoor = new DoorData(WallSide.South, xIncrement);
                         if (doors.Contains(foundADoor))
                         {
                             doorHere = true;
+                        }
+                        else if (absentWalls.Contains(foundADoor))
+                        {
+                            wallAbsenceHere = true;
                         }
 
                         for (int i = 0; i < dimensions.Y; i++)
@@ -410,6 +450,10 @@ namespace Two_Weeks_in_a_Laundromat
                                 Vector3 posVector = new Vector3(x, topLeft.Y + (i * 8), z + tileHalf);
                                 addNewDoor(ref rotVector, ref posVector, ref foundADoor);
 
+                                continue;
+                            }
+                            else if (wallAbsenceHere)
+                            {
                                 continue;
                             }
 

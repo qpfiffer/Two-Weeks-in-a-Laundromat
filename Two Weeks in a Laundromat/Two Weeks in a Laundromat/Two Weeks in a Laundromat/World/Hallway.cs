@@ -66,9 +66,52 @@ namespace Two_Weeks_in_a_Laundromat
             addRandomDoor(wololo);
             addRandomDoor(wololo);
 
+            sanitiseHallway();
+
             preloadPieces();
             setupPieces();            
             loaded = true;
+        }
+
+        /// <summary>
+        /// Makes sure there is no wall and no door at the entrance to the hallway.
+        /// </summary>
+        private void sanitiseHallway()
+        {
+            //wallToDirectionMap.Add(WallSide.East, new Vector3(1.0f, 0f, 0f));
+            //wallToDirectionMap.Add(WallSide.West, new Vector3(-1.0f, 0f, 0f));
+            //wallToDirectionMap.Add(WallSide.North, new Vector3(0.0f, 0f, -1.0f));
+            //wallToDirectionMap.Add(WallSide.South, new Vector3(0.0f, 0f, 1.0f));
+
+            DoorData wallToRemove = new DoorData();
+            if (entranceDoorDirection.X == 1.0f)
+            {
+                // East
+                wallToRemove.myWall = WallSide.West;
+            }
+            else if (entranceDoorDirection.X == -1.0f) 
+            { 
+                // West
+                wallToRemove.myWall = WallSide.East;
+            }
+
+            if (entranceDoorDirection.Z == 1.0f)
+            {
+                // South
+                wallToRemove.myWall = WallSide.North;
+            }
+            else if (entranceDoorDirection.Z == -1.0f)
+            {
+                // North
+                wallToRemove.myWall = WallSide.South;
+            }
+
+            removeWallSection(ref wallToRemove);
+
+            if (doors.Contains(wallToRemove))
+            {
+                doors.Remove(wallToRemove);
+            }
         }
 
         public override void Load(ContentManager gManager, GraphicsDevice gDevice, Effect alternateShader)
