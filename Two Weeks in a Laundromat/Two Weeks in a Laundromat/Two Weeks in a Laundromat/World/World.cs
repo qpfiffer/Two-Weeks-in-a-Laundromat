@@ -52,10 +52,10 @@ namespace Two_Weeks_in_a_Laundromat
 
             if (liveRooms.Count == 0)
             {
-                //Room laundromat = new Laundromat(string.Empty);
-                //addNewRoom(laundromat);
+                Room laundromat = new Laundromat(string.Empty);
+                addNewRoom(laundromat);
 
-                createTestRooms();
+                //createTestRooms();
             }
 
             //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
@@ -163,6 +163,8 @@ namespace Two_Weeks_in_a_Laundromat
                     }
                     // Interact with the object
                     clickedOn.interactedWith();
+
+                    // WALK THROUGH DOORS, YEAH?
                     // Add the newly transformed boxes back to the list:
                     collisionBoxes.AddRange(clickedOn.Model.BBoxes);
 

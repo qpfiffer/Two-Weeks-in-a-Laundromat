@@ -59,7 +59,7 @@ namespace Delve_Engine.Menu
         public virtual void Load(ContentManager gManager)
         {
             #region Menu_Stuff
-            mFont = gManager.Load<SpriteFont>("Fonts/mainFont");
+            mFont = gManager.Load<SpriteFont>("Fonts/softly_now");
 
             // Set up entries:
             MenuItem begin = new MenuItem("Begin");
@@ -141,15 +141,15 @@ namespace Delve_Engine.Menu
             sBatch.Begin();
             Vector2 stringSize = mFont.MeasureString(this.title);
             Vector2 menuTitleCenter = new Vector2((gDevice.Viewport.Width / 2) - (stringSize.X / 2), (gDevice.Viewport.Height / 4) - (stringSize.Y / 2));
-            sBatch.DrawString(mFont, this.title, menuTitleCenter, Color.DarkBlue);
+            sBatch.DrawString(mFont, this.title, menuTitleCenter, Color.Gray);
 
             // Draw the menu items:
             for (int i = 0; i < menuItems.Count; i++)
             {
                 if (i == selectedEntry)
-                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.Blue);
+                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 26.0f)), Color.White);
                 else
-                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 16.0f)), Color.DarkBlue);
+                    sBatch.DrawString(mFont, menuItems[i].Text, new Vector2(menuTitleCenter.X, menuTitleCenter.Y + 35.0f + (i * 26.0f)), Color.Gray);
             }
             sBatch.End();
 
