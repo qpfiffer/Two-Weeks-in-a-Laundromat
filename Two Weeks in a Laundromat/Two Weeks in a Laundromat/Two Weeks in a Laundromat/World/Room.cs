@@ -474,7 +474,7 @@ namespace Two_Weeks_in_a_Laundromat
             newDoorMeta.Shader = door.Shader;
             ModelUtil.UpdateBoundingBoxes(ref newDoorMeta);
 
-            Door newDoor = new Door(ref newDoorMeta, foundADoor, gDevice);
+            Door newDoor = new Door(ref newDoorMeta, foundADoor, gDevice, this);
             this.things.Add(newDoor);
         }
     }

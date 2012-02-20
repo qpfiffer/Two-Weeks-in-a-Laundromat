@@ -27,8 +27,8 @@ namespace Two_Weeks_in_a_Laundromat
             wallToDirectionMap = new Dictionary<WallSide,Vector3>();
             wallToDirectionMap.Add(WallSide.East, new Vector3(1.0f,0f,0f));
             wallToDirectionMap.Add(WallSide.West, new Vector3(-1.0f,0f,0f));
-            wallToDirectionMap.Add(WallSide.North, new Vector3(0.0f,0f,1.0f));
-            wallToDirectionMap.Add(WallSide.South, new Vector3(0.0f,0f,-1.0f));
+            wallToDirectionMap.Add(WallSide.North, new Vector3(0.0f,0f,-1.0f));
+            wallToDirectionMap.Add(WallSide.South, new Vector3(0.0f,0f,1.0f));
 
         }
 
@@ -92,6 +92,28 @@ namespace Two_Weeks_in_a_Laundromat
             liveRooms.Add(toAdd);
         }
 
+        private void removeRoom(Room toRemove)
+        {
+            foreach (MetaModel m in toRemove.AllMetas)
+            {
+                foreach (BoundingBox b in m.BBoxes) 
+                {
+                    this.collisionBoxes.Remove(b);
+                }
+            }
+
+            foreach (GameObject go in toRemove.AllGOs)
+            {
+                MetaModel m = go.Model;
+                foreach (BoundingBox b in m.BBoxes)
+                {
+                    this.collisionBoxes.Remove(b);
+                }
+            }
+
+            liveRooms.Remove(toRemove);
+        }
+
         public override void handleInput(ref InputInfo info)
         {
             if (info.curKBDState.IsKeyDown(Keys.E) &&
@@ -122,10 +144,20 @@ namespace Two_Weeks_in_a_Laundromat
                     Door clickedDoor = clickedOn as Door;
                     if (clickedDoor != null)
                     {
-                        Vector3 startPos = clickedDoor.Model.Position;
-                        Vector3 direction = wallToDirectionMap[clickedDoor.MetaDoor.myWall];
-                        Hallway newHallway = new Hallway(ref startPos, ref direction, string.Empty);
-                        addNewRoom(newHallway as Room);
+                        // We have to flip these because of the "interactedWith" call slightly
+                        // above. Whatever. Just note that open means closed and vice versa.
+                        if (!clickedDoor.IsOpen)
+                        {
+                            removeRoom(clickedDoor.ChildRoom);
+                        }
+                        else
+                        {
+                            Vector3 startPos = clickedDoor.Model.Position;
+                            Vector3 direction = wallToDirectionMap[clickedDoor.MetaDoor.myWall];
+                            Hallway newHallway = new Hallway(ref startPos, ref direction, string.Empty);
+                            addNewRoom(newHallway as Room);
+                            clickedDoor.ChildRoom = newHallway;
+                        }
                     }
                 }
                 #endregion

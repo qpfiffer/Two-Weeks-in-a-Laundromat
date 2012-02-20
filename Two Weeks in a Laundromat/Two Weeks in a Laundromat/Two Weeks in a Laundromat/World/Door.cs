@@ -16,16 +16,34 @@ namespace Two_Weeks_in_a_Laundromat
     {
         private bool open = false;
         private DoorData metaDoor;
+        private Room parentRoom, childRoom;
 
         public DoorData MetaDoor
         {
             get { return metaDoor; }
         }
 
-        public Door(ref MetaModel newObject, DoorData metaData, GraphicsDevice gDevice)
+        public bool IsOpen
+        {
+            get { return open; }
+        }
+
+        public Room ParentRoom
+        {
+            get { return parentRoom; }
+        }
+
+        public Room ChildRoom
+        {
+            get { return childRoom; }
+            set { childRoom = value; }
+        }
+
+        public Door(ref MetaModel newObject, DoorData metaData, GraphicsDevice gDevice, Room parentRoom)
             : base(ref newObject, gDevice) 
         {
             this.metaDoor = metaData;
+            this.parentRoom = parentRoom;
         }
 
         public override void interactedWith()
