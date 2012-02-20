@@ -284,19 +284,11 @@ namespace Two_Weeks_in_a_Laundromat
                     if (x == topLeft.X)
                     {
                         bool doorHere = false;
-                        DoorData foundADoor = new DoorData();
-                        // Loop through all the doors we have in this place
-                        foreach (DoorData dd in doors)
+                        DoorData foundADoor = new DoorData(WallSide.West, zIncrement);
+                        // See if we have a door here
+                        if (doors.Contains(foundADoor)) 
                         {
-                            // If this isn't my wall skip it
-                            if (dd.myWall != WallSide.West)
-                                continue;
-                            else if (dd.myTilePos == zIncrement)
-                            {
-                                // Is this where the door is?
-                                doorHere = true;
-                                foundADoor = dd;
-                            }
+                            doorHere = true;
                         }
                         // Loop through all heights as well.
                         for (int i = 0; i < dimensions.Y; i++)
@@ -328,20 +320,13 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (x == worldSpaceSize.X - tileSize)
                     {
                         bool doorHere = false;
-                        DoorData foundADoor = new DoorData();
-                        // Loop through all the doors we have in this place
-                        foreach (DoorData dd in doors)
+                        
+                        DoorData foundADoor = new DoorData(WallSide.East, zIncrement);
+                        if (doors.Contains(foundADoor))
                         {
-                            // If this isn't my wall skip it
-                            if (dd.myWall != WallSide.East)
-                                continue;
-                            else if (dd.myTilePos == zIncrement)
-                            {
-                                // Is this where the door is?
-                                doorHere = true;
-                                foundADoor = dd;
-                            }
+                            doorHere = true;
                         }
+
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             // Only place the door on the ground level.
@@ -374,19 +359,11 @@ namespace Two_Weeks_in_a_Laundromat
                     if (z == topLeft.Z)
                     {
                         bool doorHere = false;
-                        DoorData foundADoor = new DoorData();
-                        // Loop through all the doors we have in this place
-                        foreach (DoorData dd in doors)
+
+                        DoorData foundADoor = new DoorData(WallSide.North, xIncrement);
+                        if (doors.Contains(foundADoor))
                         {
-                            // If this isn't my wall skip it
-                            if (dd.myWall != WallSide.North)
-                                continue;
-                            else if (dd.myTilePos == xIncrement)
-                            {
-                                // Is this where the door is?
-                                doorHere = true;
-                                foundADoor = dd;
-                            }
+                            doorHere = true;
                         }
 
                         for (int i = 0; i < dimensions.Y; i++)
@@ -416,20 +393,13 @@ namespace Two_Weeks_in_a_Laundromat
                     else if (z == worldSpaceSize.Z - tileSize)
                     {
                         bool doorHere = false;
-                        DoorData foundADoor = new DoorData();
-                        // Loop through all the doors we have in this place
-                        foreach (DoorData dd in doors)
+
+                        DoorData foundADoor = new DoorData(WallSide.South, xIncrement);
+                        if (doors.Contains(foundADoor))
                         {
-                            // If this isn't my wall skip it
-                            if (dd.myWall != WallSide.South)
-                                continue;
-                            else if (dd.myTilePos == xIncrement)
-                            {
-                                // Is this where the door is?
-                                doorHere = true;
-                                foundADoor = dd;
-                            }
+                            doorHere = true;
                         }
+
                         for (int i = 0; i < dimensions.Y; i++)
                         {
                             if (doorHere)
