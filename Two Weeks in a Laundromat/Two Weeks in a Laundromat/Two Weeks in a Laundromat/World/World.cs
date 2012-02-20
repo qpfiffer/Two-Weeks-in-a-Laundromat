@@ -101,6 +101,12 @@ namespace Two_Weeks_in_a_Laundromat
                     clickedOn.interactedWith();
                     // Add the newly transformed boxes back to the list:
                     collisionBoxes.AddRange(clickedOn.Model.BBoxes);
+
+                    Door clickedDoor = clickedOn as Door;
+                    if (clickedDoor != null)
+                    {
+                        // We opened a door.
+                    }
                 }
                 #endregion
             }                
