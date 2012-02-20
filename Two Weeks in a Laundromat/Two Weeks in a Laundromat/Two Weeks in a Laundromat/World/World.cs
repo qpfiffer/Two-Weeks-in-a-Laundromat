@@ -17,6 +17,10 @@ namespace Two_Weeks_in_a_Laundromat
     {
         private List<Room> liveRooms;
         private Dictionary<WallSide, Vector3> wallToDirectionMap;
+        
+        #region DebugShit
+        public WallSide lastOpened { get; set; }
+        #endregion
 
         public World(): base()
         {
@@ -48,8 +52,8 @@ namespace Two_Weeks_in_a_Laundromat
 
             if (liveRooms.Count == 0)
             {
-                Room laundromat = new Laundromat(string.Empty);
-                addNewRoom(laundromat);
+                //Room laundromat = new Laundromat(string.Empty);
+                //addNewRoom(laundromat);
 
                 // To generated a bunch of random rooms:
                 //for (int x = 0; x < 5; x++)
@@ -65,6 +69,14 @@ namespace Two_Weeks_in_a_Laundromat
                 //        addNewRoom(testRoom);
                 //    }
                 //}
+
+                Vector3 testRoomDim = new Vector3(WOLOLO.Next(3, 10), WOLOLO.Next(1, 6), WOLOLO.Next(3, 10));
+                Vector3 testRoomStart = new Vector3(10, 0, 15);
+                Room testRoom = new Room(ref testRoomDim, ref testRoomStart, string.Empty);
+                testRoom.addRandomDoor(WOLOLO);
+                testRoom.addRandomDoor(WOLOLO);
+                testRoom.addRandomDoor(WOLOLO);
+                addNewRoom(testRoom);
             }
 
             //bgMusic = gManager.Load<Song>("Sounds/Music/Headache");
@@ -142,6 +154,7 @@ namespace Two_Weeks_in_a_Laundromat
                     collisionBoxes.AddRange(clickedOn.Model.BBoxes);
 
                     Door clickedDoor = clickedOn as Door;
+                    lastOpened = clickedDoor.MetaDoor.myWall;
                     if (clickedDoor != null)
                     {
                         // We have to flip these because of the "interactedWith" call slightly

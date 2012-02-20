@@ -111,24 +111,34 @@ namespace Two_Weeks_in_a_Laundromat
             if (loaded)
                 throw new Exception("Room already loaded. This won't do anything.");
 
-            DoorData toAdd;            
+            DoorData toAdd;
+
+            Vector3 checkVector = dimensions;
+            if (checkVector.X < 0f)
+            {
+                checkVector.X *= -1.0f;
+            }
+            if (checkVector.Z < 0f)
+            {
+                checkVector.Z *= -1.0f;
+            }
 
             switch (wololo.Next(4))
             {
                 case 0:
-                    toAdd = new DoorData(WallSide.North, wololo.Next((int)dimensions.X));
+                    toAdd = new DoorData(WallSide.North, wololo.Next((int)checkVector.X));
                     break;
                 case 1:
-                    toAdd = new DoorData(WallSide.West, wololo.Next((int)dimensions.Z));
+                    toAdd = new DoorData(WallSide.West, wololo.Next((int)checkVector.Z));
                     break;
                 case 2:
-                    toAdd = new DoorData(WallSide.East, wololo.Next((int)dimensions.Z));
+                    toAdd = new DoorData(WallSide.East, wololo.Next((int)checkVector.Z));
                     break;
                 case 3:
-                    toAdd = new DoorData(WallSide.South, wololo.Next((int)dimensions.X));
+                    toAdd = new DoorData(WallSide.South, wololo.Next((int)checkVector.X));
                     break;
                 default:
-                    toAdd = new DoorData(WallSide.West, wololo.Next((int)dimensions.Z));
+                    toAdd = new DoorData(WallSide.West, wololo.Next((int)checkVector.Z));
                     break;
             }
 
@@ -238,8 +248,29 @@ namespace Two_Weeks_in_a_Laundromat
         {
             // Find the top left portion of the room:
             Vector3 topLeft = new Vector3(roomCenter.X, roomCenter.Y, roomCenter.Z);
-            Vector3 worldSpaceSize = new Vector3(roomCenter.X + (dimensions.X * tileSize),
-                roomCenter.Y + dimensions.Y, roomCenter.Z + (dimensions.Z * tileSize));
+
+            #region DirectionToCreate
+            if (dimensions.X < 0f)
+            {
+                // Make positive
+                dimensions.X *= -1.0f;
+                topLeft.X -= dimensions.X;
+            }
+            if (dimensions.Y <= 0f)
+            {
+                // Why the fuck do we have a negative or zero height?
+                dimensions.Y = 1.0f;
+            }
+            if (dimensions.Z < 0f)
+            {
+                // Make positive
+                dimensions.Z *= -1.0f;
+                topLeft.Z -= dimensions.Z;
+            }
+            #endregion
+
+            Vector3 worldSpaceSize = new Vector3(topLeft.X + (dimensions.X * tileSize),
+                topLeft.Y + dimensions.Y, topLeft.Z + (dimensions.Z * tileSize));
 
             int zIncrement = 0;
             int xIncrement = 0;

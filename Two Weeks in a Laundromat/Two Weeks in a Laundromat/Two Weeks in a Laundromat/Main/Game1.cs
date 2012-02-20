@@ -185,6 +185,7 @@ namespace Two_Weeks_in_a_Laundromat
                     spriteBatch.DrawString(mainFont, "UD Rot: " + world.MPlayer.UpDownRot, new Vector2(1, 20), Color.White);
                     spriteBatch.DrawString(mainFont, " X Pos: " + world.MPlayer.Position.X, new Vector2(1, 40), Color.White);
                     spriteBatch.DrawString(mainFont, " Z Pos: " + world.MPlayer.Position.Z, new Vector2(1, 60), Color.White);
+                    spriteBatch.DrawString(mainFont, "  Door: " + world.lastOpened, new Vector2(1, 80), Color.White);
                     spriteBatch.End();
 #endif
                     break;
