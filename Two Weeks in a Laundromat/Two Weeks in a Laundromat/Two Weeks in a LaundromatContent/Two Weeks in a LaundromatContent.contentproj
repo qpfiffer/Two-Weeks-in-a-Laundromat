@@ -68,6 +68,10 @@
       <Project>{4040585A-7282-4FDD-89D6-0A80CAEE8A9C}</Project>
       <Name>BBoxImporter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Delve Engine\BBox_Animated_Importer\BBox_Animated_Importer.csproj">
+      <Project>{89CF3E5A-D15C-402F-8904-85A82CB9E607}</Project>
+      <Name>BBox_Animated_Importer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Ghiblies\Dryer.fbx">
@@ -254,7 +258,7 @@
     <Compile Include="Models\Segments\bone_door.fbx">
       <Name>bone_door</Name>
       <Importer>FbxImporter</Importer>
-      <Processor>Importer</Processor>
+      <Processor>AnimatedImporter</Processor>
       <ProcessorParameters_BlenderExport>True</ProcessorParameters_BlenderExport>
     </Compile>
   </ItemGroup>

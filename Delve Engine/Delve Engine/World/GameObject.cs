@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Delve_Engine.DataTypes;
+using SkinnedModel;
 
 namespace Delve_Engine.World
 {
@@ -15,7 +16,7 @@ namespace Delve_Engine.World
         #region Fields
         protected Vector3 position;
         protected float leftRightRot, upDownRot;
-        protected MetaModel model;
+        protected MetaModel metaModel;
         protected BasicEffect material;
         protected GraphicsDevice gDevice;
         protected List<Vector3> boundingOffsets;
@@ -27,10 +28,10 @@ namespace Delve_Engine.World
             get { return position; }
             set
             {
-                model.Position = value;
+                metaModel.Position = value;
 
-                if (model.model != null)
-                    ModelUtil.UpdateBoundingBoxes(ref model);
+                if (metaModel.model != null)
+                    ModelUtil.UpdateBoundingBoxes(ref metaModel);
 
                 this.position = value;
             }
@@ -50,7 +51,7 @@ namespace Delve_Engine.World
         }
         public MetaModel Model
         {
-            get { return model; }
+            get { return metaModel; }
         }
         public BasicEffect Material
         {
@@ -98,7 +99,7 @@ namespace Delve_Engine.World
         /// <param name="rotation">How it will be rotated when displayed.</param>
         public GameObject(ref MetaModel newObject, GraphicsDevice gDevice)
         {
-            this.model = newObject;
+            this.metaModel = newObject;
             this.gDevice = gDevice;
             ShouldDrawBoundingBoxes = ShouldDrawBBoxesDefault;
         }
@@ -127,16 +128,16 @@ namespace Delve_Engine.World
         {
             //if (model.Shader != null)
             {
-                model.Shader.Parameters["World"].SetValue(cMatrices.world);
-                model.Shader.Parameters["View"].SetValue(cMatrices.view);
-                model.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
-                model.Shader.Parameters["LightPos"].SetValue(playerPos);
+                metaModel.Shader.Parameters["World"].SetValue(cMatrices.world);
+                metaModel.Shader.Parameters["View"].SetValue(cMatrices.view);
+                metaModel.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
+                metaModel.Shader.Parameters["LightPos"].SetValue(playerPos);
 
-                ModelUtil.DrawModel(model);
+                ModelUtil.DrawModel(metaModel);
 #if DEBUG
-                if (model.BBoxes != null && ShouldDrawBoundingBoxes)
+                if (metaModel.BBoxes != null && ShouldDrawBoundingBoxes)
                 {
-                    foreach (BoundingBox bBox in model.BBoxes)
+                    foreach (BoundingBox bBox in metaModel.BBoxes)
                     {
                         BoundingBoxRenderer.Render(bBox,
                             gDevice,
@@ -151,6 +152,9 @@ namespace Delve_Engine.World
 
         public virtual void Update(GameTime gTime)
         {
+            if (((object[])metaModel.model.Tag)[1] is SkinningData)
+            {
+            }
         }
     }
 }

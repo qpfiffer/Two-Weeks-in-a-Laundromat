@@ -20,7 +20,7 @@ using SkinnedModel;
 namespace BBox_Animated_Importer
 {
     [ContentProcessor(DisplayName = "Animated BoundingBox Generator")]
-    public class Importer : ModelProcessor
+    public class AnimatedImporter : ModelProcessor
     {
         #region BoundingBox
         [DisplayName("Blender Export")]
