@@ -126,6 +126,10 @@
       <Project>{D6252ED0-0271-4313-9898-7AB9E0BC938C}</Project>
       <Name>Delve Engine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Delve Engine\SkinnedModel\SkinnedModelWindows.csproj">
+      <Project>{0D41E29B-829F-4255-BCA5-64DC2677DA6D}</Project>
+      <Name>SkinnedModelWindows</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Two Weeks in a LaundromatContent\Two Weeks in a LaundromatContent.contentproj">
       <Name>Two_Weeks_in_a_LaundromatContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
