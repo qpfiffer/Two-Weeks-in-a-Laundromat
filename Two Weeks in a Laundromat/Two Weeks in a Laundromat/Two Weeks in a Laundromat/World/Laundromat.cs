@@ -68,7 +68,7 @@ namespace Two_Weeks_in_a_Laundromat
             doorframe.Shader = shaderToLoad;
 
             door = new MetaModel();
-            door.model = gManager.Load<Model>("Models/segments/door");
+            door.model = gManager.Load<Model>("Models/segments/bone_door");
             door.Texture = gManager.Load<Texture2D>("Textures/Laundromat/door");
             door.Shader = shaderToLoad;
 

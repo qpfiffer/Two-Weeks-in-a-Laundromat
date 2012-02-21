@@ -20,6 +20,8 @@ namespace Delve_Engine.World
         protected BasicEffect material;
         protected GraphicsDevice gDevice;
         protected List<Vector3> boundingOffsets;
+        protected AnimationPlayer animationPlayer;
+        protected SkinningData skinningData;
         #endregion
 
         #region Properties
@@ -102,6 +104,12 @@ namespace Delve_Engine.World
             this.metaModel = newObject;
             this.gDevice = gDevice;
             ShouldDrawBoundingBoxes = ShouldDrawBBoxesDefault;
+            
+            if (((object[])metaModel.model.Tag)[2] is SkinningData)
+            {
+                skinningData = ((object[])metaModel.model.Tag)[2] as SkinningData;
+                animationPlayer = new AnimationPlayer(skinningData);
+            }
         }
 
         public virtual void Load(ContentManager gManager)
@@ -133,7 +141,14 @@ namespace Delve_Engine.World
                 metaModel.Shader.Parameters["Projection"].SetValue(cMatrices.proj);
                 metaModel.Shader.Parameters["LightPos"].SetValue(playerPos);
 
-                ModelUtil.DrawModel(metaModel);
+                if (animationPlayer != null)
+                {
+                    ModelUtil.DrawModel(metaModel, animationPlayer);
+                }
+                else
+                {
+                    ModelUtil.DrawModel(metaModel);
+                }
 #if DEBUG
                 if (metaModel.BBoxes != null && ShouldDrawBoundingBoxes)
                 {
@@ -152,8 +167,9 @@ namespace Delve_Engine.World
 
         public virtual void Update(GameTime gTime)
         {
-            if (((object[])metaModel.model.Tag)[1] is SkinningData)
+            if (animationPlayer != null)
             {
+                animationPlayer.Update(gTime.ElapsedGameTime, true, Matrix.Identity);
             }
         }
     }

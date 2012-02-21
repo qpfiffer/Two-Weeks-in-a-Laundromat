@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Delve_Engine.DataTypes;
+using SkinnedModel;
 
 namespace Delve_Engine.Utilities
 {
@@ -269,27 +270,59 @@ namespace Delve_Engine.Utilities
                         part.Effect = m.Shader;
                         part.Effect.Parameters["UsedTexture"].SetValue(m.Texture);
 
-                        if (m.model.Bones.Count == 0)
-                        {
-                            // Calculate the world matrix:
-                            Matrix worldTemp = transforms[mesh.ParentBone.Index];
-                            worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
-                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
-                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
-                            worldTemp *= Matrix.CreateTranslation(m.Position);
-                            part.Effect.Parameters["World"].SetValue(worldTemp);
-                        }
-                        else
-                        {
-                            // We've got some fucking bones to deal with.
-                            Matrix worldTemp = transforms[mesh.ParentBone.Index];
-                            worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
-                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
-                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
-                            worldTemp *= Matrix.CreateTranslation(m.Position);
-                            part.Effect.Parameters["World"].SetValue(worldTemp);
-                        }
+                        // Calculate the world matrix:
+                        Matrix worldTemp = transforms[mesh.ParentBone.Index];
+                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                        worldTemp *= Matrix.CreateTranslation(m.Position);
+                        part.Effect.Parameters["World"].SetValue(worldTemp);
                         
+                    }
+                    mesh.Draw();
+
+                    // POP IT!
+                    m.Shader.Parameters["World"].SetValue(oldWorld);
+                    m.Shader.Parameters["View"].SetValue(oldView);
+                    m.Shader.Parameters["Projection"].SetValue(oldProj);
+                }
+            }
+        }
+
+        public static void DrawModel(MetaModel m, AnimationPlayer animationPlayer)
+        {
+            // In this function it is assumed that all matrices
+            // are set up and updated elsewhere.
+
+            // We also push and pop the matrix values because it is faster to do it
+            // that way than to clone them.
+
+            // PUSH IT
+            Matrix oldWorld = m.Shader.Parameters["World"].GetValueMatrix();
+            Matrix oldView = m.Shader.Parameters["View"].GetValueMatrix();
+            Matrix oldProj = m.Shader.Parameters["Projection"].GetValueMatrix();
+
+            Matrix[] bones = animationPlayer.GetWorldTransforms();
+
+            foreach (ModelMesh mesh in m.model.Meshes)
+            {
+                // Don't draw bounding box volumes:
+                if (mesh.Name.Contains("bounding") == false)
+                {
+                    foreach (ModelMeshPart part in mesh.MeshParts)
+                    {
+                        part.Effect = m.Shader;
+                        part.Effect.Parameters["UsedTexture"].SetValue(m.Texture);
+
+                        // Calculate the world matrix:
+                        Matrix worldTemp = bones[1];
+                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                        worldTemp *= Matrix.CreateTranslation(m.Position);
+                        part.Effect.Parameters["World"].SetValue(worldTemp);
+
+
                     }
                     mesh.Draw();
 

@@ -39,6 +39,20 @@ namespace SkinnedModel
         // Backlink to the bind pose and skeleton hierarchy data.
         SkinningData skinningDataValue;
 
+        private bool loop, lastFrame;
+
+        public bool Loop
+        {
+            get { return loop; }
+            set { loop = value; }
+        }
+
+        public bool SitOnLastFrame 
+        {
+            get { return lastFrame; }
+            set { lastFrame = value; } 
+        }
+
 
         #endregion
 

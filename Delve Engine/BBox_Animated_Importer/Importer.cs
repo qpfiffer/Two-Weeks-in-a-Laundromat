@@ -23,6 +23,7 @@ namespace BBox_Animated_Importer
     public class AnimatedImporter : ModelProcessor
     {
         #region BoundingBox
+
         [DisplayName("Blender Export")]
         [Description("Toggles whether or not this model should be treated as exported from Blender.")]
         [DefaultValue(false)]
@@ -43,7 +44,7 @@ namespace BBox_Animated_Importer
         List<List<Vector3>> MeshVerts = new List<List<Vector3>>();
 
         // Holds the calculated bounding boxes and the skinningData.
-        object[] ModelData = new object[2];
+        object[] ModelData = new object[3];
         #endregion
         #region BoundingBoxProcessing
         private void CheckNode(NodeContent content)
@@ -176,7 +177,7 @@ namespace BBox_Animated_Importer
         #endregion
         #region AnimationProcessing
         
-        static void ValidateMesh(NodeContent node, ContentProcessorContext context,
+        void ValidateMesh(NodeContent node, ContentProcessorContext context,
                                  string parentBoneName)
         {
             MeshContent mesh = node as MeshContent;
@@ -217,7 +218,7 @@ namespace BBox_Animated_Importer
         /// <summary>
         /// Used by ValidateMesh.
         /// </summary>
-        static bool MeshHasSkinning(MeshContent mesh)
+        bool MeshHasSkinning(MeshContent mesh)
         {
             foreach (GeometryContent geometry in mesh.Geometry)
             {
@@ -228,7 +229,7 @@ namespace BBox_Animated_Importer
             return true;
         }
 
-        static void FlattenTransforms(NodeContent node, BoneContent skeleton)
+        void FlattenTransforms(NodeContent node, BoneContent skeleton)
         {
             foreach (NodeContent child in node.Children)
             {
@@ -236,8 +237,15 @@ namespace BBox_Animated_Importer
                 if (child == skeleton)
                     continue;
 
-                // Bake the local transform into the actual geometry.
-                MeshHelper.TransformScene(child, child.Transform);
+                if (BlenderExport == true)
+                {
+                    MeshHelper.TransformScene(child, child.Transform);
+                }
+                else
+                {
+                    // Bake the local transform into the actual geometry.
+                    MeshHelper.TransformScene(child, child.Transform);
+                }
 
                 // Having baked it, we can now set the local
                 // coordinate system back to identity.
@@ -248,17 +256,17 @@ namespace BBox_Animated_Importer
             }
         }
 
-        static Dictionary<string, AnimationClip> ProcessAnimations(
+        Dictionary<string, AnimationClip> ProcessAnimations(
             AnimationContentDictionary animations, IList<BoneContent> bones)
         {
             // Build up a table mapping bone names to indices.
-            Dictionary<string, int> boneMap = new Dictionary<string, int>();
+            Dictionary<string, int> boneMap = new Dictionary<string, int>();           
 
             for (int i = 0; i < bones.Count; i++)
             {
                 string boneName = bones[i].Name;
 
-                if (!string.IsNullOrEmpty(boneName))
+                //if (!string.IsNullOrEmpty(boneName))
                     boneMap.Add(boneName, i);
             }
 
@@ -282,7 +290,7 @@ namespace BBox_Animated_Importer
             return animationClips;
         }
 
-        static AnimationClip ProcessAnimation(AnimationContent animation,
+        AnimationClip ProcessAnimation(AnimationContent animation,
                                               Dictionary<string, int> boneMap)
         {
             List<Keyframe> keyframes = new List<Keyframe>();
@@ -321,7 +329,7 @@ namespace BBox_Animated_Importer
             return new AnimationClip(animation.Duration, keyframes);
         }
 
-        static int CompareKeyframeTimes(Keyframe a, Keyframe b)
+        int CompareKeyframeTimes(Keyframe a, Keyframe b)
         {
             return a.Time.CompareTo(b.Time);
         }
@@ -375,11 +383,15 @@ namespace BBox_Animated_Importer
 
             // Convert animation data to our runtime format.
             Dictionary<string, AnimationClip> animationClips;
+
+            context.Logger.LogWarning(null, null, "Bone count is: {0}", bones.Count);
+
             animationClips = ProcessAnimations(skeleton.Animations, bones);
 
             // Store our custom animation data in the Tag property of the model.
-            ModelData[1] = new SkinningData(animationClips, bindPose,
+            SkinningData temp = new SkinningData(animationClips, bindPose,
                                          inverseBindPose, skeletonHierarchy);
+            ModelData[2] = temp;
             #endregion
 
             ModelContent basemodel = base.Process(input, context);
