@@ -51,11 +51,13 @@ namespace Two_Weeks_in_a_Laundromat
             if (open)
             {
                 this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(-90.0f), 0);
+                //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y + MathHelper.ToRadians(-90.0f));
                 open = false;
             }
             else
             {
                 this.model.Rotation = new Vector3(0, model.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
+                //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y);
                 open = true;
             }
 

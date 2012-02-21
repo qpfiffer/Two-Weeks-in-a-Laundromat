@@ -269,13 +269,26 @@ namespace Delve_Engine.Utilities
                         part.Effect = m.Shader;
                         part.Effect.Parameters["UsedTexture"].SetValue(m.Texture);
 
-                        // Calculate the world matrix:
-                        Matrix worldTemp = transforms[mesh.ParentBone.Index];
-                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
-                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
-                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
-                        worldTemp *= Matrix.CreateTranslation(m.Position);
-                        part.Effect.Parameters["World"].SetValue(worldTemp);
+                        if (m.model.Bones.Count == 0)
+                        {
+                            // Calculate the world matrix:
+                            Matrix worldTemp = transforms[mesh.ParentBone.Index];
+                            worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
+                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                            worldTemp *= Matrix.CreateTranslation(m.Position);
+                            part.Effect.Parameters["World"].SetValue(worldTemp);
+                        }
+                        else
+                        {
+                            // We've got some fucking bones to deal with.
+                            Matrix worldTemp = transforms[mesh.ParentBone.Index];
+                            worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
+                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                            worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                            worldTemp *= Matrix.CreateTranslation(m.Position);
+                            part.Effect.Parameters["World"].SetValue(worldTemp);
+                        }
                         
                     }
                     mesh.Draw();
