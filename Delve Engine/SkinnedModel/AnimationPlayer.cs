@@ -65,6 +65,9 @@ namespace SkinnedModel
             if (skinningData == null)
                 throw new ArgumentNullException("skinningData");
 
+            loop = false;
+            lastFrame = false;
+
             skinningDataValue = skinningData;
 
             boneTransforms = new Matrix[skinningData.BindPose.Count];
@@ -115,6 +118,10 @@ namespace SkinnedModel
             if (relativeToCurrentTime)
             {
                 time += currentTimeValue;
+
+
+                if (loop == false && time >= currentClipValue.Duration)
+                    return;
 
                 // If we reached the end, loop back to the start.
                 while (time >= currentClipValue.Duration)
