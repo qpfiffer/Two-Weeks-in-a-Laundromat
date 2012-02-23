@@ -170,7 +170,67 @@ namespace Delve_Engine.Utilities
             Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X) * Matrix.CreateRotationY(m.Rotation.Y)
                 * Matrix.CreateRotationZ(m.Rotation.Z) * Matrix.CreateTranslation(m.Position);
 
-            List<BoundingBox> generatedBBoxes = ((object[])m.model.Tag)[0] as List<BoundingBox>;
+            List<BoundingBox> generatedBBoxes = null;
+            if (m.BBoxes == null)
+                generatedBBoxes = ((object[])m.model.Tag)[0] as List<BoundingBox>;
+            else
+               generatedBBoxes = m.BBoxes;
+
+            if (generatedBBoxes != null)
+            {
+                foreach (BoundingBox bBox in generatedBBoxes)
+                {
+                    Vector3 transformedMin = Vector3.Transform(bBox.Min, translationMatrix);
+                    Vector3 transformedMax = Vector3.Transform(bBox.Max, translationMatrix);
+
+                    Vector3 newMin = transformedMin;
+                    Vector3 newMax = transformedMax;
+
+                    if (newMax.X < newMin.X)
+                    {
+                        float temp = newMin.X;
+                        newMin.X = newMax.X;
+                        newMax.X = temp;
+                    }
+
+                    if (newMax.Y < newMin.Y)
+                    {
+                        float temp = newMin.Y;
+                        newMin.Y = newMax.Y;
+                        newMax.Y = temp;
+                    }
+
+                    if (newMax.Z < newMin.Z)
+                    {
+                        float temp = newMin.Z;
+                        newMin.Z = newMax.Z;
+                        newMax.Z = temp;
+                    }
+
+                    BoundingBox newBBox = new BoundingBox(newMin, newMax);
+                    toSet.Add(newBBox);
+                }
+            }
+
+            m.BBoxes = toSet;
+        }
+
+        public static void UpdateBoundingBoxes(ref MetaModel m, AnimationPlayer animationPlayer)
+        {
+            if (m.model.Tag == null)
+                throw new Exception("No bounding box data for this model!");
+
+            List<BoundingBox> toSet = new List<BoundingBox>();
+            Matrix[] bones = animationPlayer.GetWorldTransforms();
+
+            Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X) * Matrix.CreateRotationY(m.Rotation.Y)
+                * Matrix.CreateRotationZ(m.Rotation.Z) * Matrix.CreateTranslation(m.Position);
+
+            List<BoundingBox> generatedBBoxes = null;
+            if (m.BBoxes == null)
+                generatedBBoxes = ((object[])m.model.Tag)[0] as List<BoundingBox>;
+            else
+               generatedBBoxes = m.BBoxes;
 
             if (generatedBBoxes != null)
             {
@@ -316,10 +376,12 @@ namespace Delve_Engine.Utilities
 
                         // Calculate the world matrix:
                         Matrix worldTemp = bones[1];
-                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
-                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
-                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
-                        worldTemp *= Matrix.CreateTranslation(m.Position);
+                        // We dont need these here because we pass in a rootTranfsformationMatrix
+                        // when we update AnimationPlayer.
+                        //worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
+                        //worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                        //worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                        //worldTemp *= Matrix.CreateTranslation(m.Position);
                         part.Effect.Parameters["World"].SetValue(worldTemp);
 
 

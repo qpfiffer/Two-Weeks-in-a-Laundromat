@@ -39,12 +39,30 @@ namespace SkinnedModel
         // Backlink to the bind pose and skeleton hierarchy data.
         SkinningData skinningDataValue;
 
-        private bool loop, lastFrame;
+        private bool loop, lastFrame, playing, idle, reverse;
 
         public bool Loop
         {
             get { return loop; }
             set { loop = value; }
+        }
+
+        public bool Reverse
+        {
+            get { return reverse; }
+            set { reverse = value; }
+        }
+
+        public bool IsPlaying
+        {
+            get { return playing; }
+            set { playing = value; }
+        }
+
+        public bool IsIdle
+        {
+            get { return idle; }
+            set { idle = value; }
         }
 
         public bool SitOnLastFrame 
@@ -67,6 +85,8 @@ namespace SkinnedModel
 
             loop = false;
             lastFrame = false;
+            playing = false;
+            reverse = false;
 
             skinningDataValue = skinningData;
 
@@ -84,6 +104,34 @@ namespace SkinnedModel
             if (clip == null)
                 throw new ArgumentNullException("clip");
 
+            idle = false;
+            playing = true;
+
+            if (!reverse)
+            {
+                currentClipValue = clip;
+                currentTimeValue = TimeSpan.Zero;
+                currentKeyframe = 0;
+            }
+            else
+            {
+                currentClipValue = clip;
+                currentTimeValue = TimeSpan.Zero;
+                currentKeyframe = clip.Keyframes.Count;
+            }
+
+            // Initialize bone transforms to the bind pose.
+            skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+        }
+
+        public void StartClipIdle(AnimationClip clip)
+        {
+            if (clip == null)
+                throw new ArgumentNullException("clip");
+
+            idle = true;
+            playing = true;
+
             currentClipValue = clip;
             currentTimeValue = TimeSpan.Zero;
             currentKeyframe = 0;
@@ -99,9 +147,17 @@ namespace SkinnedModel
         public void Update(TimeSpan time, bool relativeToCurrentTime,
                            Matrix rootTransform)
         {
-            UpdateBoneTransforms(time, relativeToCurrentTime);
-            UpdateWorldTransforms(rootTransform);
-            UpdateSkinTransforms();
+            // This may look kind of weird, but we do it this way so that
+            // the bone transforms get set only once.
+            if (playing == true)
+            {
+                UpdateBoneTransforms(time, relativeToCurrentTime);
+                UpdateWorldTransforms(rootTransform);
+                UpdateSkinTransforms();
+            }
+
+            if (idle == true)
+                playing = false;
         }
 
 
@@ -114,48 +170,100 @@ namespace SkinnedModel
                 throw new InvalidOperationException(
                             "AnimationPlayer.Update was called before StartClip");
 
-            // Update the animation position.
-            if (relativeToCurrentTime)
+            #region Forward
+            if (!reverse)
             {
-                time += currentTimeValue;
+                // Update the animation position.
+                if (relativeToCurrentTime)
+                {
+                    time += currentTimeValue;
 
 
-                if (loop == false && time >= currentClipValue.Duration)
-                    return;
+                    if (loop == false && time >= currentClipValue.Duration)
+                        return;
 
-                // If we reached the end, loop back to the start.
-                while (time >= currentClipValue.Duration)
-                    time -= currentClipValue.Duration;
+                    // If we reached the end, loop back to the start.
+                    while (time >= currentClipValue.Duration)
+                        time -= currentClipValue.Duration;
+                }
+
+                if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
+                    throw new ArgumentOutOfRangeException("time");
+
+                // If the position moved backwards, reset the keyframe index.
+                if (time < currentTimeValue)
+                {
+                    currentKeyframe = 0;
+                    skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+                }
+
+                currentTimeValue = time;
+
+                // Read keyframe matrices.
+                IList<Keyframe> keyframes = currentClipValue.Keyframes;
+
+                while (currentKeyframe < keyframes.Count)
+                {
+                    Keyframe keyframe = keyframes[currentKeyframe];
+
+                    // Stop when we've read up to the current time position.
+                    if (keyframe.Time > currentTimeValue)
+                        break;
+
+                    // Use this keyframe.
+                    boneTransforms[keyframe.Bone] = keyframe.Transform;
+
+                    currentKeyframe++;
+                }
             }
-
-            if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
-                throw new ArgumentOutOfRangeException("time");
-
-            // If the position moved backwards, reset the keyframe index.
-            if (time < currentTimeValue)
+            #endregion
+            #region Reverse
+            else
             {
-                currentKeyframe = 0;
-                skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+                // Update the animation position.
+                if (relativeToCurrentTime)
+                {
+                    time += currentTimeValue;
+
+
+                    if (loop == false && time >= currentClipValue.Duration)
+                        return;
+
+                    // If we reached the end, loop back to the start.
+                    while (time >= currentClipValue.Duration)
+                        time -= currentClipValue.Duration;
+                }
+
+                if ((time < TimeSpan.Zero) || (time >= currentClipValue.Duration))
+                    throw new ArgumentOutOfRangeException("time");
+
+                // If the position moved backwards, reset the keyframe index.
+                if (time < currentTimeValue)
+                {
+                    currentKeyframe = 0;
+                    skinningDataValue.BindPose.CopyTo(boneTransforms, 0);
+                }
+
+                currentTimeValue = time;
+
+                // Read keyframe matrices.
+                IList<Keyframe> keyframes = currentClipValue.Keyframes;
+
+                while (currentKeyframe < keyframes.Count)
+                {
+                    Keyframe keyframe = keyframes[currentKeyframe];
+
+                    // Stop when we've read up to the current time position.
+                    if (keyframe.Time > currentTimeValue)
+                        break;
+
+                    // Use this keyframe.
+                    boneTransforms[keyframe.Bone] = keyframe.Transform;
+
+                    currentKeyframe++;
+                }
             }
-
-            currentTimeValue = time;
-
-            // Read keyframe matrices.
-            IList<Keyframe> keyframes = currentClipValue.Keyframes;
-
-            while (currentKeyframe < keyframes.Count)
-            {
-                Keyframe keyframe = keyframes[currentKeyframe];
-
-                // Stop when we've read up to the current time position.
-                if (keyframe.Time > currentTimeValue)
-                    break;
-
-                // Use this keyframe.
-                boneTransforms[keyframe.Bone] = keyframe.Transform;
-
-                currentKeyframe++;
-            }
+            #endregion
         }
 
 

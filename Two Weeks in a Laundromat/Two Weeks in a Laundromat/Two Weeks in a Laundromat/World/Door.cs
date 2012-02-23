@@ -18,6 +18,7 @@ namespace Two_Weeks_in_a_Laundromat
         private bool open = false;
         private DoorData metaDoor;
         private Room parentRoom, childRoom;
+        private AnimationClip clip;
 
         public DoorData MetaDoor
         {
@@ -46,9 +47,9 @@ namespace Two_Weeks_in_a_Laundromat
             this.metaDoor = metaData;
             this.parentRoom = parentRoom;
            
-            AnimationClip clip = skinningData.AnimationClips["open_door"];
-
-            animationPlayer.StartClip(clip);
+            clip = skinningData.AnimationClips["open_door"];
+            animationPlayer.StartClipIdle(clip);
+            //animationPlayer.Loop = true;            
         }
 
         public override void interactedWith()
@@ -56,14 +57,16 @@ namespace Two_Weeks_in_a_Laundromat
             if (open)
             {
                 this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(-90.0f), 0);
-                //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y + MathHelper.ToRadians(-90.0f));
+                //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y + MathHelper.ToRadians(-90.0f));                
                 open = false;
+                animationPlayer.StartClipIdle(clip);
             }
             else
             {
                 this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
                 //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y);
                 open = true;
+                animationPlayer.StartClip(clip);
             }
 
             ModelUtil.UpdateBoundingBoxes(ref metaModel);

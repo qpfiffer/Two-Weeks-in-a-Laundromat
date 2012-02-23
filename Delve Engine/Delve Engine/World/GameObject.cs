@@ -17,7 +17,7 @@ namespace Delve_Engine.World
         protected Vector3 position;
         protected float leftRightRot, upDownRot;
         protected MetaModel metaModel;
-        protected BasicEffect material;
+        //protected BasicEffect material;
         protected GraphicsDevice gDevice;
         protected List<Vector3> boundingOffsets;
         protected AnimationPlayer animationPlayer;
@@ -55,10 +55,10 @@ namespace Delve_Engine.World
         {
             get { return metaModel; }
         }
-        public BasicEffect Material
-        {
-            get { return material; }
-        }
+        //public BasicEffect Material
+        //{
+        //    get { return material; }
+        //}
         public bool ShouldDrawBoundingBoxes
         {
             get;
@@ -117,15 +117,15 @@ namespace Delve_Engine.World
             throw new NotImplementedException("This probably shouldn't be called directly.");
         }
 
-        public void ToggleFog(bool fogEnabled)
-        {
-            material.FogEnabled = fogEnabled;
-        }
+        //public void ToggleFog(bool fogEnabled)
+        //{
+        //    material.FogEnabled = fogEnabled;
+        //}
 
-        public void ToggleFog()
-        {
-            material.FogEnabled = !material.FogEnabled;
-        }
+        //public void ToggleFog()
+        //{
+        //    material.FogEnabled = !material.FogEnabled;
+        //}
 
         public virtual void interactedWith()
         {
@@ -158,7 +158,7 @@ namespace Delve_Engine.World
                             gDevice,
                             cMatrices.view,
                             cMatrices.proj,
-                            Color.Red);
+                            Color.Blue);
                     }
                 }
 #endif
@@ -169,7 +169,13 @@ namespace Delve_Engine.World
         {
             if (animationPlayer != null)
             {
-                animationPlayer.Update(gTime.ElapsedGameTime, true, Matrix.Identity);
+                MetaModel m = metaModel;
+                Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X) * Matrix.CreateRotationY(m.Rotation.Y)
+                * Matrix.CreateRotationZ(m.Rotation.Z) * Matrix.CreateTranslation(m.Position);
+
+                animationPlayer.Update(gTime.ElapsedGameTime, true, translationMatrix);
+                // This is fucked up. Don't use it yet.
+                //ModelUtil.UpdateBoundingBoxes(ref metaModel, animationPlayer);
             }
         }
     }
