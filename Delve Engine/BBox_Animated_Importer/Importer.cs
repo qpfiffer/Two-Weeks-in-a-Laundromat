@@ -70,7 +70,7 @@ namespace BBox_Animated_Importer
                         for (int i = 0; i < mesh.Positions.Count; i++)
                         {
                             Vector3 v = mesh.Positions[i];
-                            v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX - MathHelper.ToRadians(90.0f)));
+                            v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX));
                             v = Vector3.Transform(v, Matrix.CreateRotationY(RotationY));
                             v = Vector3.Transform(v, Matrix.CreateRotationZ(RotationZ));
 
@@ -235,21 +235,17 @@ namespace BBox_Animated_Importer
             {
                 // Don't process the skeleton, because that is special.
                 if (child == skeleton)
+                {
+                    MeshHelper.TransformScene(child, child.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
                     continue;
-
-                if (BlenderExport == true)
-                {
-                    MeshHelper.TransformScene(child, child.Transform);
                 }
-                else
-                {
-                    // Bake the local transform into the actual geometry.
-                    MeshHelper.TransformScene(child, child.Transform);
-                }
+                
+                // Bake the local transform into the actual geometry.
+                //MeshHelper.TransformScene(child, child.Transform);
 
                 // Having baked it, we can now set the local
                 // coordinate system back to identity.
-                child.Transform = Matrix.Identity;
+                //child.Transform = Matrix.Identity;
 
                 // Recurse.
                 FlattenTransforms(child, skeleton);
@@ -312,8 +308,17 @@ namespace BBox_Animated_Importer
                 // Convert the keyframe data.
                 foreach (AnimationKeyframe keyframe in channel.Value)
                 {
-                    keyframes.Add(new Keyframe(boneIndex, keyframe.Time,
-                                               keyframe.Transform));
+                    //if (BlenderExport == true)
+                    //{
+                    //    Matrix fixTheFuckup = keyframe.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
+                    //    keyframes.Add(new Keyframe(boneIndex, keyframe.Time,
+                    //                               keyframe.Transform));
+                    //}
+                    //else
+                    //{
+                        keyframes.Add(new Keyframe(boneIndex, keyframe.Time,
+                                                   keyframe.Transform));
+                    //}
                 }
             }
 
@@ -337,6 +342,12 @@ namespace BBox_Animated_Importer
         #endregion
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
+            //Why.
+            if (BlenderExport)
+            {
+                RotationX -= 90.0f;
+            }
+
             #region BoundingBox
             //GenerateNormals(input, context);
             // Setup bounding box data.
@@ -376,9 +387,19 @@ namespace BBox_Animated_Importer
             // Put everything where it needs to be:
             foreach (BoneContent bone in bones)
             {
-                bindPose.Add(bone.Transform);
-                inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
-                skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
+                //if (BlenderExport)
+                //{
+                //    Matrix toAdd = Matrix.CreateRotationX(MathHelper.ToRadians(90.0f));
+                //    bindPose.Add(bone.Transform + toAdd);
+                //    inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform + toAdd));
+                //    skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
+                //}
+                //else
+                //{
+                    bindPose.Add(bone.Transform);
+                    inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
+                    skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
+                //}
             }
 
             // Convert animation data to our runtime format.
@@ -392,7 +413,7 @@ namespace BBox_Animated_Importer
             SkinningData temp = new SkinningData(animationClips, bindPose,
                                          inverseBindPose, skeletonHierarchy);
             ModelData[2] = temp;
-            #endregion
+            #endregion            
 
             ModelContent basemodel = base.Process(input, context);
             basemodel.Tag = ModelData;

@@ -49,21 +49,21 @@ namespace Two_Weeks_in_a_Laundromat
            
             clip = skinningData.AnimationClips["open_door"];
             animationPlayer.StartClipIdle(clip);
-            //animationPlayer.Loop = true;            
+            animationPlayer.Loop = true;            
         }
 
         public override void interactedWith()
         {
             if (open)
             {
-                this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(-90.0f), 0);
+                //this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(-90.0f), 0);
                 //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y + MathHelper.ToRadians(-90.0f));                
                 open = false;
                 animationPlayer.StartClipIdle(clip);
             }
             else
             {
-                this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
+                //this.metaModel.Rotation = new Vector3(0, metaModel.Rotation.Y + MathHelper.ToRadians(90.0f), 0);
                 //this.model.model.Bones[0].Transform = Matrix.CreateRotationY(model.Rotation.Y);
                 open = true;
                 animationPlayer.StartClip(clip);
