@@ -34,6 +34,7 @@ namespace SkinnedModel
         Matrix[] boneTransforms;
         Matrix[] worldTransforms;
         Matrix[] skinTransforms;
+        Matrix[] initialBonePositions;
 
 
         // Backlink to the bind pose and skeleton hierarchy data.
@@ -91,8 +92,17 @@ namespace SkinnedModel
             skinningDataValue = skinningData;
 
             boneTransforms = new Matrix[skinningData.BindPose.Count];
+
+            initialBonePositions = new Matrix[skinningData.BindPose.Count];
+            skinningDataValue.BindPose.CopyTo(initialBonePositions, 0);
+
             worldTransforms = new Matrix[skinningData.BindPose.Count];
             skinTransforms = new Matrix[skinningData.BindPose.Count];
+        }
+
+        public Matrix[] GetStartingBonePositions()
+        {
+            return initialBonePositions;
         }
 
 

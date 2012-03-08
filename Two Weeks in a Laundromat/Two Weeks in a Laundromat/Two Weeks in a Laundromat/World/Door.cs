@@ -49,7 +49,7 @@ namespace Two_Weeks_in_a_Laundromat
            
             clip = skinningData.AnimationClips["open_door"];
             animationPlayer.StartClipIdle(clip);
-            animationPlayer.Loop = true;            
+            //animationPlayer.Loop = true;            
         }
 
         public override void interactedWith()

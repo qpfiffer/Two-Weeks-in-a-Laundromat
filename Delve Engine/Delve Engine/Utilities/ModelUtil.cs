@@ -362,7 +362,7 @@ namespace Delve_Engine.Utilities
             Matrix oldView = m.Shader.Parameters["View"].GetValueMatrix();
             Matrix oldProj = m.Shader.Parameters["Projection"].GetValueMatrix();
 
-            Matrix[] bones = animationPlayer.GetWorldTransforms();
+            Matrix[] bones = animationPlayer.GetBoneTransforms();
 
             foreach (ModelMesh mesh in m.model.Meshes)
             {
@@ -378,10 +378,10 @@ namespace Delve_Engine.Utilities
                         Matrix worldTemp = bones[1];
                         // We dont need these here because we pass in a rootTranfsformationMatrix
                         // when we update AnimationPlayer.
-                        //worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
-                        //worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
-                        //worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
-                        //worldTemp *= Matrix.CreateTranslation(m.Position);
+                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X + MathHelper.ToRadians(-90.0f));
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
+                        worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
+                        worldTemp *= Matrix.CreateTranslation(m.Position);
                         part.Effect.Parameters["World"].SetValue(worldTemp);
 
 
