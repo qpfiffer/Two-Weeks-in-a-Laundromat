@@ -239,13 +239,13 @@ namespace BBox_Animated_Importer
                     //MeshHelper.TransformScene(child, child.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
                     continue;
                 }
-                
+
                 // Bake the local transform into the actual geometry.
-                //MeshHelper.TransformScene(child, child.Transform);
+                MeshHelper.TransformScene(child, child.Transform);
 
                 // Having baked it, we can now set the local
                 // coordinate system back to identity.
-                //child.Transform = Matrix.Identity;
+                child.Transform = Matrix.Identity;
 
                 // Recurse.
                 FlattenTransforms(child, skeleton);
@@ -316,8 +316,10 @@ namespace BBox_Animated_Importer
                     //}
                     //else
                     //{
+                    Matrix transform = keyframe.Transform;
+                    //transform += Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
                         keyframes.Add(new Keyframe(boneIndex, keyframe.Time,
-                                                   keyframe.Transform));
+                                                   transform));
                     //}
                 }
             }
@@ -366,6 +368,7 @@ namespace BBox_Animated_Importer
                 throw new InvalidContentException("Input skeleton not found.");
 
             // Make sure everything is in the same coordinate system.
+            //MeshHelper.TransformScene(skeleton, skeleton.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
             FlattenTransforms(input, skeleton);
 
             // Read the bind pose and skeleton hierarchy data.
@@ -387,6 +390,9 @@ namespace BBox_Animated_Importer
             // Put everything where it needs to be:
             foreach (BoneContent bone in bones)
             {
+                Matrix what = bone.Transform - Matrix.CreateTranslation(bone.Transform.Translation);
+                MeshHelper.TransformScene(bone, what + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
+                //bone.Transform += Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
                 //if (BlenderExport)
                 //{
                 //    Matrix toAdd = Matrix.CreateRotationX(MathHelper.ToRadians(90.0f));

@@ -364,6 +364,7 @@ namespace Delve_Engine.Utilities
 
             Matrix[] bones = animationPlayer.GetBoneTransforms();
 
+
             foreach (ModelMesh mesh in m.model.Meshes)
             {
                 // Don't draw bounding box volumes:
