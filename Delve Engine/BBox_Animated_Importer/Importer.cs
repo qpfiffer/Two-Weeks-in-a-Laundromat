@@ -236,16 +236,16 @@ namespace BBox_Animated_Importer
                 // Blender fucks everything up, so make sure that we transform the skeleton.
                 if (child == skeleton)
                 {
-                    MeshHelper.TransformScene(child, child.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
+                    //MeshHelper.TransformScene(child, child.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
                     continue;
                 }
                 
                 // Bake the local transform into the actual geometry.
-                MeshHelper.TransformScene(child, child.Transform);
+                //MeshHelper.TransformScene(child, child.Transform);
 
                 // Having baked it, we can now set the local
                 // coordinate system back to identity.
-                child.Transform = Matrix.Identity;
+                //child.Transform = Matrix.Identity;
 
                 // Recurse.
                 FlattenTransforms(child, skeleton);
