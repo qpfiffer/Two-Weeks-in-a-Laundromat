@@ -383,14 +383,12 @@ namespace Delve_Engine.Utilities
                         // Calculate the world matrix:
                         Matrix worldTemp = bones[1];
                         // We dont need these here because we pass in a rootTranfsformationMatrix
-                        // when we update AnimationPlayer.                        
+                        // when we update AnimationPlayer.
                         worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
                         worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
                         worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
                         worldTemp *= Matrix.CreateTranslation(m.Position);
                         part.Effect.Parameters["World"].SetValue(worldTemp);
-
-
                     }
                     mesh.Draw();
 

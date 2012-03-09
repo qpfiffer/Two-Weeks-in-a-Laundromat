@@ -317,7 +317,7 @@ namespace BBox_Animated_Importer
                     //else
                     //{
                     Matrix transform = keyframe.Transform;
-                    //transform += Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
+                    //transform *= Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
                         keyframes.Add(new Keyframe(boneIndex, keyframe.Time,
                                                    transform));
                     //}
