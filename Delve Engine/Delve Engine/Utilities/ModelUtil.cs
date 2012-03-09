@@ -364,6 +364,11 @@ namespace Delve_Engine.Utilities
 
             Matrix[] bones = animationPlayer.GetBoneTransforms();
 
+            Vector3 scale, trans;
+            Quaternion rot;
+            m.model.Bones[1].Transform.Decompose(out scale, out rot, out trans);
+            Matrix offset = Matrix.CreateTranslation(trans);
+
 
             foreach (ModelMesh mesh in m.model.Meshes)
             {
@@ -378,8 +383,8 @@ namespace Delve_Engine.Utilities
                         // Calculate the world matrix:
                         Matrix worldTemp = bones[1];
                         // We dont need these here because we pass in a rootTranfsformationMatrix
-                        // when we update AnimationPlayer.
-                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X + MathHelper.ToRadians(-90.0f));
+                        // when we update AnimationPlayer.                        
+                        worldTemp *= Matrix.CreateRotationX(m.Rotation.X);
                         worldTemp *= Matrix.CreateRotationY(m.Rotation.Y);
                         worldTemp *= Matrix.CreateRotationY(m.Rotation.Z);
                         worldTemp *= Matrix.CreateTranslation(m.Position);
