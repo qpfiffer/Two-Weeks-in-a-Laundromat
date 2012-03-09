@@ -390,8 +390,15 @@ namespace BBox_Animated_Importer
             // Put everything where it needs to be:
             foreach (BoneContent bone in bones)
             {
-                Matrix what = bone.Transform - Matrix.CreateTranslation(bone.Transform.Translation);
-                MeshHelper.TransformScene(bone, what + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
+                Vector3 scale, trans;
+                Quaternion rot;
+                bone.Transform.Decompose(out scale, out rot, out trans);
+                Matrix what = Matrix.CreateTranslation(trans); 
+                what *= Matrix.CreateFromQuaternion(rot) + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
+                //what *= Matrix.CreateScale(scale);
+
+
+                MeshHelper.TransformScene(bone, what);
                 //bone.Transform += Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
                 //if (BlenderExport)
                 //{
@@ -402,7 +409,7 @@ namespace BBox_Animated_Importer
                 //}
                 //else
                 //{
-                    bindPose.Add(bone.Transform);
+                    bindPose.Add(what);
                     inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
                     skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
                 //}
