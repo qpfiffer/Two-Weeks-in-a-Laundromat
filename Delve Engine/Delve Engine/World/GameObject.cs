@@ -173,7 +173,7 @@ namespace Delve_Engine.World
                 Matrix translationMatrix = Matrix.CreateRotationX(m.Rotation.X) * Matrix.CreateRotationY(m.Rotation.Y)
                 * Matrix.CreateRotationZ(m.Rotation.Z) * Matrix.CreateTranslation(m.Position);
 
-                animationPlayer.Update(gTime.ElapsedGameTime, true, translationMatrix);
+                animationPlayer.Update(gTime.ElapsedGameTime, true, Matrix.Identity);
                 // This is fucked up. Don't use it yet.
                 //ModelUtil.UpdateBoundingBoxes(ref metaModel, animationPlayer);
             }

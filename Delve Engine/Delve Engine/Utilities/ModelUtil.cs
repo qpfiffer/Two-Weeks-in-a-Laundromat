@@ -362,7 +362,7 @@ namespace Delve_Engine.Utilities
             Matrix oldView = m.Shader.Parameters["View"].GetValueMatrix();
             Matrix oldProj = m.Shader.Parameters["Projection"].GetValueMatrix();
 
-            Matrix[] bones = animationPlayer.GetBoneTransforms();
+            Matrix[] bones = animationPlayer.GetWorldTransforms();
 
             Vector3 scale, trans;
             Quaternion rot;

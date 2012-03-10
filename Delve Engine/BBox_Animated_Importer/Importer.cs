@@ -70,9 +70,9 @@ namespace BBox_Animated_Importer
                         for (int i = 0; i < mesh.Positions.Count; i++)
                         {
                             Vector3 v = mesh.Positions[i];
-                            v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX));
-                            v = Vector3.Transform(v, Matrix.CreateRotationY(RotationY));
-                            v = Vector3.Transform(v, Matrix.CreateRotationZ(RotationZ));
+                            //v = Vector3.Transform(v, Matrix.CreateRotationX(RotationX));
+                            //v = Vector3.Transform(v, Matrix.CreateRotationY(RotationY));
+                            //v = Vector3.Transform(v, Matrix.CreateRotationZ(RotationZ));
 
                             if (v.X < minX)
                                 minX = v.X;
@@ -344,11 +344,35 @@ namespace BBox_Animated_Importer
         #endregion
         public override ModelContent Process(NodeContent input, ContentProcessorContext context)
         {
+            #region Help Out The Animations
+            //NodeContent inputClone = input;
+            //ValidateMesh(inputClone, context, null);
+
+            //// Find the skeleton.
+            //BoneContent untransSkeleton = MeshHelper.FindSkeleton(inputClone);
+
+            //// Make sure everything is in the same coordinate system.
+            ////MeshHelper.TransformScene(skeleton, skeleton.Transform + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
+            //FlattenTransforms(inputClone, untransSkeleton);
+
+            //// Read the bind pose and skeleton hierarchy data.
+            //IList<BoneContent> unTransBones = MeshHelper.FlattenSkeleton(untransSkeleton);
+
+            //// Convert animation data to our runtime format.
+            //Dictionary<string, AnimationClip> animationClips;
+
+            //context.Logger.LogWarning(null, null, "Bone count is: {0}", unTransBones.Count);
+
+            //animationClips = ProcessAnimations(untransSkeleton.Animations, unTransBones);
+            #endregion
             //Why.
             if (BlenderExport)
             {
                 RotationX -= 90.0f;
             }
+
+            MeshHelper.TransformScene(input, input.Transform * Matrix.CreateRotationX(MathHelper.ToRadians(RotationX)));
+            
 
             #region BoundingBox
             //GenerateNormals(input, context);
@@ -390,29 +414,9 @@ namespace BBox_Animated_Importer
             // Put everything where it needs to be:
             foreach (BoneContent bone in bones)
             {
-                Vector3 scale, trans;
-                Quaternion rot;
-                bone.Transform.Decompose(out scale, out rot, out trans);
-                Matrix what = Matrix.CreateTranslation(trans); 
-                what *= Matrix.CreateFromQuaternion(rot) + Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
-                //what *= Matrix.CreateScale(scale);
-
-
-                MeshHelper.TransformScene(bone, what);
-                //bone.Transform += Matrix.CreateRotationX(MathHelper.ToRadians(RotationX));
-                //if (BlenderExport)
-                //{
-                //    Matrix toAdd = Matrix.CreateRotationX(MathHelper.ToRadians(90.0f));
-                //    bindPose.Add(bone.Transform + toAdd);
-                //    inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform + toAdd));
-                //    skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
-                //}
-                //else
-                //{
-                    bindPose.Add(what);
-                    inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
-                    skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
-                //}
+                bindPose.Add(bone.Transform);
+                inverseBindPose.Add(Matrix.Invert(bone.AbsoluteTransform));
+                skeletonHierarchy.Add(bones.IndexOf(bone.Parent as BoneContent));
             }
 
             // Convert animation data to our runtime format.

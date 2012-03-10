@@ -101,8 +101,8 @@ namespace Two_Weeks_in_a_Laundromat
 
         private void addNewRoom(Room toAdd)
         {
-            //toAdd.Load(gManager, gDevice);
-            toAdd.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
+            toAdd.Load(gManager, gDevice);
+            //toAdd.Load(gManager, gDevice, gManager.Load<Effect>("Shaders/rbShift"));
 
             foreach (MetaModel m in toAdd.AllMetas)
             {
